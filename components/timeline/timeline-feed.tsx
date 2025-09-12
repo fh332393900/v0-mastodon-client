@@ -264,9 +264,7 @@ export function TimelineFeed() {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center justify-between"
       >
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          Timeline
-        </h1>
+        <h1 className="text-3xl font-bold text-primary">Timeline</h1>
         <div className="flex items-center space-x-2">
           <div className="flex rounded-lg border border-border/50 p-1">
             {(["public", "local", "home"] as const).map((type) => (
