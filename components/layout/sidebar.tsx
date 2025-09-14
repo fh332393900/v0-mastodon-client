@@ -19,7 +19,7 @@ const navigationItems = [
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(true)
   const pathname = usePathname()
   const { user, logout } = useAuth()
 
