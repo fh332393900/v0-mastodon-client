@@ -16,8 +16,6 @@
     "@radix-ui/react-select": "latest",
     "@radix-ui/react-slider": "latest",
     "@radix-ui/react-switch": "latest",
-    "@remix-run/react": "latest",
-    "@sveltejs/kit": "latest",
     "@vercel/analytics": "latest",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -30,12 +28,9 @@
     "next-themes": "latest",
     "react": "^19",
     "react-dom": "^19",
-    "svelte": "latest",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "use-sync-external-store": "latest",
-    "vue": "latest",
-    "vue-router": "latest",
     "zustand": "latest"
   },
   "devDependencies": {
