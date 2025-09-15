@@ -25,12 +25,7 @@ export async function GET(request: NextRequest) {
 
     const authUrl = `${serverUrl}/oauth/authorize?client_id=${app.clientId}&redirect_uri=${encodeURIComponent(app.redirectUri)}&response_type=code&scope=read+write+follow+push`
 
-    return NextResponse.json({
-      authUrl,
-      clientId: app.clientId,
-      clientSecret: app.clientSecret,
-      serverUrl,
-    })
+    return NextResponse.redirect(authUrl)
   } catch (error) {
     console.error("Mastodon OAuth error:", error)
     return NextResponse.json({ error: "Failed to initialize OAuth" }, { status: 500 })
