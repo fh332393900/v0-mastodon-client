@@ -12,7 +12,6 @@ export async function GET(request: NextRequest) {
     console.log(serverUrl, 'serverUrl')
     console.log(createRestAPIClient, 'createRestAPIClient')
     const client = createRestAPIClient({ url: serverUrl, accessToken: process.env.MASTODON_TOKEN })
-    
    
     console.log(client.v1, '--')
     const app = await client.v1.apps.create({
@@ -23,7 +22,7 @@ export async function GET(request: NextRequest) {
     })
     console.log(app, 'app')
 
-    const authUrl = `${serverUrl}/oauth/authorize?client_id=${app.clientId}&redirect_uri=${encodeURIComponent(app.redirectUri)}&response_type=code&scope=read+write+follow+push`
+    const authUrl = `${serverUrl}/oauth/authorize?client_id=${app.clientId}&redirect_uri=${encodeURIComponent(app.redirectUri)}&response_type=code&scope=read+write+follow+push?serverUrl=${serverUrl}&clientSecret=${app.clientSecret}`
 
     return NextResponse.redirect(authUrl)
   } catch (error) {
