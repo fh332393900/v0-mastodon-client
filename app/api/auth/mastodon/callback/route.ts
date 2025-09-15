@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect("/login?error=missing_params")
     }
 
-    const client = createRestAPIClient({ url: serverUrl })
+    // const client = createRestAPIClient({ url: serverUrl })
 
     const params = new URLSearchParams();
     params.append('grant_type', 'authorization_code');
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     params.append('redirect_uri',  `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/auth/mastodon/callback`);
     params.append('scope', 'read write follow');
     console.log(params, 'params====')
-    const res: any = await fetch(`https://${serverUrl}/oauth/token`, {
+    const res: any = await fetch(`${serverUrl}/oauth/token`, {
       method: 'POST',
       body: params
     })
