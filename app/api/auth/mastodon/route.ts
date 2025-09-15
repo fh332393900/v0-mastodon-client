@@ -10,7 +10,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Server URL is required" }, { status: 400 })
     }
     console.log(serverUrl, 'serverUrl')
-    
     console.log(createRestAPIClient, 'createRestAPIClient')
     const client = createRestAPIClient({ url: serverUrl, accessToken: process.env.MASTODON_TOKEN })
     
