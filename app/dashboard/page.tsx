@@ -6,7 +6,6 @@ import { useAuth } from "@/hooks/use-auth"
 import { ThreeColumnLayout } from "@/components/layout/three-column-layout"
 import { TimelineFeed } from "@/components/timeline/timeline-feed"
 import { motion } from "framer-motion"
-import { kvTest } from "@/lib/shared"
 
 export default function DashboardPage() {
   const { isAuthenticated, isLoading } = useAuth()
@@ -16,7 +15,6 @@ export default function DashboardPage() {
     if (!isLoading && !isAuthenticated) {
       router.push("/")
     }
-    kvTest();
   }, [isAuthenticated, isLoading, router])
 
   if (isLoading) {
