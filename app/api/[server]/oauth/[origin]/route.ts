@@ -23,16 +23,16 @@ export async function GET(
   }
 
   try {
+    const form = new URLSearchParams();
+    form.append('grant_type', 'authorization_code');
+    form.append('code', code);
+    form.append('client_id', app.client_id);
+    form.append('client_secret', app.client_secret);
+    form.append('redirect_uri',  getRedirectURI(origin, server));
+    form.append('scope', 'read write follow push');
     const result = await fetch(`https://${server}/oauth/token`, {
       method: 'POST',
-      body: JSON.stringify({
-        client_id: app.client_id,
-        client_secret: app.client_secret,
-        redirect_uri: getRedirectURI(origin, server),
-        grant_type: 'authorization_code',
-        code,
-        scope: 'read write follow push',
-      })
+      body: form.toString()
     })
 
     const token = await result.json()
