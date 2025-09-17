@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createRestAPIClient } from "masto"
-import { kvTest } from "@/lib/shared"
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,7 +9,6 @@ export async function GET(request: NextRequest) {
     if (!serverUrl) {
       return NextResponse.json({ error: "Server URL is required" }, { status: 400 })
     }
-    kvTest()
     console.log(serverUrl, 'serverUrl')
     console.log(createRestAPIClient, 'createRestAPIClient')
     const client = createRestAPIClient({ url: serverUrl, accessToken: process.env.MASTODON_TOKEN })

@@ -40,7 +40,7 @@ dependencies:
     version: 2.1.1
   framer-motion:
     specifier: latest
-    version: 12.23.12(@emotion/is-prop-valid@1.4.0)(react-dom@19.0.0)(react@19.0.0)
+    version: 12.23.13(@emotion/is-prop-valid@1.4.0)(react-dom@19.0.0)(react@19.0.0)
   geist:
     specifier: latest
     version: 1.5.1(next@15.2.4)
@@ -71,6 +71,9 @@ dependencies:
   tailwindcss-animate:
     specifier: ^1.0.7
     version: 1.0.7(tailwindcss@4.1.9)
+  ufo:
+    specifier: ^1.6.1
+    version: 1.6.1
   use-sync-external-store:
     specifier: latest
     version: 1.5.0(react@19.0.0)
@@ -2930,8 +2933,8 @@ packages:
       is-callable: 1.2.7
     dev: true
 
-  /framer-motion@12.23.12(@emotion/is-prop-valid@1.4.0)(react-dom@19.0.0)(react@19.0.0):
-    resolution: {integrity: sha512-6e78rdVtnBvlEVgu6eFEAgG9v3wLnYEboM8I5O5EXvfKC8gxGQB8wXJdhkMy10iVcn05jl6CNw7/HTsTCfwcWg==}
+  /framer-motion@12.23.13(@emotion/is-prop-valid@1.4.0)(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-OMF57Xh0fuTXfJQPtCieYGeU9Fam4SxqPLVz78YI7ATRFrfz8SARtqr1+qv56cX45kPFcIEfkUorVfxlOsjcUg==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0 || ^19.0.0
@@ -4600,6 +4603,10 @@ packages:
     engines: {node: '>=12.20'}
     hasBin: true
     dev: true
+
+  /ufo@1.6.1:
+    resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
+    dev: false
 
   /unbox-primitive@1.1.0:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}

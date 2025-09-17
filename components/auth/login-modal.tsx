@@ -34,8 +34,12 @@ export function LoginModal({ children }: LoginModalProps) {
       setError("Please enter server address!")
       return
     }
-
-    router.push(`/api/auth/mastodon?server=${server}`)
+    fetch(`/api/${server}/login`, {
+      method: 'POST',
+      body: JSON.stringify({
+        origin: location.origin,
+      })
+    })
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

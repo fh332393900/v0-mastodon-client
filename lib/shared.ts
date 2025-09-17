@@ -1,5 +1,55 @@
+import type { AppInfo } from '@/types'
 import { kv } from '@vercel/kv'
+import { name } from '../package.json'
 
-export async function kvTest() {
-  await kv.set('test', 1111)
+export function getRedirectURI(origin: string, server: string) {
+  origin = origin.replace(/\?.*$/, '')
+  return `${origin}/api/${server}/oauth/${encodeURIComponent(origin)}`
+}
+
+async function fetchAppInfo(origin: string, server: string) {
+  const res = await fetch(`https://${server}/api/v1/apps`, {
+    method: 'POST',
+    body: JSON.stringify({
+      client_name: name,
+      website: 'https://v0-mastodon-client.vercel.app',
+      redirect_uris: getRedirectURI(origin, server),
+      scopes: 'read write follow push',
+    }),
+  })
+  const app: AppInfo = await res.json()
+  return app
+}
+
+export async function getApp(origin: string, server: string) {
+  const host = origin.replace(/^https?:\/\//, '').replace(/\W/g, '-').replace(/\?.*$/, '')
+  const key = `servers:v3:${server}:${host}.json`.toLowerCase()
+
+  try {
+    if (await kv.get(key))
+      return (kv.get(key) as Promise<AppInfo>)
+    const appInfo = await fetchAppInfo(origin, server)
+    await kv.set(key, appInfo)
+    return appInfo
+  }
+  catch {
+    return null
+  }
+}
+
+export async function deleteApp(server: string) {
+  const keys: any = (await kv.get(`servers:v3:${server}:`))
+  for (const key of keys)
+    await kv.del(key)
+}
+
+export async function listServers() {
+  const keys: any = await kv.get('servers:v3:')
+  const servers = new Set<string>()
+  for await (const key of keys) {
+    const id = key.split(':')[2]
+    if (id)
+      servers.add(id.toLocaleLowerCase())
+  }
+  return Array.from(servers).sort()
 }
