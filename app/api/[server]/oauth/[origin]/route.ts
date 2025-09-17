@@ -32,6 +32,9 @@ export async function GET(
     form.append('scope', 'read write follow push');
     const result = await fetch(`https://${server}/oauth/token`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
       body: form.toString()
     })
 
