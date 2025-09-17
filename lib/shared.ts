@@ -8,23 +8,28 @@ export function getRedirectURI(origin: string, server: string) {
 }
 
 async function fetchAppInfo(origin: string, server: string) {
-  const res = await fetch(`https://${server}/api/v1/apps`, {
-    method: 'POST',
-    body: JSON.stringify({
-      client_name: name,
-      website: 'https://v0-mastodon-client.vercel.app',
-      redirect_uris: getRedirectURI(origin, server),
-      scopes: 'read write follow push',
-    }),
-  })
-  const app: AppInfo = await res.json()
-  return app
+  try {
+    const res = await fetch(`https://${server}/api/v1/apps`, {
+      method: 'POST',
+      body: JSON.stringify({
+        client_name: name,
+        website: 'https://v0-mastodon-client.vercel.app',
+        redirect_uris: getRedirectURI(origin, server),
+        scopes: 'read write follow push',
+      }),
+    })
+    const app: AppInfo = await res.json()
+    return app
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export async function getApp(origin: string, server: string) {
   const host = origin.replace(/^https?:\/\//, '').replace(/\W/g, '-').replace(/\?.*$/, '')
   const key = `servers:v3:${server}:${host}.json`.toLowerCase()
-
+  console.log(key)
+  console.log(host)
   try {
     if (await kv.get(key))
       return (kv.get(key) as Promise<AppInfo>)

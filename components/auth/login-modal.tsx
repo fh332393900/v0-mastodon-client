@@ -68,18 +68,20 @@ export function LoginModal({ children }: LoginModalProps) {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="server" className="text-sm font-medium">
-                Srver
+                Server
               </Label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <span className="absolute left-3 top-3.5 transform -translate-y-1/2 h-4 w-4 text-muted-foreground">
+                  https://
+                </span>
                 <Input
                   id="server"
                   type="text"
-                  placeholder="alice"
+                  placeholder=""
                   value={server}
                   onChange={(e) => setServer(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  className="pl-10 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                  className="pl-18 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                   disabled={isLoading}
                 />
               </div>
