@@ -25,22 +25,15 @@ export default async function RootLayout({
 }>) {
   const cookieStore = cookies();
 
-  const accessToken = (await cookieStore).get("mastodon_token")?.value ?? "";
-  const server = (await cookieStore).get("mastodon_server")?.value ?? "mastodon.social";
-  console.log(accessToken, 1)
-  console.log(server, 2)
-  const client = createRestAPIClient({
-    url: `https://${server}`,
-    accessToken: accessToken,
-  })
-  console.log(client)
+  const accessToken = (await cookieStore).get("mastodon_token")?.value ?? ""
+  const server = (await cookieStore).get("mastodon_server")?.value ?? "mastodon.social"
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange={false}>
-            <MastoProvider client={client}>
+            <MastoProvider accessToken={accessToken} server={server}>
               {children}
             </MastoProvider>
           </ThemeProvider>
