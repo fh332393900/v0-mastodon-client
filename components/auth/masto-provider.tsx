@@ -26,6 +26,10 @@ export function MastoProvider({ children, accessToken, server }: { children: Rea
         accessToken,
       })
       setClient(c)
+
+      c.v1.accounts.verifyCredentials().then(res => {
+        console.log(res, 'test-----')
+      })
     }
   }, [server, accessToken])
 
