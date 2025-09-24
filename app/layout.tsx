@@ -30,7 +30,7 @@ export default async function RootLayout({
   console.log(accessToken, 1)
   console.log(server, 2)
   const client = createRestAPIClient({
-    url: server,
+    url: `https://${server}`,
     accessToken: accessToken,
   })
 
