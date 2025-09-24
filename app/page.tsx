@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LoginModal } from "@/components/auth/login-modal"
 import { MessageCircle, Users, Globe, Zap, Shield, Heart, ArrowRight, Sparkles } from "lucide-react"
-import { useAuth } from "@/hooks/use-auth"
+import { useAuth } from "@/components/auth/auth-provider"
 
 export default function HomePage() {
   const { isAuthenticated, isLoading } = useAuth()
@@ -16,7 +16,8 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.push("/dashboard")
+      console.log(isAuthenticated)
+      router.push("/timeline")
     }
   }, [isAuthenticated, isLoading, router])
 

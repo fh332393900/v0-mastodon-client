@@ -4,9 +4,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { mastodon } from "masto";
 import { createRestAPIClient } from "masto"
 
-export type MastoClient = mastodon.rest.Client;
+export type MastoClient = mastodon.rest.Client
+export type MastoStreamingClient = mastodon.streaming.Client
+export interface MastoContextType {
+  client: MastoClient,
+  streamingClient?: MastoStreamingClient
+}
 
-const MastoContext = createContext<MastoClient | null>(null);
+const MastoContext = createContext<MastoContextType | undefined>(undefined);
 
 export function useMasto() {
   const client = useContext(MastoContext);
@@ -17,24 +22,18 @@ export function useMasto() {
 }
 
 export function MastoProvider({ children, accessToken, server }: { children: React.ReactNode, accessToken: string, server: string }){
-  const [client, setClient] = useState<MastoClient | null>(null)
+  const [client, setClient] = useState<MastoClient>()
 
   useEffect(() => {
-    if (accessToken && server) {
-      const c = createRestAPIClient({
-        url: `https://${server}`,
-        accessToken,
-      })
-      setClient(c)
-
-      c.v1.accounts.verifyCredentials().then(res => {
-        console.log(res, 'test-----')
-      })
-    }
+    const c = createRestAPIClient({
+      url: `https://${server}`,
+      accessToken,
+    })
+    setClient(c)
   }, [server, accessToken])
 
   return (
-    <MastoContext.Provider value={client}>
+    <MastoContext.Provider value={{ client: client as MastoClient }}>
       {children}
     </MastoContext.Provider>
   )

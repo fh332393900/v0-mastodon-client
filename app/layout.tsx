@@ -9,7 +9,7 @@ import { Suspense } from "react"
 import "./globals.css"
 import { cookies } from "next/headers";
 import { MastoProvider } from "@/components/auth/masto-provider";
-import { createRestAPIClient } from "masto"
+import { AuthProvider } from "@/components/auth/auth-provider"
 
 
 export const metadata: Metadata = {
@@ -34,7 +34,9 @@ export default async function RootLayout({
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange={false}>
             <MastoProvider accessToken={accessToken} server={server}>
-              {children}
+              <AuthProvider>
+                {children}
+              </AuthProvider>
             </MastoProvider>
           </ThemeProvider>
         </Suspense>

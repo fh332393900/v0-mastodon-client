@@ -10,11 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
 const trendingTags = [
-  { tag: "#OpenSource", posts: "2.1k" },
-  { tag: "#WebDev", posts: "1.8k" },
-  { tag: "#Mastodon", posts: "1.2k" },
-  { tag: "#Privacy", posts: "956" },
-  { tag: "#Fediverse", posts: "743" },
 ]
 
 export function RightPanel() {
@@ -30,9 +25,6 @@ export function RightPanel() {
       <div className="flex flex-col h-full p-4 space-y-4">
         {/* Search Section */}
         <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Search</CardTitle>
-          </CardHeader>
           <CardContent className="pt-0">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />

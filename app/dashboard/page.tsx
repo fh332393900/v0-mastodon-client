@@ -6,7 +6,6 @@ import { useAuth } from "@/hooks/use-auth"
 import { ThreeColumnLayout } from "@/components/layout/three-column-layout"
 import { TimelineFeed } from "@/components/timeline/timeline-feed"
 import { motion } from "framer-motion"
-import { useMasto } from "@/components/auth/masto-provider"
 
 export default function DashboardPage() {
   const { isAuthenticated, isLoading } = useAuth()
@@ -14,7 +13,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push("/")
+      // router.push("/")
     }
   }, [isAuthenticated, isLoading, router])
 

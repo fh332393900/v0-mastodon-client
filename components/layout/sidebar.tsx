@@ -8,10 +8,10 @@ import { Home, Heart, Search, Settings, Menu, X, LogOut } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { useAuth } from "@/hooks/use-auth"
+import { useAuth } from "@/components/auth/auth-provider"
 
 const navigationItems = [
-  { icon: Home, label: "Home", href: "/dashboard", color: "text-blue-500" },
+  { icon: Home, label: "Home", href: "/timeline", color: "text-blue-500" },
   { icon: Heart, label: "Favorites", href: "/favorites", color: "text-red-500" },
   { icon: Search, label: "Explore", href: "/explore", color: "text-green-500" },
   { icon: Settings, label: "Settings", href: "/settings", color: "text-gray-500" },
@@ -56,15 +56,6 @@ export function Sidebar() {
       {/* Sidebar */}
       <motion.aside
         initial={false}
-        animate={{
-          width: isCollapsed ? 80 : 280,
-          x: isMobileOpen ? 0 : -300,
-        }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className={cn(
-          "fixed left-0 top-0 z-40 h-screen bg-card border-r border-border",
-          "lg:relative lg:translate-x-0",
-        )}
       >
         <div className="flex h-full flex-col">
           {/* Header */}
@@ -97,9 +88,6 @@ export function Sidebar() {
               return (
                 <motion.div
                   key={item.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
                 >
                   <Link href={item.href}>
                     <Button

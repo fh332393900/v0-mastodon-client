@@ -2,8 +2,10 @@
 
 import type React from "react"
 import { createContext, useContext, useEffect, useState } from "react"
+import { useMasto } from "./masto-provider"
+import type { mastodon } from "masto"
 
-interface User {}
+type User = mastodon.v1.AccountCredentials
 
 interface AuthContextType {
   user: User | null
@@ -20,6 +22,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
+  const { client } = useMasto()
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      await refreshUser()
+    }
+
+    checkAuth()
+  }, [client])
+
   const login = async (server: string) => {
     const res = await fetch(`/api/${server}/login`, {
       method: 'POST',
@@ -31,7 +43,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     location.href = authUrl
   }
 
-  const refreshUser = async () => {}
+  const refreshUser = async () => {
+    const res = await client?.v1.accounts.verifyCredentials()
+    console.log(res, 'user===')
+    setUser(res)
+  }
 
   const logout = async () => {}
 
