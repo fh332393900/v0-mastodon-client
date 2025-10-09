@@ -45,7 +45,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshUser = async () => {
     const res = await client?.v1.accounts.verifyCredentials()
-    console.log(res, 'user===')
     setUser(res)
   }
 

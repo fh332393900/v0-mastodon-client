@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     const client = createRestAPIClient({
-      url: serverUrl,
+      url: `https://${serverUrl}`,
       accessToken: token,
     })
 

@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Heart, MessageCircle, Repeat2, Share, MoreHorizontal, Clock, Globe } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useMasto } from "@/components/auth/masto-provider"
 
 interface Post {
   id: string
@@ -17,6 +18,7 @@ interface Post {
     username: string
     displayName: string
     avatar: string
+    acct: string
   }
   createdAt: string
   favouritesCount: number
@@ -38,6 +40,8 @@ function PostCard({ post, index }: { post: Post; index: number }) {
   const [likes, setLikes] = useState(post.favouritesCount)
   const [reposts, setReposts] = useState(post.reblogsCount)
 
+  const { client } = useMasto()
+
   const handleLike = async () => {
     try {
       const method = isLiked ? "DELETE" : "POST"
@@ -55,7 +59,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
     }
   }
 
-  const handleRepost = async () => {
+  const handleRepost = async () => { 
     try {
       const method = isReposted ? "DELETE" : "POST"
       const response = await fetch(`/api/posts/${post.id}/reblog`, {
@@ -106,7 +110,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
                     {post.account.displayName}
                   </h3>
                   <Badge variant="secondary" className="text-xs">
-                    @{post.account.username}
+                    @{post.account.acct}
                   </Badge>
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">
@@ -200,24 +204,17 @@ export function TimelineFeed() {
   const [posts, setPosts] = useState<Post[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [timelineType, setTimelineType] = useState<"public" | "home" | "local">("public")
-
+  const { client } = useMasto()
   useEffect(() => {
     const fetchTimeline = async () => {
-      setIsLoading(true)
-      try {
-        const response = await fetch(`/api/timeline?type=${timelineType}&limit=20`)
-        const data = await response.json()
-        setPosts(data)
-      } catch (error) {
-        console.error("Failed to fetch timeline:", error)
-        setPosts([])
-      } finally {
+      client.v1.timelines.home.list({ limit: 30 }).then(res => {
+        setPosts(res as Post[])
         setIsLoading(false)
-      }
+      })
     }
 
-    fetchTimeline()
-  }, [timelineType])
+    client && fetchTimeline()
+  }, [timelineType, client])
 
   if (isLoading) {
     return (
