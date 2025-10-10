@@ -12,14 +12,6 @@ import { useAuth } from "@/components/auth/auth-provider"
 
 export default function HomePage() {
   const { isAuthenticated, isLoading } = useAuth()
-  const router = useRouter()
-
-  useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      console.log(isAuthenticated)
-      router.push("/timeline")
-    }
-  }, [isAuthenticated, isLoading, router])
 
   const handleGuestMode = () => {
     // Navigate to timeline in guest mode
