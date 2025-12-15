@@ -18,13 +18,13 @@ export default function HomePage() {
     window.location.href = "/timeline?mode=guest"
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+  //     </div>
+  //   )
+  // }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">

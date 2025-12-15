@@ -33,14 +33,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [client])
 
   const login = async (server: string) => {
-    const res = await fetch(`/api/${server}/login`, {
-      method: 'POST',
-      body: JSON.stringify({
-        origin: location.origin,
+    setIsLoading(true)
+    try {
+      const res = await fetch(`/api/${server}/login`, {
+        method: 'POST',
+        body: JSON.stringify({
+          origin: location.origin,
+        })
       })
-    })
-    const { authUrl } = await res.json()
-    location.href = authUrl
+      const { authUrl } = await res.json()
+      setIsLoading(false)
+      location.href = authUrl
+    } catch (error) {
+      setIsLoading(false)
+    }
   }
 
   const refreshUser = async () => {

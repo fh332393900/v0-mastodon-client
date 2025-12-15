@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { MessageCircle, ArrowRight, Loader2, User, Lock } from "lucide-react"
-import { useAuth } from "@/hooks/use-auth"
+import { useAuth } from "@/components/auth/auth-provider"
 import { useRouter } from "next/navigation"
 
 interface LoginModalProps {
@@ -27,22 +27,13 @@ export function LoginModal({ children }: LoginModalProps) {
   const [open, setOpen] = useState(false)
   const [error, setError] = useState("")
   const { login, isLoading } = useAuth()
-  const router = useRouter()
 
   const handleLogin = async () => {
     if (!server) {
       setError("Please enter server address!")
       return
     }
-    const res = await fetch(`/api/${server}/login`, {
-      method: 'POST',
-      body: JSON.stringify({
-        origin: location.origin,
-      })
-    })
-    const { authUrl } = await res.json()
-    console.log(authUrl)
-    location.href = authUrl
+    await login(server)
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
