@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
 import { Search, Github, Shield, Info } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -9,19 +8,13 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-const trendingTags = [
-]
+const trendingTags: { tag: string; posts: number }[] = []
 
 export function RightPanel() {
   const [searchQuery, setSearchQuery] = useState("")
 
   return (
-    <motion.aside
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3, delay: 0.1 }}
-      className="hidden lg:flex w-80 flex-col bg-card/50 border-l border-border"
-    >
+    <aside className="hidden lg:flex w-80 flex-col bg-card/50 border-l border-border">
       <div className="flex flex-col h-full p-4 space-y-4">
         {/* Search Section */}
         <Card>
@@ -44,12 +37,9 @@ export function RightPanel() {
             <CardTitle className="text-sm font-medium">Trending Tags</CardTitle>
           </CardHeader>
           <CardContent className="pt-0 space-y-3">
-            {trendingTags.map((item, index) => (
-              <motion.div
+            {trendingTags.map((item) => (
+              <div
                 key={item.tag}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
                 className="flex items-center justify-between p-2 rounded-lg hover:bg-accent/50 cursor-pointer transition-colors"
               >
                 <div>
@@ -59,7 +49,7 @@ export function RightPanel() {
                 <Badge variant="secondary" className="text-xs">
                   Trending
                 </Badge>
-              </motion.div>
+              </div>
             ))}
           </CardContent>
         </Card>
@@ -93,6 +83,6 @@ export function RightPanel() {
           </div>
         </div>
       </div>
-    </motion.aside>
+  </aside>
   )
 }

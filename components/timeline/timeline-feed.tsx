@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -87,13 +86,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      whileHover={{ scale: 1.01 }}
-      className="group"
-    >
+    <div className="group">
       <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/20 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
@@ -135,11 +128,8 @@ function PostCard({ post, index }: { post: Post; index: number }) {
           {post.mediaAttachments && post.mediaAttachments.length > 0 && (
             <div className="space-y-2">
               {post.mediaAttachments.map((item, mediaIndex) => (
-                <motion.div
+                <div
                   key={mediaIndex}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 }}
                   className="rounded-lg overflow-hidden border border-border/50"
                 >
                   <img
@@ -147,7 +137,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
                     alt={item.description || "Media attachment"}
                     className="w-full h-auto max-h-96 object-cover hover:scale-105 transition-transform duration-300"
                   />
-                </motion.div>
+                </div>
               ))}
             </div>
           )}
@@ -196,7 +186,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   )
 }
 
@@ -256,11 +246,7 @@ export function TimelineFeed() {
 
   return (
     <div className="space-y-6">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
-      >
+      <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-primary">Timeline</h1>
         <div className="flex items-center space-x-2">
           <div className="flex rounded-lg border border-border/50 p-1">
@@ -280,14 +266,9 @@ export function TimelineFeed() {
             {posts.length} posts
           </Badge>
         </div>
-      </motion.div>
+  </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-lg p-4 border border-primary/20"
-      >
+      <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-lg p-4 border border-primary/20">
         <p className="text-sm text-muted-foreground text-center">
           {timelineType === "home"
             ? "Your personalized home timeline"
@@ -295,27 +276,20 @@ export function TimelineFeed() {
               ? "Local community timeline"
               : "Public fediverse timeline"}
         </p>
-      </motion.div>
+      </div>
 
       <div className="space-y-6">
-        <AnimatePresence>
-          {posts.map((post, index) => (
-            <PostCard key={post.id} post={post} index={index} />
-          ))}
-        </AnimatePresence>
+        {posts.map((post, index) => (
+          <PostCard key={post.id} post={post} index={index} />
+        ))}
       </div>
 
       {posts.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="text-center py-8"
-        >
+        <div className="text-center py-8">
           <Button variant="outline" className="hover:scale-105 transition-transform duration-200 bg-transparent">
             Load More Posts
           </Button>
-        </motion.div>
+        </div>
       )}
     </div>
   )

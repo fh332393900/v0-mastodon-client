@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Home, Heart, Search, Settings, Menu, X, LogOut } from "lucide-react"
@@ -11,10 +10,10 @@ import { cn } from "@/lib/utils"
 import { useAuth } from "@/components/auth/auth-provider"
 
 const navigationItems = [
-  { icon: Home, label: "Home", href: "/timeline", color: "text-blue-500" },
-  { icon: Heart, label: "Favorites", href: "/favorites", color: "text-red-500" },
-  { icon: Search, label: "Explore", href: "/explore", color: "text-green-500" },
-  { icon: Settings, label: "Settings", href: "/settings", color: "text-gray-500" },
+  { icon: Home, label: "Home", route: "timeline", color: "text-blue-500" },
+  { icon: Heart, label: "Favorites", route: "favorites", color: "text-red-500" },
+  { icon: Search, label: "Explore", route: "explore", color: "text-green-500" },
+  { icon: Settings, label: "Settings", route: "settings", color: "text-gray-500" },
 ]
 
 export function Sidebar() {
@@ -22,6 +21,8 @@ export function Sidebar() {
   const [isMobileOpen, setIsMobileOpen] = useState(true)
   const pathname = usePathname()
   const { user, logout } = useAuth()
+  const server = pathname?.split("/")[1] || "mastodon.social"
+  const baseHref = `/${server}`
 
   const handleLogout = async () => {
     await logout()
@@ -41,40 +42,32 @@ export function Sidebar() {
       </Button>
 
       {/* Mobile Overlay */}
-      <AnimatePresence>
-        {isMobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
-            onClick={() => setIsMobileOpen(false)}
-          />
-        )}
-      </AnimatePresence>
+      {isMobileOpen && (
+        <div
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
 
       {/* Sidebar */}
-      <motion.aside
-        initial={false}
-      >
+      <aside className={isMobileOpen ? "fixed inset-y-0 left-0 z-50 w-72 bg-card border-r border-border lg:relative lg:w-72" : "hidden lg:block lg:w-72 bg-card border-r border-border"}>
         <div className="flex h-full flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-border">
-            <AnimatePresence mode="wait">
-              {!isCollapsed && (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="flex items-center space-x-2"
-                >
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">M</span>
-                  </div>
-                  <span className="text-lg font-bold">MastoClient</span>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {!isCollapsed ? (
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">M</span>
+                </div>
+                <span className="text-lg font-bold">MastoClient</span>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center w-full">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">M</span>
+                </div>
+              </div>
+            )}
 
             <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)} className="hidden lg:flex">
               <Menu className="h-5 w-5" />
@@ -83,13 +76,12 @@ export function Sidebar() {
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2">
-            {navigationItems.map((item, index) => {
-              const isActive = pathname === item.href
+            {navigationItems.map((item) => {
+              const href = `${baseHref}/${item.route}`
+              const isActive = pathname === href
               return (
-                <motion.div
-                  key={item.href}
-                >
-                  <Link href={item.href}>
+                <div key={item.route}>
+                  <Link href={href}>
                     <Button
                       variant={isActive ? "secondary" : "ghost"}
                       className={cn(
@@ -106,21 +98,10 @@ export function Sidebar() {
                           !isCollapsed && "mr-3",
                         )}
                       />
-                      <AnimatePresence>
-                        {!isCollapsed && (
-                          <motion.span
-                            initial={{ opacity: 0, width: 0 }}
-                            animate={{ opacity: 1, width: "auto" }}
-                            exit={{ opacity: 0, width: 0 }}
-                            className="font-medium"
-                          >
-                            {item.label}
-                          </motion.span>
-                        )}
-                      </AnimatePresence>
+                      {!isCollapsed && <span className="font-medium">{item.label}</span>}
                     </Button>
                   </Link>
-                </motion.div>
+                </div>
               )
             })}
           </nav>
@@ -128,9 +109,7 @@ export function Sidebar() {
           {/* User Info */}
           {user && (
             <div className="p-4 border-t border-border">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+              <div
                 className={cn(
                   "flex items-center space-x-3 p-3 rounded-lg bg-accent/50",
                   isCollapsed && "justify-center",
@@ -141,40 +120,28 @@ export function Sidebar() {
                   <AvatarFallback>{user.displayName.charAt(0)}</AvatarFallback>
                 </Avatar>
 
-                <AnimatePresence>
-                  {!isCollapsed && (
-                    <motion.div
-                      initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: "auto" }}
-                      exit={{ opacity: 0, width: 0 }}
-                      className="flex-1 min-w-0"
-                    >
-                      <div className="font-medium text-sm truncate">{user.displayName}</div>
-                      <div className="text-xs text-muted-foreground truncate">@{user.username}</div>
-                      <div className="text-xs text-muted-foreground truncate">{user.server}</div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {!isCollapsed && (
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-sm truncate">{user.displayName}</div>
+                    <div className="text-xs text-muted-foreground truncate">@{user.username}</div>
+                  </div>
+                )}
 
-                <AnimatePresence>
-                  {!isCollapsed && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={handleLogout}
-                        className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                      >
-                        <LogOut className="h-4 w-4" />
-                      </Button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                {!isCollapsed && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleLogout}
+                    className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
           )}
         </div>
-      </motion.aside>
+      </aside>
     </>
   )
 }
