@@ -31,7 +31,6 @@ export async function getMastodonClient() {
   if (!auth) {
     return null
   }
-
   return createRestAPIClient({
     url: auth.url,
     accessToken: auth.token,
