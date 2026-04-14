@@ -43,13 +43,9 @@ function PostCard({ post, index }: { post: Post; index: number }) {
 
   const handleLike = async () => {
     try {
-      const method = isLiked ? "DELETE" : "POST"
-      const response = await fetch(`/api/posts/${post.id}/favourite`, {
-        method,
-        headers: { "Content-Type": "application/json" },
-      })
-
-      if (response.ok) {
+      const status = !isLiked ? await client.v1.statuses.$select(post.id).favourite() : await client.v1.statuses.$select(post.id).unfavourite()
+      console.log(status)
+      if (status) {
         setIsLiked(!isLiked)
         setLikes(isLiked ? likes - 1 : likes + 1)
       }
@@ -175,7 +171,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
                   isLiked ? "text-red-500 hover:text-red-500/80" : "text-muted-foreground hover:text-red-500",
                 )}
               >
-                <Heart className={cn("w-4 h-4", isLiked && "fill-current animate-pulse")} />
+                <Heart className={cn("w-4 h-4", isLiked && "fill-current")} />
                 <span className="text-sm">{likes}</span>
               </Button>
             </div>
