@@ -14,12 +14,12 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check for session token for protected routes
-  const token = request.cookies.get("mastodon_token")?.value
+  // const token = request.cookies.get("mastodon_token")?.value
 
-  if (!token) {
-    const homePage = new URL('/', request.url)
-    return NextResponse.redirect(homePage)
-  }
+  // if (!token) {
+  //   const homePage = new URL('/', request.url)
+  //   return NextResponse.redirect(homePage)
+  // }
 
   return NextResponse.next()
 }

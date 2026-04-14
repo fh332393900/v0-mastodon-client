@@ -1,5 +1,7 @@
 import { getApp, getRedirectURI } from "@/lib/shared"
 import { type NextRequest, NextResponse } from "next/server"
+import fetch from 'node-fetch'
+import { agent } from '@/lib/proxy-agent'
 
 export async function GET(
   request: NextRequest,
@@ -35,7 +37,8 @@ export async function GET(
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: form.toString()
+      body: form.toString(),
+      agent
     })
 
     const token = await result.json()

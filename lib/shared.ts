@@ -1,5 +1,11 @@
 import type { AppInfo } from '@/types'
 import { kv } from '@vercel/kv'
+import fetch from 'node-fetch'
+import { HttpsProxyAgent } from 'https-proxy-agent'
+
+// 代理地址请根据你的实际情况修改
+  const proxy = process.env.HTTPS_PROXY || 'http://127.0.0.1:7890'
+  const agent = new HttpsProxyAgent(proxy)
 
 export function getRedirectURI(origin: string, server: string) {
   origin = origin.replace(/\?.*$/, '')
@@ -7,21 +13,29 @@ export function getRedirectURI(origin: string, server: string) {
 }
 
 async function fetchAppInfo(origin: string, server: string) {
+  console.log(origin, 'origin')
   const form = new URLSearchParams();
   form.append("client_name", "v0-mastodon-client");
   form.append("redirect_uris", getRedirectURI(origin, server));
   form.append("scopes", "read write follow push");
   form.append("website", "https://v0-mastodon-client.vercel.app");
 
-  const res = await fetch(`https://${server}/api/v1/apps`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: form.toString(),
-  })
-  const app: AppInfo = await res.json()
-  return app
+  try {
+    const res = await fetch(`https://${server}/api/v1/apps`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: form.toString(),
+      agent
+    })
+    const app: AppInfo = await res.json()
+    return app
+  } catch (error) {
+    console.log(error.stack || error
+      , '****fetchAppInfo error****')
+  }
+  
 }
 
 export async function getApp(origin: string, server: string) {
