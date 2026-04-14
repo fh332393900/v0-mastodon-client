@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -193,18 +193,74 @@ function PostCard({ post, index }: { post: Post; index: number }) {
 export function TimelineFeed() {
   const [posts, setPosts] = useState<Post[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
   const [timelineType, setTimelineType] = useState<"public" | "home" | "local">("public")
   const { client } = useMasto()
-  useEffect(() => {
-    const fetchTimeline = async () => {
-      client.v1.timelines.home.list({ limit: 30 }).then(res => {
-        setPosts(res as Post[])
-        setIsLoading(false)
-      })
-    }
 
-    client && fetchTimeline()
-  }, [timelineType, client])
+  const limit = 20
+  const sentinelRef = useRef<HTMLDivElement | null>(null)
+
+  const fetchTimeline = useCallback(
+    async (maxId?: string, append = false) => {
+      if (!client) return
+      try {
+        if (append) setLoadingMore(true)
+        else setIsLoading(true)
+
+        const params: any = { limit }
+        if (maxId) params.max_id = maxId
+
+        // using home timeline endpoint as before; adapt per timelineType later if needed
+        const res = await client.v1.timelines.home.list(params)
+        const newPosts = (res as Post[]) || []
+
+        setPosts((prev) => {
+          if (!append) return newPosts
+          // avoid duplicates by id
+          const existing = new Set(prev.map((p) => p.id))
+          const filtered = newPosts.filter((p) => !existing.has(p.id))
+          return [...prev, ...filtered]
+        })
+
+        // if returned less than limit, no more pages
+        setHasMore(newPosts.length === limit)
+      } catch (error) {
+        console.error('Failed to fetch timeline:', error)
+      } finally {
+        setIsLoading(false)
+        setLoadingMore(false)
+      }
+    },
+    [client],
+  )
+
+  // initial load and when timelineType changes
+  useEffect(() => {
+    setPosts([])
+    setHasMore(true)
+    fetchTimeline(undefined, false)
+  }, [timelineType, fetchTimeline])
+
+  // intersection observer for infinite scroll
+  useEffect(() => {
+    if (!sentinelRef.current) return
+    const el = sentinelRef.current
+    const observer = new IntersectionObserver(
+      (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && hasMore && !loadingMore && !isLoading && posts.length > 0) {
+              const lastId = posts[posts.length - 1].id
+              fetchTimeline(lastId, true)
+            }
+          })
+        },
+      { root: null, rootMargin: '500px', threshold: 0.1 },
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [posts, hasMore, loadingMore, isLoading, fetchTimeline])
 
   if (isLoading) {
     return (
@@ -284,11 +340,29 @@ export function TimelineFeed() {
         ))}
       </div>
 
-      {posts.length > 0 && (
-        <div className="text-center py-8">
-          <Button variant="outline" className="hover:scale-105 transition-transform duration-200 bg-transparent">
-            Load More Posts
-          </Button>
+      <div ref={sentinelRef} aria-hidden className="w-full h-2" />
+
+      {loadingMore && (
+        <div className="space-y-4">
+          {[...Array(2)].map((_, i) => (
+            <Card key={`skeleton-${i}`} className="animate-pulse">
+              <CardHeader>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-muted rounded-full" />
+                  <div className="space-y-2">
+                    <div className="w-32 h-4 bg-muted rounded" />
+                    <div className="w-24 h-3 bg-muted rounded" />
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="w-full h-4 bg-muted rounded" />
+                  <div className="w-3/4 h-4 bg-muted rounded" />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       )}
     </div>
