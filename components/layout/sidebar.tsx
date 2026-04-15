@@ -127,10 +127,10 @@ export function Sidebar() {
                 </Avatar>
 
                 {!isCollapsed && (
-                  <div className="flex-1 min-w-0">
+                  <Link href={`/${server}/@${user.username}`} className="flex-1 min-w-0">
                     <div className="font-bold text-sm truncate text-orange-500 mb-1">{user.displayName}</div>
                     <div className="text-xs text-muted-foreground truncate">@{user.username}@{server}</div>
-                  </div>
+                  </Link>
                 )}
 
                 {!isCollapsed && (
