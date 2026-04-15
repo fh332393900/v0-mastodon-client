@@ -173,3 +173,11 @@
 .animate-slide-in-up {
   animation: slide-in-up 0.5s ease-out;
 }
+
+.content-rich p {
+  line-height: 1.5;
+  font-size: 15px;
+  margin-top: .25rem;
+  margin-bottom: .5rem;
+
+}

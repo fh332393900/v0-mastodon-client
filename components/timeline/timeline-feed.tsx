@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Heart, MessageCircle, Repeat2, Share, MoreHorizontal, Clock, Globe } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useMasto } from "@/components/auth/masto-provider"
+import MastodonContent from '@/components/mastodon/MastodonContent'
 
 interface Post {
   id: string
@@ -118,7 +119,9 @@ function PostCard({ post, index }: { post: Post; index: number }) {
 
         <CardContent className="space-y-4">
           <div className="prose prose-sm dark:prose-invert max-w-none">
-            <div className="text-foreground leading-relaxed" dangerouslySetInnerHTML={{ __html: post.content }} />
+            <div className="text-foreground leading-relaxed">
+              <MastodonContent content={post.content} />
+            </div>
           </div>
 
           {post.mediaAttachments && post.mediaAttachments.length > 0 && (

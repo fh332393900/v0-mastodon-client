@@ -7,7 +7,11 @@ export default {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        'small': '14px'
+      }
+    },
   },
   plugins: [animate],
 }
