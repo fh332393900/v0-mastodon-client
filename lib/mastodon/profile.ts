@@ -22,18 +22,18 @@ export function normalizeAccountParam(account: string) {
 
 export const getProfileViewData = async (server: string, account: string) => {
   const client = await getScopedMastodonClient(server)
-  console.log(client.v1, '-------------')
   const normalizedAccount = normalizeAccountParam(account)
   const lookupCandidates = getAccountLookupCandidates(server, normalizedAccount)
 
   let profile: MastodonAccount | null = null
   let lastError: unknown
-
-  try {
-    profile = await client.v1.accounts.lookup({ acct: account })
-  } catch (error) {
-    console.log(error, 'error********')
-    lastError = error
+  for (const acct of lookupCandidates) {
+    try {
+      profile = await client.v1.accounts.lookup({ acct })
+      break
+    } catch (error) {
+      lastError = error
+    }
   }
   console.log(profile, 'profile')
 
@@ -106,6 +106,47 @@ function acctServer(acct: string) {
   return acct.split("@").at(-1) ?? null
 }
 
+/**
+ * Generate possible Mastodon account lookup candidates based on the current server context.
+ * 处理本地服务器账号和其他服务器账号，并且添加备用账号
+ *
+ * Mastodon accounts can be represented in multiple formats:
+ * - Full acct: "user@server.com"
+ * - Local username: "user"
+ * - UI format: "@user" or encoded "%40user"
+ *
+ * This function attempts to normalize and generate fallback candidates
+ * to improve account lookup success rate across different input formats.
+ *
+ * @param server - Current Mastodon instance server (e.g. "mastodon.social")
+ * @param account - User input account string (e.g. "@elon", "elon@mastodon.social")
+ *
+ * @returns A list of possible lookup candidates in priority order
+ *
+ * @example
+ * // Case 1: Full remote account
+ * getAccountLookupCandidates("mastodon.social", "elon@mastodon.social")
+ * // returns:
+ * // ["elon@mastodon.social", "elon"]
+ *
+ * @example
+ * // Case 2: Different instance account
+ * getAccountLookupCandidates("mastodon.social", "elon@fosstodon.org")
+ * // returns:
+ * // ["elon@fosstodon.org"]
+ *
+ * @example
+ * // Case 3: Local username only
+ * getAccountLookupCandidates("mastodon.social", "elon")
+ * // returns:
+ * // ["elon"]
+ *
+ * @example
+ * // Case 4: UI input with prefix
+ * getAccountLookupCandidates("mastodon.social", "@elon@mastodon.social")
+ * // returns:
+ * // ["@elon@mastodon.social", "@elon"]
+ */
 function getAccountLookupCandidates(server: string, account: string) {
   const candidates = [account]
   const accountServer = acctServer(account)
