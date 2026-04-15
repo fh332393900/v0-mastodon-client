@@ -14,21 +14,20 @@ export function normalizeAccountParam(account: string) {
 
 export const getProfileViewData = async (server: string, account: string) => {
   const client = await getScopedMastodonClient(server)
-  console.log(client, '-------------')
+  console.log(client.v1, '-------------')
   const normalizedAccount = normalizeAccountParam(account)
   const lookupCandidates = getAccountLookupCandidates(server, normalizedAccount)
 
   let profile: MastodonAccount | null = null
   let lastError: unknown
 
-  for (const acct of lookupCandidates) {
-    try {
-      profile = await client.v1.accounts.lookup({ acct })
-      break
-    } catch (error) {
-      lastError = error
-    }
+  try {
+    profile = await client.v1.accounts.lookup({ acct: account })
+  } catch (error) {
+    console.log(error, 'error********')
+    lastError = error
   }
+  console.log(profile, 'profile')
 
   if (!profile) {
     throw lastError ?? new Error("Unable to resolve Mastodon account")
