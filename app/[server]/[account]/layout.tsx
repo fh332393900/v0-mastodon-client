@@ -30,7 +30,7 @@ export default async function ProfileLayout({
   params: Promise<{ server: string; account: string }>
 }) {
   const { server, account: accountParam } = await params
-  const normalizedAccount = normalizeAccountParam(decodeURIComponent(accountParam))
+  const normalizedAccount = normalizeAccountParam(accountParam)
   console.log(normalizedAccount, 'normalizedAccount')
   let data
 
