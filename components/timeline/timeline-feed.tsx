@@ -99,6 +99,9 @@ export function TimelineFeed() {
     scrollPositionRef.current =  raw ? Number(raw) || 0 : 0
 
     const handleScroll = () => {
+      if (!window.scrollY) {
+        return
+      }
       scrollPositionRef.current = window.scrollY
       sessionStorage.setItem(`timeline:scroll:${timelineType}`, String(scrollPositionRef.current))
     }
