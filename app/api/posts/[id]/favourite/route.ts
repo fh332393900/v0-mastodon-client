@@ -2,11 +2,12 @@ import { type NextRequest, NextResponse } from "next/server"
 import { createRestAPIClient } from "masto"
 import { cookies } from "next/headers"
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const cookieStore = cookies()
-    const token = (await cookieStore).get("mastodon_token")?.value
-    const serverUrl = (await cookieStore).get("mastodon_server")?.value
+    const cookieStore = await cookies()
+    const { id } = await params
+    const token = cookieStore.get("mastodon_token")?.value
+    const serverUrl = cookieStore.get("mastodon_server")?.value
 
     if (!token || !serverUrl) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       accessToken: token,
     })
 
-    const status = await client.v1.statuses.$select(params.id).favourite()
+    const status = await client.v1.statuses.$select(id).favourite()
     return NextResponse.json(status)
   } catch (error) {
     console.error("Favourite error:", error)
@@ -25,11 +26,12 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const cookieStore = cookies()
-    const token = (await cookieStore).get("mastodon_token")?.value
-    const serverUrl = (await cookieStore).get("mastodon_server")?.value
+    const cookieStore = await cookies()
+    const { id } = await params
+    const token = cookieStore.get("mastodon_token")?.value
+    const serverUrl = cookieStore.get("mastodon_server")?.value
 
     if (!token || !serverUrl) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
@@ -40,7 +42,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       accessToken: token,
     })
 
-    const status = await client.v1.statuses.$select(params.id).unfavourite()
+    const status = await client.v1.statuses.$select(id).unfavourite()
     return NextResponse.json(status)
   } catch (error) {
     console.error("Unfavourite error:", error)

@@ -11,6 +11,8 @@ interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
   isLoading: boolean
+  /** Has attempted to resolve auth at least once (success or failure). */
+  isInitialized: boolean
   login: (server: string) => Promise<void>
   logout: () => Promise<void>
   refreshUser: () => Promise<void>
@@ -21,16 +23,29 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false)
 
-  const { client } = useMasto()
+  const { client, isReady } = useMasto()
 
   useEffect(() => {
+    if (!isReady) return
+
+    // In dev StrictMode this effect can run twice; guard to avoid duplicate verify calls.
+    let cancelled = false
+
     const checkAuth = async () => {
-      await refreshUser()
+      try {
+        await refreshUser()
+      } finally {
+        if (!cancelled) setIsInitialized(true)
+      }
     }
 
     checkAuth()
-  }, [client])
+    return () => {
+      cancelled = true
+    }
+  }, [client, isReady])
 
   const login = async (server: string) => {
     setIsLoading(true)
@@ -50,8 +65,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const refreshUser = async () => {
-    const res = await client?.v1.accounts.verifyCredentials()
-    setUser(res)
+    try {
+      const res = await client?.v1.accounts.verifyCredentials()
+      setUser(res ?? null)
+    } catch {
+      setUser(null)
+    }
   }
 
   const logout = async () => {
@@ -61,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoading, login, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoading, isInitialized, login, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   )

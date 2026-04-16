@@ -10,16 +10,17 @@ export interface MastoContextType {
   client: MastoClient
   server: string
   streamingClient?: MastoStreamingClient
+  isReady: boolean
 }
 
 const MastoContext = createContext<MastoContextType | undefined>(undefined);
 
 export function useMasto() {
-  const client = useContext(MastoContext);
-  if (!client) {
+  const ctx = useContext(MastoContext);
+  if (!ctx) {
     throw new Error("Masto client not initialized. Wrap your app with <MastoProvider>.");
   }
-  return client;
+  return ctx;
 }
 
 export function MastoProvider({ children, accessToken, server }: { children: React.ReactNode, accessToken: string, server: string }){
@@ -34,7 +35,7 @@ export function MastoProvider({ children, accessToken, server }: { children: Rea
   }, [server, accessToken])
 
   return (
-    <MastoContext.Provider value={{ client: client as MastoClient, server: server }}>
+    <MastoContext.Provider value={{ client: client as MastoClient, server: server, isReady: !!client }}>
       {children}
     </MastoContext.Provider>
   )
