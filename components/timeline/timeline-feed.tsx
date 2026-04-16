@@ -89,9 +89,9 @@ function PostCard({ status, index }: { status: mastodon.v1.Status; index: number
       <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/20 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
         <div>
           {status.reblog ? (
-            <div className="px-6 mb-1 flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="px-6 flex items-center gap-2 text-xs text-muted-foreground">
               <Repeat2 className="h-5 w-5 text-accent" />
-              <Avatar className="ring-2 ring-primary/20 transition-all duration-200 group-hover:ring-primary/40 h-6 w-6">
+              <Avatar className="ring-2 ring-primary/20 transition-all duration-200 group-hover:ring-primary/40 h-8 w-8">
                 <AvatarImage src={status.account.avatar || "/placeholder.svg"} alt={status.account.displayName} />
                 <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-primary-foreground">
                   {status.account.displayName.charAt(0)}
@@ -111,13 +111,13 @@ function PostCard({ status, index }: { status: mastodon.v1.Status; index: number
                 </AvatarFallback>
               </Avatar>
               <div className="space-y-1">
-                <div className="flex items-center space-x-2">
-                  <h3 className="font-semibold text-foreground hover:text-primary transition-colors cursor-pointer">
+                <div className="flex flex-wrap items-center space-x-2">
+                  <h3 className="font-semibold line-clamp-1 text-foreground hover:text-primary transition-colors cursor-pointer">
                     {post.account.displayName}
                   </h3>
-                  <Badge variant="default" className="text-xs">
+                  <div className="text-xs text-muted-foreground line-clamp-1">
                     @{post.account.acct}
-                  </Badge>
+                  </div>
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <Clock className="w-3 h-3" />
@@ -199,10 +199,6 @@ function PostCard({ status, index }: { status: mastodon.v1.Status; index: number
                 <span className="text-sm">{likes}</span>
               </Button>
             </div>
-
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary transition-colors">
-              <Share className="w-4 h-4" />
-            </Button>
           </div>
         </CardContent>
       </Card>
@@ -325,7 +321,7 @@ export function TimelineFeed() {
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-primary">Timeline</h1>
         <div className="flex items-center space-x-2">
-          <div className="flex rounded-lg border border-border/50 p-1">
+          <div className="hidden md:flex rounded-lg border border-border/50 p-1">
             {(["public", "local", "home"] as const).map((type) => (
               <Button
                 key={type}
@@ -338,7 +334,7 @@ export function TimelineFeed() {
               </Button>
             ))}
           </div>
-          <Badge variant="outline" className="text-accent border-accent/50">
+          <Badge variant="outline" className="text-accent border-accent/50 line-clamp-1">
             {posts.length} posts
           </Badge>
         </div>

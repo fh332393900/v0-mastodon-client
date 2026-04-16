@@ -27,6 +27,7 @@ export const getProfileViewData = async (server: string, account: string) => {
 
   let profile: MastodonAccount | null = null
   let lastError: unknown
+  console.log(lookupCandidates, 'lookupCandidates')
   for (const acct of lookupCandidates) {
     try {
       profile = await client.v1.accounts.lookup({ acct })
