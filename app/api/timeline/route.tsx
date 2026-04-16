@@ -1,7 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createRestAPIClient } from "masto"
-// Import to trigger proxy setup
-import "@/lib/proxy-agent"
 import { cookies } from "next/headers"
 
 export async function GET(request: NextRequest) {

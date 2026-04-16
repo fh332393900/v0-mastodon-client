@@ -1,5 +1,3 @@
-'use cache'
-
 import type { ReactNode } from "react"
 import { AppLayout } from "@/components/layout/app-layout"
 
