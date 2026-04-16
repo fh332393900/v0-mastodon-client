@@ -9,6 +9,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/components/auth/auth-provider"
+import { useMasto } from "../auth/masto-provider"
 
 const navigationItems = [
   { icon: Home, label: "Home", route: "timeline", color: "text-blue-500" },
@@ -22,8 +23,7 @@ export function Sidebar() {
   const [isMobileOpen, setIsMobileOpen] = useState(true)
   const pathname = usePathname()
   const { user, logout } = useAuth()
-  const server = pathname?.split("/")[1] || "mastodon.social"
-  const baseHref = `/${server}`
+  const { server } = useMasto()
 
   const handleLogout = async () => {
     await logout()
@@ -84,7 +84,7 @@ export function Sidebar() {
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2">
             {navigationItems.map((item) => {
-              const href = `${baseHref}/${item.route}`
+              const href = `/${server}/${item.route}`
               const isActive = pathname === href
               return (
                 <div key={item.route}>
