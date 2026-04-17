@@ -8,6 +8,7 @@ import type { mastodon } from 'masto'
 import AccountHoverWrapper from '@/components/mastodon/AccountHoverWrapper'
 import TagHoverWrapper from '@/components/mastodon/TagHoverWrapper'
 import ContentCode from '@/components/mastodon/ContentCode'
+import Link from 'next/link'
 
 const ELEMENT_NODE = 1
 const TEXT_NODE = 2
@@ -110,9 +111,9 @@ function handleMention(node: any): React.ReactNode | null {
 
     return (
       <AccountHoverWrapper handle={handle}>
-        <a href={`/${server}/@${username}`} className="text-primary">
+        <Link href={`/${server}/@${username}`} className="text-primary">
           {renderChildrenWithKeys(node.children)}
-        </a>
+        </Link>
       </AccountHoverWrapper>
     )
   }
@@ -124,9 +125,9 @@ function handleMention(node: any): React.ReactNode | null {
 
     return (
       <TagHoverWrapper tagName={tag}>
-        <a href={`/tags/${tag}`} className="text-primary">
+        <Link href={`/mastodon.social/tags/${tag}`} className="text-primary">
           {renderChildrenWithKeys(node.children)}
-        </a>
+        </Link>
       </TagHoverWrapper>
     )
   }

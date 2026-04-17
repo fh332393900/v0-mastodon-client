@@ -23,17 +23,17 @@ export function LoadingSkeleton() {
         <Card key={`skeleton-${i}`} className="animate-pulse">
           <CardHeader>
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-muted rounded-full" />
+              <div className="w-10 h-10 bg-muted/60 dark:bg-muted-foreground/40 rounded-full" />
               <div className="space-y-2">
-                <div className="w-32 h-4 bg-muted rounded" />
-                <div className="w-24 h-3 bg-muted rounded" />
+                <div className="w-32 h-4 bg-muted/60 dark:bg-muted-foreground/40 rounded" />
+                <div className="w-24 h-3 bg-muted/60 dark:bg-muted-foreground/40 rounded" />
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <div className="w-full h-4 bg-muted rounded" />
-              <div className="w-3/4 h-4 bg-muted rounded" />
+              <div className="w-full h-4 bg-muted/60 dark:bg-muted-foreground/40 rounded" />
+              <div className="w-3/4 h-4 bg-muted/60 dark:bg-muted-foreground/40 rounded" />
             </div>
           </CardContent>
         </Card>
