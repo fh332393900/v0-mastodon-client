@@ -190,9 +190,6 @@ export function TimelineFeed() {
           <Badge variant="outline" className="text-accent border-accent/50">
             {posts.length} posts
           </Badge>
-          <Button variant="ghost" size="sm" onClick={() => refetch()} className="text-xs">
-            Refresh
-          </Button>
         </div>
       </div>
 

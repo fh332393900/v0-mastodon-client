@@ -76,9 +76,20 @@ export function RightPanel() {
               <Info className="h-3 w-3 mr-2" />
               About
             </Button>
-            <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
-              <Github className="h-3 w-3 mr-2" />
-              GitHub
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start text-xs"
+            >
+              <a
+                href="https://github.com/fh332393900/v0-mastodon-client"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Github className="h-3 w-3 mr-2" />
+                GitHub
+              </a>
             </Button>
           </div>
         </div>

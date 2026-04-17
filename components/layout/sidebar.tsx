@@ -105,7 +105,7 @@ export function Sidebar() {
                           !isCollapsed && "mr-3",
                         )}
                       />
-                      {!isCollapsed && <span className="font-medium">{item.label}</span>}
+                      {!isCollapsed && <span className="font-bold text-base">{item.label}</span>}
                     </Button>
                   </Link>
                 </div>
@@ -129,7 +129,7 @@ export function Sidebar() {
               </div>
             </div>
           ) : (
-            <div className="py-2 px-2">
+            <div className="py-2 px-2 border-t border-border mx-4">
               <div
                 className={cn(
                   "flex items-center space-x-3 p-3 rounded-lg",
@@ -143,7 +143,7 @@ export function Sidebar() {
 
                 {!isCollapsed && (
                   <Link href={`/${server}/@${user.username}`} className="flex-1 min-w-0">
-                    <div className="font-bold text-sm truncate text-orange-500 mb-1">{user.displayName}</div>
+                    <div className="font-bold text-sm truncate text-primary mb-1">{user.displayName}</div>
                     <div className="text-xs text-muted-foreground truncate">@{user.username}@{server}</div>
                   </Link>
                 )}

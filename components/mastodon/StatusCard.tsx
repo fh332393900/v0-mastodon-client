@@ -81,7 +81,7 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex gap-4 justify-between items-center">
             {profileHref ? (
-              <Link href={profileHref} className="font-semibold text-foreground flex items-center min-w-0 px-2 rounded-md hover:bg-primary-foreground">
+              <Link href={profileHref} className="font-semibold text-foreground flex items-center min-w-0 px-2 rounded-xl hover:bg-primary-foreground dark:hover:bg-muted">
                 <span className="shrink-0">{author.displayName || author.username}</span>
                 <span className="text-sm ml-1 line-clamp-1 text-muted-foreground truncate">@{author.acct}</span>
               </Link>
@@ -125,7 +125,7 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
           ) : null}
 
           {showActions ? (
-            <div className="flex w-full items-center justify-between gap-4 pt-2 text-sm text-muted-foreground">
+            <div className="flex w-full items-center justify-between border-t border-border pt-3 mt-2 gap-4 text-sm text-muted-foreground">
               <div className="flex w-full justify-between gap-4">
                 <button
                   type="button"
