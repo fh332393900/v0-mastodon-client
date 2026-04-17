@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import type { mastodon } from "masto"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
+import { useQueryClient } from "@tanstack/react-query"
 
 type Action = "reblogged" | "favourited" | "bookmarked" | "pinned" | "muted"
 type CountField = "reblogsCount" | "favouritesCount"
@@ -13,6 +14,7 @@ interface StatusActionsProps {
 export function useStatusActions({ status }: StatusActionsProps) {
   const { client, isReady } = useMasto()
   const { user } = useAuth()
+  const queryClient = useQueryClient()
 
   const [currentStatus, setCurrentStatus] = useState<mastodon.v1.Status>({ ...status })
   const [isLoading, setIsLoading] = useState<Record<Action, boolean>>({
@@ -69,6 +71,34 @@ export function useStatusActions({ status }: StatusActionsProps) {
       }
 
       updateRenderedStatus(next)
+      // Update any cached timeline queries containing this status so UI remains consistent.
+      try {
+        const queries = queryClient.getQueryCache().findAll()
+        for (const q of queries) {
+          const key = q.queryKey
+          if (!Array.isArray(key)) continue
+          if (key[0] !== "timeline") continue
+
+          queryClient.setQueryData(key as any, (old: any) => {
+            if (!old || !old.pages) return old
+            const pages = old.pages.map((page: any) =>
+              page.map((s: any) => {
+                // Match by id or nested reblog id
+                const sid = s.reblog ? s.reblog.id : s.id
+                const renderedId = next.reblog ? next.reblog.id : next.id
+                if (sid === renderedId || s.id === next.id) {
+                  // merge shallowly to preserve surrounding metadata
+                  return { ...s, ...(next.reblog ? { reblog: next.reblog } : next) }
+                }
+                return s
+              }),
+            )
+            return { ...old, pages }
+          })
+        }
+      } catch (e) {
+        // ignore cache update errors
+      }
     } finally {
       setIsLoading((prev) => ({ ...prev, [action]: false }))
     }
