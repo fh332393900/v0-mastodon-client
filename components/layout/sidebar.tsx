@@ -54,7 +54,7 @@ export function Sidebar() {
       <aside
         className={cn(
           isMobileOpen ? "fixed inset-y-0 left-0 z-50 bg-card border-r border-border" : "hidden lg:block bg-card border-r border-border",
-          isCollapsed ? "w-20 lg:w-20" : "w-72 lg:w-72",
+          isCollapsed ? "w-20 lg:w-20" : "w-64 lg:w-64",
           "transition-all duration-200 lg:sticky lg:top-0 lg:h-screen",
         )}
       >

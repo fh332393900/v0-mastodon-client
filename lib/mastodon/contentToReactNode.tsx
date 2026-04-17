@@ -27,6 +27,7 @@ const VOID_ELEMENTS = new Set([
   'wbr',
 ])
 
+/** 把富文本字符串转换为React VNode */
 export function contentToReactNode(content: string): React.ReactNode {
   const tree = parse(content)
 

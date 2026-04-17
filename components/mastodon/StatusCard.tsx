@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button"
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import { cn } from "@/lib/utils"
 import type { mastodon } from "masto"
+import { useMasto } from "../auth/masto-provider"
+import { getAccountProfileHref } from "@/lib/mastodon/account"
 
 type Status = mastodon.v1.Status
 
@@ -31,12 +33,13 @@ function formatDate(value: string) {
   }).format(new Date(value))
 }
 
-export function StatusCard({ status, server, showActions = true }: StatusCardProps) {
+export function StatusCard({ status, showActions = true }: StatusCardProps) {
   const renderedStatus = status.reblog ?? status
   const author = renderedStatus.account
 
-  const profileHref = server ? `/${server}/profile/${author.acct}` : undefined
+  const { server } = useMasto()
 
+  const profileHref = server ? getAccountProfileHref(author, server) : undefined
   const [isLiked, setIsLiked] = useState(renderedStatus.favourited)
   const [isReposted, setIsReposted] = useState(renderedStatus.reblogged)
   const [likes, setLikes] = useState(renderedStatus.favouritesCount)
@@ -77,11 +80,17 @@ export function StatusCard({ status, server, showActions = true }: StatusCardPro
   }
 
   return (
-    <article className="rounded-3xl border border-border/70 bg-card/90 p-5 shadow-sm">
+    <article className="rounded-3xl border border-border/70 bg-card/90 p-4 shadow-sm">
       {status.reblog ? (
-        <div className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
-          <Repeat2 className="h-3.5 w-3.5" />
-          <span>{status.account.displayName || status.account.username} 转发了这条贴文</span>
+        <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
+          <Repeat2 className="h-5 w-5 text-accent" />
+          <Link href={`/${server}/${status.account.acct}`} className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary">
+            <Avatar className="h-7 w-7 ring-2 ring-border/70">
+              <AvatarImage src={status.account.avatar} alt={status.account.displayName} />
+              <AvatarFallback>{status.account.displayName?.charAt(0) || status.account.username.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <span>{status.account.displayName || status.account.username} 转发了这条贴文</span>
+          </Link>
         </div>
       ) : null}
 
@@ -101,20 +110,16 @@ export function StatusCard({ status, server, showActions = true }: StatusCardPro
         )}
 
         <div className="min-w-0 flex-1 space-y-3">
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex gap-4 justify-between items-center">
             {profileHref ? (
-              <Link href={profileHref} className="font-semibold text-foreground hover:text-primary">
-                {author.displayName || author.username}
+              <Link href={profileHref} className="font-semibold text-foreground flex items-center min-w-0 px-2 rounded-md hover:bg-primary-foreground">
+                <span className="shrink-0">{author.displayName || author.username}</span>
+                <span className="text-sm ml-1 line-clamp-1 text-muted-foreground truncate">@{author.acct}</span>
               </Link>
             ) : (
               <span className="font-semibold text-foreground">{author.displayName || author.username}</span>
             )}
-            <span className="text-sm text-muted-foreground">@{author.acct}</span>
-            <span className="text-sm text-muted-foreground">- {formatDate(renderedStatus.createdAt)}</span>
-            <Badge variant="outline" className="capitalize">
-              <Globe className="mr-1 h-3 w-3" />
-              {renderedStatus.visibility}
-            </Badge>
+            <span className="text-sm text-muted-foreground shrink-0 whitespace-nowrap">{formatDate(renderedStatus.createdAt)}</span>
             {renderedStatus.pinned ? (
               <Badge variant="outline">
                 <Pin className="mr-1 h-3 w-3" />置顶
