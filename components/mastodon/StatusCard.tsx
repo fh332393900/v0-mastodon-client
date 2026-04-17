@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
-import { Globe, MessageCircle, Repeat2, Heart, Pin, Share } from "lucide-react"
+import { MessageCircle, Repeat2, Heart, Pin, Bookmark } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -12,6 +11,7 @@ import { cn } from "@/lib/utils"
 import type { mastodon } from "masto"
 import { useMasto } from "../auth/masto-provider"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
+import { useStatusActions } from "@/hooks/mastodon/useStatusActions"
 
 type Status = mastodon.v1.Status
 
@@ -34,50 +34,19 @@ function formatDate(value: string) {
 }
 
 export function StatusCard({ status, showActions = true }: StatusCardProps) {
-  const renderedStatus = status.reblog ?? status
+  const { server } = useMasto()
+  const {
+    renderedStatus,
+    isLoading,
+    canReblog,
+    toggleReblog,
+    toggleFavourite,
+    toggleBookmark,
+  } = useStatusActions({ status })
+
   const author = renderedStatus.account
 
-  const { server } = useMasto()
-
   const profileHref = server ? getAccountProfileHref(author, server) : undefined
-  const [isLiked, setIsLiked] = useState(renderedStatus.favourited)
-  const [isReposted, setIsReposted] = useState(renderedStatus.reblogged)
-  const [likes, setLikes] = useState(renderedStatus.favouritesCount)
-  const [reposts, setReposts] = useState(renderedStatus.reblogsCount)
-
-  const handleLike = async () => {
-    try {
-      const method = isLiked ? "DELETE" : "POST"
-      const response = await fetch(`/api/posts/${renderedStatus.id}/favourite`, {
-        method,
-        headers: { "Content-Type": "application/json" },
-      })
-
-      if (response.ok) {
-        setIsLiked(!isLiked)
-        setLikes(isLiked ? likes - 1 : likes + 1)
-      }
-    } catch (error) {
-      console.error("Failed to toggle like:", error)
-    }
-  }
-
-  const handleRepost = async () => {
-    try {
-      const method = isReposted ? "DELETE" : "POST"
-      const response = await fetch(`/api/posts/${renderedStatus.id}/reblog`, {
-        method,
-        headers: { "Content-Type": "application/json" },
-      })
-
-      if (response.ok) {
-        setIsReposted(!isReposted)
-        setReposts(isReposted ? reposts - 1 : reposts + 1)
-      }
-    } catch (error) {
-      console.error("Failed to toggle repost:", error)
-    }
-  }
 
   return (
     <article className="rounded-3xl border border-border/70 bg-card/90 p-4 shadow-sm">
@@ -156,41 +125,60 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
           ) : null}
 
           {showActions ? (
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-1 text-sm text-muted-foreground">
-              <div className="flex flex-wrap gap-4">
-                <span className="inline-flex items-center gap-1.5">
-                  <MessageCircle className="h-4 w-4" />
-                  {renderedStatus.repliesCount}
-                </span>
-
+            <div className="flex w-full items-center justify-between gap-4 pt-2 text-sm text-muted-foreground">
+              <div className="flex w-full justify-between gap-4">
                 <button
                   type="button"
-                  onClick={handleRepost}
                   className={cn(
-                    "inline-flex items-center gap-1.5 transition-colors",
-                    isReposted ? "text-green-500" : "hover:text-green-500",
+                    "inline-flex items-center gap-1.5 transition-colors cursor-pointer",
+                    "hover:text-primary",
                   )}
                 >
-                  <Repeat2 className="h-4 w-4" />
-                  {reposts}
+                  <MessageCircle className="h-5 w-5" />
+                  {renderedStatus.repliesCount}
                 </button>
 
                 <button
                   type="button"
-                  onClick={handleLike}
+                  onClick={toggleReblog}
+                  disabled={!canReblog || isLoading.reblogged}
                   className={cn(
-                    "inline-flex items-center gap-1.5 transition-colors",
-                    isLiked ? "text-red-500" : "hover:text-red-500",
+                    "inline-flex items-center gap-1.5 transition-colors cursor-pointer",
+                    renderedStatus.reblogged ? "text-green-500" : "hover:text-green-500",
+                    (!canReblog || isLoading.reblogged) && "opacity-60 cursor-not-allowed",
                   )}
                 >
-                  <Heart className={cn("h-4 w-4", isLiked && "fill-current")} />
-                  {likes}
+                  <Repeat2 className="h-5 w-5" />
+                  {renderedStatus.reblogsCount}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={toggleFavourite}
+                  disabled={isLoading.favourited}
+                  className={cn(
+                    "inline-flex items-center gap-1.5 transition-colors cursor-pointer",
+                    renderedStatus.favourited ? "text-red-500" : "hover:text-red-500",
+                    isLoading.favourited && "opacity-60 cursor-not-allowed",
+                  )}
+                >
+                  <Heart className={cn("h-5 w-5", renderedStatus.favourited && "fill-current")} />
+                  {renderedStatus.favouritesCount}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={toggleBookmark}
+                  disabled={isLoading.bookmarked}
+                  className={cn(
+                    "inline-flex items-center gap-1.5 transition-colors cursor-pointer",
+                    renderedStatus.bookmarked ? "text-yellow-500" : "hover:text-yellow-500",
+                    isLoading.bookmarked && "opacity-60 cursor-not-allowed",
+                  )}
+                >
+                  <Bookmark className={cn("h-5 w-5", renderedStatus.bookmarked && "fill-current")} />
                 </button>
               </div>
-
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary transition-colors">
-                <Share className="h-4 w-4" />
-              </Button>
             </div>
           ) : null}
         </div>
