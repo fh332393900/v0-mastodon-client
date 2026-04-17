@@ -131,6 +131,9 @@ export function InfiniteScroller({
       {children}
       <div ref={sentinelRef} aria-hidden="true" className="h-1" />
       {isLoadingMore && <LoadingSkeleton />}
+      {!isLoadingMore && !hasMore && (
+        <div className="py-6 text-center text-sm text-muted-foreground">没有更多了~</div>
+      )}
     </div>
   )
 }

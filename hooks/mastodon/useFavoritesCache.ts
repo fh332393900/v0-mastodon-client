@@ -38,9 +38,12 @@ export function useFavoritesCache({ limit = 20 }: UseFavoritesCacheOptions = {})
     queryFn: ({ pageParam }) => fetchPage({ pageParam }),
     enabled: isReady && !!client && !!user,
     initialPageParam: undefined as string | undefined,
-    getNextPageParam: (lastPage) => {
+    getNextPageParam: (lastPage, _pages, lastPageParam) => {
       if (!lastPage || lastPage.length < limit) return undefined
-      return lastPage[lastPage.length - 1]?.id
+      const lastId = lastPage[lastPage.length - 1]?.id
+      if (!lastId) return undefined
+      if (lastPageParam && lastId === lastPageParam) return undefined
+      return lastId
     },
     staleTime: 60_000,
     gcTime: 30 * 60_000,
