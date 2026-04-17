@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 import { InfiniteScroller } from "@/components/mastodon/infinite-scroller"
@@ -17,6 +17,7 @@ export function TimelineFeed() {
 
   const { client, isReady: isMastoReady } = useMasto()
   const { user, isInitialized: isAuthReady } = useAuth()
+  const queryClient = useQueryClient()
 
   const isReady = isMastoReady && isAuthReady
   const limit = 20
@@ -89,33 +90,38 @@ export function TimelineFeed() {
     return out
   }, [data])
 
-  // Persist/restore scroll position per timelineType using sessionStorage.
+  // Persist/restore scroll position per timelineType using React Query cache.
   const restoringRef = useRef(false)
   const scrollPositionRef = useRef(0)
   useEffect(() => {
     if (!isReady) return
 
-    const raw = sessionStorage.getItem(`timeline:scroll:${timelineType}`)
-    scrollPositionRef.current =  raw ? Number(raw) || 0 : 0
+    const scrollKey = ["timelineScroll", timelineType] as const
+    const cached = queryClient.getQueryData<number>(scrollKey)
 
-    const handleScroll = () => {
-      if (!window.scrollY) {
-        return
-      }
-      scrollPositionRef.current = window.scrollY
-      sessionStorage.setItem(`timeline:scroll:${timelineType}`, String(scrollPositionRef.current))
+    let initial = 0
+    if (typeof cached === "number") {
+      initial = cached
     }
 
+    scrollPositionRef.current = initial
+
+    const handleScroll = () => {
+      if (restoringRef.current) return
+      if (!window.scrollY) return
+      const y = window.scrollY
+      if (y === scrollPositionRef.current) return
+
+      scrollPositionRef.current = y
+      queryClient.setQueryData(scrollKey, y)
+    }
 
     restoringRef.current = true
     requestAnimationFrame(() => {
       try {
-        const raw = sessionStorage.getItem(`timeline:scroll:${timelineType}`)
-        const y = raw ? Number(raw) || 0 : 0
-        scrollPositionRef.current = y
-        window.scrollTo({ top: y })
-      } catch {
-        // ignore
+        if (initial > 0) {
+          window.scrollTo({ top: initial })
+        }
       } finally {
         restoringRef.current = false
       }
@@ -126,18 +132,13 @@ export function TimelineFeed() {
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [timelineType, isReady])
+  }, [timelineType, isReady, queryClient])
 
   const handleLoadMore = () => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage()
   }
 
   const handleTimelineChange = (type: TimelineType) => {
-    try {
-      sessionStorage.setItem(`timeline:scroll:${timelineType}`, String(window.scrollY))
-    } catch {
-      // ignore
-    }
     setTimelineType(type)
   }
 
