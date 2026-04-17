@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { InfiniteScroller } from "@/components/mastodon/infinite-scroller"
+import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
 import { StatusCard } from "@/components/mastodon/StatusCard"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -74,19 +74,12 @@ export function TimelineFeed() {
     }
   }, [timelineType])
 
-  if (isLoading) {
+  if (!isReady || isLoading) {
     return (
       <div className="space-y-6">
         <h1 className="text-3xl font-bold">Loading Timeline...</h1>
         {/* Initial loading skeleton */}
-        <div className="space-y-4">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="animate-pulse bg-card/50 p-4 rounded-lg">
-              <div className="h-4 bg-muted w-1/3 rounded"></div>
-              <div className="h-4 bg-muted w-3/4 rounded mt-2"></div>
-            </div>
-          ))}
-        </div>
+        <LoadingSkeleton />
       </div>
     )
   }

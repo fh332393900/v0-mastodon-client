@@ -10,7 +10,7 @@ interface InfiniteScrollerProps {
   isLoadingMore: boolean
 }
 
-function LoadingSkeleton() {
+export function LoadingSkeleton() {
   return (
     <div className="space-y-6 mt-6">
       {[...Array(3)].map((_, i) => (
