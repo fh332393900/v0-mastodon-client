@@ -1,94 +1,17 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query"
-import { useMasto } from "@/components/auth/masto-provider"
-import { useAuth } from "@/components/auth/auth-provider"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { InfiniteScroller } from "@/components/mastodon/infinite-scroller"
 import { StatusCard } from "@/components/mastodon/StatusCard"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import type { mastodon } from "masto"
-
-type TimelineType = "public" | "home" | "local"
+import { useTimelineCache, type TimelineType } from "@/hooks/mastodon/useTimelineCache"
 
 export function TimelineFeed() {
   const [timelineType, setTimelineType] = useState<TimelineType>("home")
 
-  const { client, isReady: isMastoReady } = useMasto()
-  const { user, isInitialized: isAuthReady } = useAuth()
-  const queryClient = useQueryClient()
-
-  const isReady = isMastoReady && isAuthReady
-  const limit = 20
-
-  const queryKey = useMemo(() => ["timeline", timelineType, user ? "authed" : "public"] as const, [timelineType, user])
-
-  const fetchPage = useCallback(
-    async ({ pageParam }: { pageParam?: string }) => {
-      if (!client) return [] as mastodon.v1.Status[]
-
-      const params: any = { limit }
-      if (pageParam) params.max_id = pageParam
-
-      const timelineApi = client.v1.timelines
-      let res: mastodon.v1.Status[] = []
-
-      switch (timelineType) {
-        case "home":
-          if (user) res = await timelineApi.home.list(params)
-          else res = await timelineApi.public.list({ ...params, local: true })
-          break
-        case "local":
-          res = await timelineApi.public.list({ ...params, local: true })
-          break
-        case "public":
-        default:
-          res = await timelineApi.public.list(params)
-          break
-      }
-
-      return res ?? []
-    },
-    [client, timelineType, user],
-  )
-
-  const {
-    data,
-    isLoading,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-    refetch,
-  } = useInfiniteQuery({
-    queryKey,
-    queryFn: ({ pageParam }) => fetchPage({ pageParam }),
-    enabled: isReady && !!client && (timelineType !== "home" || !!user),
-    initialPageParam: undefined as string | undefined,
-    getNextPageParam: (lastPage) => {
-      if (!lastPage || lastPage.length < limit) return undefined
-      return lastPage[lastPage.length - 1]?.id
-    },
-    staleTime: 60_000,
-    gcTime: 30 * 60_000,
-    refetchOnWindowFocus: false,
-  })
-
-  const posts = useMemo(() => {
-    const pages = data?.pages ?? []
-    // flatten + de-dup
-    const seen = new Set<string>()
-    const out: mastodon.v1.Status[] = []
-    for (const page of pages) {
-      for (const s of page) {
-        if (!seen.has(s.id)) {
-          seen.add(s.id)
-          out.push(s)
-        }
-      }
-    }
-    return out
-  }, [data])
+  const { posts, query, queryClient, isReady, user } = useTimelineCache({ timelineType })
+  const { isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } = query
 
   // Persist/restore scroll position per timelineType using React Query cache.
   const restoringRef = useRef(false)
