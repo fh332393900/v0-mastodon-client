@@ -58,7 +58,7 @@ export default function TagPage() {
         scrollCacheKey={`tag:${tagName}`}
         scrollThrottleMs={120}
       >
-        <div className="space-y-6">
+        <div className="space-y-6 px-4 pb-2">
           {posts.map((post) => (
             <StatusCard key={post.id} status={post} />
           ))}
