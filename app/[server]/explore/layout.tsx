@@ -18,13 +18,10 @@ export default function ExploreLayout({ children }: { children: ReactNode }) {
   const server = pathname.split("/")[1]
 
   return (
-    <div className="space-y-4 px-4 py-6">
-      <div className="sticky top-0 z-20 -mx-4 bg-background/80 px-4 pt-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="flex items-center justify-between border-b border-border pb-3">
-          <h1 className="text-3xl font-bold">Explore</h1>
-        </div>
-
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-2">
+    <div className="space-y-4">
+      <div className="sticky top-0 z-20 -mx-4 bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div>
+          <nav className="grid grid-cols-4 border-b border-border">
           {tabs.map((t) => {
             const fullHref = `/${server}/explore/${t.href}`
             const active = pathname.endsWith(`/explore/${t.href}`) || (t.href === "" && pathname.endsWith("/explore"))
@@ -33,16 +30,23 @@ export default function ExploreLayout({ children }: { children: ReactNode }) {
                 key={t.href}
                 href={fullHref}
                 className={cn(
-                  "whitespace-nowrap rounded-full border px-4 py-2 text-sm transition-colors",
-                  active
-                    ? "border-primary/40 bg-primary/10 text-primary"
-                    : "border-border/60 bg-card/70 text-muted-foreground hover:text-foreground",
+                  "relative flex h-12 md:h-15 items-center justify-center text-sm font-medium transition-colors",
+                  "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                  active && "text-foreground",
                 )}
               >
                 {t.label}
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "pointer-events-none absolute bottom-0 left-0 h-0.5 w-full bg-transparent",
+                    active && "bg-primary",
+                  )}
+                />
               </Link>
             )
           })}
+          </nav>
         </div>
       </div>
 
