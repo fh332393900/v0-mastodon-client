@@ -87,7 +87,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
         <div className="relative px-5 pb-5 sm:px-8 sm:pb-7">
           <div className="-mt-14 flex flex-col gap-5 sm:-mt-16 sm:flex-row items-center sm:justify-between">
-            <div className="flex items-end gap-4">
+            <div className="flex items-center gap-4">
               <Avatar className="h-28 w-28 border-4 border-card shadow-lg sm:h-32 sm:w-32">
                 <AvatarImage src={account.avatar} alt={accountNameText} />
                 <AvatarFallback>{accountNameText.charAt(0)}</AvatarFallback>
