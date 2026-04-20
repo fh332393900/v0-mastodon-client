@@ -96,7 +96,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogPortal>
-          <DialogOverlay className="bg-black/80" />
+          <DialogOverlay className="bg-black/60" />
           <DialogPrimitive.Content
             data-slot="image-dialog"
             className="fixed inset-0 z-50 flex items-center justify-center outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
@@ -155,11 +155,18 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
             {/* Bottom index and alt bar */}
               <div className="absolute bottom-4 left-1/2 z-50 w-[min(90%,600px)] -translate-x-1/2 px-4">
                 {canNavigate && (
-                  <div className="mb-2 text-center text-sm text-white/90">{`${current + 1}/${images.length}`}</div>
+                  <div className="mb-2 text-center">
+                    <span className="inline-flex items-center rounded-md bg-black/50 px-2.5 py-1 text-xs font-semibold text-white">
+                      {`${current + 1}/${images.length}`}
+                    </span>
+                  </div>
                 )}
 
                 {currentImage?.description ? (
-                  <div className="rounded-md bg-black/50 px-3 py-2 text-sm text-white">
+                  <div
+                    className="line-clamp-1 rounded-full bg-black/60 px-3 py-1 text-sm/6 text-white"
+                    title={currentImage.description}
+                  >
                     {currentImage.description}
                   </div>
                 ) : null}
