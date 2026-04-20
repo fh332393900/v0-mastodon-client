@@ -371,7 +371,6 @@ export default function ComposePage() {
               placeholder="说点什么吧…"
               className={cn(
                 "min-h-[160px] w-full resize-none rounded-xl border border-border/70 bg-background px-4 py-3 text-sm",
-                remaining < 0 && "border-destructive/60",
               )}
             />
             <div className="flex items-center justify-between text-xs text-muted-foreground">
