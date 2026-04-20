@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Heart, Search, Settings, Menu, X, LogOut } from "lucide-react"
+import { Home, Heart, Search, Settings, Menu, X, LogOut, PenSquare } from "lucide-react"
 import { LoginModal } from "@/components/auth/login-modal"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -15,6 +15,7 @@ import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToR
 const navigationItems = [
   { icon: Home, label: "Home", route: "timeline", color: "text-blue-500" },
   { icon: Heart, label: "Favorites", route: "favorites", color: "text-red-500" },
+  { icon: PenSquare, label: "Compose", route: "compose", color: "text-purple-500" },
   { icon: Search, label: "Explore", route: "explore", color: "text-green-500" },
   { icon: Settings, label: "Settings", route: "settings", color: "text-yellow-500" },
 ]
