@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import { MediaImage } from "@/components/mastodon/media-image"
 import { cn } from "@/lib/utils"
+import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import type { mastodon } from "masto"
 import { useMasto } from "../auth/masto-provider"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
@@ -46,6 +47,14 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
   } = useStatusActions({ status })
 
   const author = renderedStatus.account
+  const authorNameText = getDisplayNameText({
+    displayName: author.displayName,
+    username: author.username,
+  })
+  const reblogAuthorNameText = getDisplayNameText({
+    displayName: status.account.displayName,
+    username: status.account.username,
+  })
 
   const profileHref = server ? getAccountProfileHref(author, server) : undefined
 
@@ -56,10 +65,17 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
           <Repeat2 className="h-5 w-5 text-accent" />
           <Link href={`/${server}/${status.account.acct}`} className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary">
             <Avatar className="h-7 w-7 ring-2 ring-border/70">
-              <AvatarImage src={status.account.avatar} alt={status.account.displayName} />
-              <AvatarFallback>{status.account.displayName?.charAt(0) || status.account.username.charAt(0)}</AvatarFallback>
+              <AvatarImage src={status.account.avatar} alt={reblogAuthorNameText} />
+              <AvatarFallback>{reblogAuthorNameText.charAt(0)}</AvatarFallback>
             </Avatar>
-            <span>{status.account.displayName || status.account.username} 转发了这条贴文</span>
+            <span className="inline-flex flex-wrap items-center gap-1">
+              {renderDisplayName({
+                displayName: status.account.displayName,
+                username: status.account.username,
+                emojis: status.account.emojis,
+              })}
+              <span>转发了这条贴文</span>
+            </span>
           </Link>
         </div>
       ) : null}
@@ -68,14 +84,14 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
         {profileHref ? (
           <Link href={profileHref}>
             <Avatar className="h-12 w-12 ring-2 ring-border/70">
-              <AvatarImage src={author.avatar} alt={author.displayName} />
-              <AvatarFallback>{author.displayName?.charAt(0) || author.username.charAt(0)}</AvatarFallback>
+              <AvatarImage src={author.avatar} alt={authorNameText} />
+              <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
             </Avatar>
           </Link>
         ) : (
           <Avatar className="h-12 w-12 ring-2 ring-border/70">
-            <AvatarImage src={author.avatar} alt={author.displayName} />
-            <AvatarFallback>{author.displayName?.charAt(0) || author.username.charAt(0)}</AvatarFallback>
+            <AvatarImage src={author.avatar} alt={authorNameText} />
+            <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
           </Avatar>
         )}
 
@@ -83,11 +99,23 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
           <div className="flex gap-2 md:gap-4 justify-between items-center">
             {profileHref ? (
               <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 px-2 rounded-xl hover:bg-primary-foreground dark:hover:bg-muted">
-                <span className="block md:shrink-0 truncate">{author.displayName || author.username}</span>
+                <span className="block md:shrink-0 truncate">
+                  {renderDisplayName({
+                    displayName: author.displayName,
+                    username: author.username,
+                    emojis: author.emojis,
+                  })}
+                </span>
                 <span className="block text-sm ml-1 text-muted-foreground truncate">@{author.acct}</span>
               </Link>
             ) : (
-              <span className="font-semibold text-foreground">{author.displayName || author.username}</span>
+              <span className="font-semibold text-foreground">
+                {renderDisplayName({
+                  displayName: author.displayName,
+                  username: author.username,
+                  emojis: author.emojis,
+                })}
+              </span>
             )}
             <span className="text-sm text-muted-foreground shrink-0 whitespace-nowrap">{formatDate(renderedStatus.createdAt)}</span>
             {renderedStatus.pinned ? (

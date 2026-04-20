@@ -10,6 +10,7 @@ import { LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
 import { cn } from "@/lib/utils"
 import { useMasto } from "@/components/auth/masto-provider"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
+import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import { useExploreSuggestedAccountsCache } from "@/hooks/mastodon/useExploreSuggestedAccountsCache"
 import type { mastodon } from "masto"
 
@@ -54,25 +55,32 @@ export default function ExploreSuggestedPage() {
         <div className="space-y-3">
           {accounts.map((a: mastodon.v1.Account) => {
             const href = server ? getAccountProfileHref(a, server) : undefined
+            const nameText = getDisplayNameText({ displayName: a.displayName, username: a.username })
             return (
               <div key={a.id} className="rounded-3xl border border-border/70 bg-card/90 p-4">
                 <div className="flex items-center gap-3">
                   {href ? (
                     <Link href={href} className="shrink-0">
                       <Avatar className="ring-2 ring-border/70">
-                        <AvatarImage src={a.avatar} alt={a.displayName} />
-                        <AvatarFallback>{(a.displayName || a.username).charAt(0)}</AvatarFallback>
+                        <AvatarImage src={a.avatar} alt={nameText} />
+                        <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
                       </Avatar>
                     </Link>
                   ) : (
                     <Avatar className="ring-2 ring-border/70">
-                      <AvatarImage src={a.avatar} alt={a.displayName} />
-                      <AvatarFallback>{(a.displayName || a.username).charAt(0)}</AvatarFallback>
+                      <AvatarImage src={a.avatar} alt={nameText} />
+                      <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
                     </Avatar>
                   )}
 
                   <div className="min-w-0 flex-1">
-                    <div className="font-medium truncate">{a.displayName || a.username}</div>
+                    <div className="font-medium truncate">
+                      {renderDisplayName({
+                        displayName: a.displayName,
+                        username: a.username,
+                        emojis: a.emojis,
+                      })}
+                    </div>
                     <div className="text-sm text-muted-foreground truncate">@{a.acct}</div>
                   </div>
 

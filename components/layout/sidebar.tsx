@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "../auth/masto-provider"
+import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 
 const navigationItems = [
   { icon: Home, label: "Home", route: "timeline", color: "text-blue-500" },
@@ -24,6 +25,9 @@ export function Sidebar() {
   const pathname = usePathname()
   const { user, logout } = useAuth()
   const { server } = useMasto()
+  const userNameText = user
+    ? getDisplayNameText({ displayName: user.displayName, username: user.username })
+    : ""
 
   const handleLogout = async () => {
     await logout()
@@ -137,13 +141,19 @@ export function Sidebar() {
                 )}
               >
                 <Avatar className="h-12 w-12">
-                  <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.displayName} />
-                  <AvatarFallback>{user.displayName.charAt(0)}</AvatarFallback>
+                  <AvatarImage src={user.avatar || "/placeholder.svg"} alt={userNameText} />
+                  <AvatarFallback>{userNameText.charAt(0)}</AvatarFallback>
                 </Avatar>
 
                 {!isCollapsed && (
                   <Link href={`/${server}/@${user.username}`} className="flex-1 min-w-0">
-                    <div className="font-bold text-sm truncate text-primary mb-1">{user.displayName}</div>
+                    <div className="font-bold text-sm truncate text-primary mb-1">
+                      {renderDisplayName({
+                        displayName: user.displayName,
+                        username: user.username,
+                        emojis: user.emojis,
+                      })}
+                    </div>
                     <div className="text-xs text-muted-foreground truncate">@{user.username}@{server}</div>
                   </Link>
                 )}

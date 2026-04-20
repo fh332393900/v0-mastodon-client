@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
+import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import type { MastodonStatus } from "@/lib/mastodon/account"
 
 function formatDate(value: string) {
@@ -29,28 +30,43 @@ export function ProfileStatusCard({
   const renderedStatus = status.reblog ?? status
   const author = renderedStatus.account
   const profileHref = getAccountProfileHref(author, server)
+  const authorNameText = getDisplayNameText({
+    displayName: author.displayName,
+    username: author.username,
+  })
 
   return (
     <article className="rounded-3xl border border-border/70 bg-card/90 p-5 shadow-sm">
       {status.reblog ? (
         <div className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
           <Repeat2 className="h-3.5 w-3.5" />
-          <span>{status.account.displayName || status.account.username} {"\u8f6c\u53d1\u4e86\u8fd9\u6761\u8d34\u6587"}</span>
+          <span className="inline-flex flex-wrap items-center gap-1">
+            {renderDisplayName({
+              displayName: status.account.displayName,
+              username: status.account.username,
+              emojis: status.account.emojis,
+            })}
+            <span>{"\u8f6c\u53d1\u4e86\u8fd9\u6761\u8d34\u6587"}</span>
+          </span>
         </div>
       ) : null}
 
       <div className="flex gap-4">
         <Link href={profileHref}>
           <Avatar className="h-12 w-12 ring-2 ring-border/70">
-            <AvatarImage src={author.avatar} alt={author.displayName} />
-            <AvatarFallback>{author.displayName?.charAt(0) || author.username.charAt(0)}</AvatarFallback>
+            <AvatarImage src={author.avatar} alt={authorNameText} />
+            <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
           </Avatar>
         </Link>
 
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex flex-wrap items-center gap-2">
             <Link href={profileHref} className="font-semibold text-foreground hover:text-primary">
-              {author.displayName || author.username}
+              {renderDisplayName({
+                displayName: author.displayName,
+                username: author.username,
+                emojis: author.emojis,
+              })}
             </Link>
             <span className="text-sm text-muted-foreground">@{author.acct}</span>
             <span className="text-sm text-muted-foreground">- {formatDate(renderedStatus.createdAt)}</span>

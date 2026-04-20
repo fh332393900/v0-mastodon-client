@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import type { MastodonAccount } from "@/lib/mastodon/account"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
+import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 
 export function ProfileAccountListItem({
   account,
@@ -16,6 +17,10 @@ export function ProfileAccountListItem({
   currentServer: string
 }) {
   const href = getAccountProfileHref(account, currentServer)
+  const accountNameText = getDisplayNameText({
+    displayName: account.displayName,
+    username: account.username,
+  })
 
   return (
     <Link
@@ -24,13 +29,19 @@ export function ProfileAccountListItem({
     >
       <div className="flex gap-4">
         <Avatar className="h-14 w-14 ring-2 ring-border/70">
-          <AvatarImage src={account.avatar} alt={account.displayName} />
-          <AvatarFallback>{account.displayName?.charAt(0) || account.username.charAt(0)}</AvatarFallback>
+          <AvatarImage src={account.avatar} alt={accountNameText} />
+          <AvatarFallback>{accountNameText.charAt(0)}</AvatarFallback>
         </Avatar>
 
         <div className="min-w-0 flex-1 space-y-2">
           <div className="flex flex-wrap items-center gap-2">
-            <p className="font-semibold text-foreground">{account.displayName || account.username}</p>
+            <p className="font-semibold text-foreground">
+              {renderDisplayName({
+                displayName: account.displayName,
+                username: account.username,
+                emojis: account.emojis,
+              })}
+            </p>
             {account.bot ? <Badge variant="outline">Bot</Badge> : null}
             {account.locked ? <Badge variant="outline">{"\u5df2\u9501\u5b9a"}</Badge> : null}
           </div>

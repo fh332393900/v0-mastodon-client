@@ -46,6 +46,24 @@ export function contentToReactNode(
   )
 }
 
+export type DisplayNameLike = {
+  displayName?: string | null
+  username?: string | null
+  emojis?: mastodon.v1.CustomEmoji[]
+}
+
+export function getDisplayNameText(input: DisplayNameLike) {
+  const raw = input.displayName?.trim()
+  if (raw) return raw
+  return input.username?.trim() || ""
+}
+
+export function renderDisplayName(input: DisplayNameLike): React.ReactNode {
+  const text = getDisplayNameText(input)
+  const emojis = input.emojis || []
+  return renderTextWithEmojis(text, buildEmojiMap(emojis))
+}
+
 function renderChildrenWithKeys(children: any[] = [], emojiMap: EmojiMap = {}): React.ReactNode[] {
   return children.map((child: any, i: number) => (
     <Fragment key={i}>{treeToReactNode(child, emojiMap)}</Fragment>

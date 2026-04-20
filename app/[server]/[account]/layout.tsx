@@ -12,6 +12,7 @@ import { ProfileFollowButton } from "@/components/mastodon/profile/ProfileFollow
 import { ProfileTabs } from "@/components/mastodon/profile/ProfileTabs"
 import type { MastodonFeaturedTag } from "@/lib/mastodon/account"
 import { normalizeAccountParam } from "@/lib/mastodon/account"
+import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
 
 function formatCount(value: number) {
@@ -63,6 +64,10 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
   const { account, relationship, featuredTags } = data
   const baseHref = `/${server}/@${normalizedAccount}`
+  const accountNameText = getDisplayNameText({
+    displayName: account.displayName,
+    username: account.username,
+  })
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-6">
@@ -72,7 +77,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
             <>
               <img
                 src={account.header}
-                alt={`${account.displayName} header`}
+                alt={`${accountNameText} header`}
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-card via-card/35 to-transparent" />
@@ -84,14 +89,18 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
           <div className="-mt-14 flex flex-col gap-5 sm:-mt-16 sm:flex-row items-center sm:justify-between">
             <div className="flex items-end gap-4">
               <Avatar className="h-28 w-28 border-4 border-card shadow-lg sm:h-32 sm:w-32">
-                <AvatarImage src={account.avatar} alt={account.displayName} />
-                <AvatarFallback>{account.displayName?.charAt(0) || account.username.charAt(0)}</AvatarFallback>
+                <AvatarImage src={account.avatar} alt={accountNameText} />
+                <AvatarFallback>{accountNameText.charAt(0)}</AvatarFallback>
               </Avatar>
 
               <div className="pb-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                    {account.displayName || account.username}
+                    {renderDisplayName({
+                      displayName: account.displayName,
+                      username: account.username,
+                      emojis: account.emojis,
+                    })}
                   </h1>
                   {account.bot ? <Badge variant="outline">Bot</Badge> : null}
                   {account.locked ? <Badge variant="outline">{"\u53d7\u4fdd\u62a4"}</Badge> : null}
