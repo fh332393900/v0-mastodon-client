@@ -3,6 +3,7 @@
 import { MessageCircleMore } from "lucide-react"
 import { useParams } from "next/navigation"
 
+import { InfiniteScroller } from "@/components/mastodon/infinite-scroller"
 import { StatusCard } from "@/components/mastodon/StatusCard"
 import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
 import { useProfileStatuses } from "@/hooks/mastodon/useProfileStatuses"
@@ -22,6 +23,8 @@ export default function ProfilePostsPage() {
     server,
     accountId: profile?.account.id,
   })
+
+  const { isFetchingNextPage, fetchNextPage, hasNextPage } = statusQuery
 
   if (profileQuery.isLoading || statusQuery.isLoading) {
     return (
@@ -47,10 +50,20 @@ export default function ProfilePostsPage() {
   }
 
   return (
-    <div className="space-y-4">
-      {statuses.map((status) => (
-        <StatusCard key={status.id} status={status} server={server ?? ""} />
-      ))}
-    </div>
+    <InfiniteScroller
+      onLoadMore={() => {
+        if (hasNextPage && !isFetchingNextPage) fetchNextPage()
+      }}
+      hasMore={!!hasNextPage}
+      isLoadingMore={isFetchingNextPage}
+      scrollCacheKey={`profile:${server}:${profile.account.id}:statuses`}
+      scrollThrottleMs={120}
+    >
+      <div className="space-y-4">
+        {statuses.map((status) => (
+          <StatusCard key={status.id} status={status} server={server ?? ""} />
+        ))}
+      </div>
+    </InfiniteScroller>
   )
 }

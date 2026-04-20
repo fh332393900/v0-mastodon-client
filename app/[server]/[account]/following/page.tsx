@@ -4,6 +4,7 @@ import { Users } from "lucide-react"
 import { useParams } from "next/navigation"
 
 import { ProfileAccountListItem } from "@/components/mastodon/profile/ProfileAccountListItem"
+import { InfiniteScroller } from "@/components/mastodon/infinite-scroller"
 import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
 import { useProfileAccountsList } from "@/hooks/mastodon/useProfileAccountsList"
 
@@ -23,6 +24,8 @@ export default function ProfileFollowingPage() {
     accountId: profile?.account.id,
     type: "following",
   })
+
+  const { isFetchingNextPage, fetchNextPage, hasNextPage } = query
 
   if (profileQuery.isLoading || query.isLoading) {
     return (
@@ -48,14 +51,24 @@ export default function ProfileFollowingPage() {
   }
 
   return (
-    <div className="space-y-4">
-      {accounts.map((account) => (
-        <ProfileAccountListItem
-          key={account.id}
-          account={account}
-          currentServer={server ?? ""}
-        />
-      ))}
-    </div>
+    <InfiniteScroller
+      onLoadMore={() => {
+        if (hasNextPage && !isFetchingNextPage) fetchNextPage()
+      }}
+      hasMore={!!hasNextPage}
+      isLoadingMore={isFetchingNextPage}
+      scrollCacheKey={`profile:${server}:${profile.account.id}:following`}
+      scrollThrottleMs={120}
+    >
+      <div className="space-y-4">
+        {accounts.map((account) => (
+          <ProfileAccountListItem
+            key={account.id}
+            account={account}
+            currentServer={server ?? ""}
+          />
+        ))}
+      </div>
+    </InfiniteScroller>
   )
 }
