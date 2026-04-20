@@ -81,7 +81,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
         </div>
 
         <div className="relative px-5 pb-5 sm:px-8 sm:pb-7">
-          <div className="-mt-14 flex flex-col gap-5 sm:-mt-16 sm:flex-row sm:items-end sm:justify-between">
+          <div className="-mt-14 flex flex-col gap-5 sm:-mt-16 sm:flex-row items-center sm:justify-between">
             <div className="flex items-end gap-4">
               <Avatar className="h-28 w-28 border-4 border-card shadow-lg sm:h-32 sm:w-32">
                 <AvatarImage src={account.avatar} alt={account.displayName} />
@@ -108,15 +108,6 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                 initialRelationship={relationship}
                 locked={account.locked}
               />
-              <Link
-                href={account.url}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex h-11 items-center justify-center rounded-full border border-border/70 px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-              >
-                <ExternalLink className="mr-2 h-4 w-4" />
-                {"\u6253\u5f00\u539f\u4e3b\u9875"}
-              </Link>
             </div>
           </div>
 
