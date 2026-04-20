@@ -49,7 +49,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
         aria-label="预览图片"
       >
         <img
-          src={media.previewUrl || media.url || undefined}
+          src={ media.url || media.previewUrl || undefined}
           alt={media.description || "media"}
           className="h-full w-full object-cover"
         />
