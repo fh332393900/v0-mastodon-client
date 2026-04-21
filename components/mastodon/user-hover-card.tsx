@@ -100,7 +100,7 @@ export function UserHoverCard({
   const trigger = children ? (
     <span className={className}>{children}</span>
   ) : profileHref ? (
-    <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 w-full px-2 rounded-xl hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
+    <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
       <span className="block md:shrink-0 line-clamp-1 truncate max-w-full">
         {renderDisplayName({
           displayName: account.displayName,
@@ -183,21 +183,42 @@ export function UserHoverCard({
       >
         {/* 触发区与卡片之间的缓冲区，防止鼠标经过间隙时卡片关闭 */}
         <div className="absolute -top-2 left-0 h-2 w-full" />
-        <div className="flex items-start gap-3">
-          <Avatar className="h-12 w-12">
-            <AvatarImage src={account.avatar} alt={nameText} />
-            <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div className="min-w-0 flex-1">
-            <div className="text-sm truncate font-semibold text-foreground">
-              {renderDisplayName({
-                displayName: account.displayName,
-                username: account.username,
-                emojis: account.emojis,
-              })}
-            </div>
-            <div className="text-xs truncate text-muted-foreground">@{account.acct}</div>
-          </div>
+        <div className="flex items-center gap-3">
+          {profileHref ? (
+            <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 py-1 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
+              <Avatar className="h-12 w-12">
+                <AvatarImage src={account.avatar} alt={nameText} />
+                <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div className="min-w-0 flex-1">
+                <div className="text-sm truncate font-semibold text-foreground">
+                  {renderDisplayName({
+                    displayName: account.displayName,
+                    username: account.username,
+                    emojis: account.emojis,
+                  })}
+                </div>
+                <div className="text-xs truncate text-muted-foreground">@{account.acct}</div>
+              </div>
+            </Link>
+          ) : (
+            <>
+              <Avatar className="h-12 w-12">
+                <AvatarImage src={account.avatar} alt={nameText} />
+                <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
+              </Avatar><div className="min-w-0 flex-1">
+                <div className="text-sm truncate font-semibold text-foreground">
+                  {renderDisplayName({
+                    displayName: account.displayName,
+                    username: account.username,
+                    emojis: account.emojis,
+                  })}
+                </div>
+                <div className="text-xs truncate text-muted-foreground">@{account.acct}</div>
+              </div>
+            </>
+          )}
+          
           {canInteract ? (
             <Button
               size="sm"
