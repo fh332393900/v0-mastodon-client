@@ -92,9 +92,6 @@ export default function TagPage() {
             {posts.length} posts
           </Badge>
         </div>
-        <Button variant="outline" size="sm" className="text-muted-foreground h-9 w-9 rounded-full p-0 transition-colors">
-          <Star className="h-4 w-4" />
-        </Button>
         <Button
           variant={following ? "default" : "outline"}
           size="sm"

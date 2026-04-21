@@ -5,10 +5,8 @@ import { Search, Github, Shield, Info } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-
-const trendingTags: { tag: string; posts: number }[] = []
+import { Card, CardContent } from "@/components/ui/card"
+import { TrendingTagsPanel } from "@/components/layout/trending-tags-panel"
 
 export function RightPanel() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -32,27 +30,7 @@ export function RightPanel() {
         </Card>
 
         {/* Trending Tags */}
-        <Card className="flex-1 bg-card/50 backdrop-blur-sm border-border/50 shadow-lg shadow-primary/5">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Trending Tags</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 space-y-3">
-            {trendingTags.map((item) => (
-              <div
-                key={item.tag}
-                className="flex items-center justify-between p-2 rounded-lg hover:bg-accent/50 cursor-pointer transition-colors"
-              >
-                <div>
-                  <div className="font-medium text-sm">{item.tag}</div>
-                  <div className="text-xs text-muted-foreground">{item.posts} posts</div>
-                </div>
-                <Badge variant="secondary" className="text-xs">
-                  Trending
-                </Badge>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+        <TrendingTagsPanel />
 
         {/* Footer Section */}
         <div className="space-y-4 mt-auto">

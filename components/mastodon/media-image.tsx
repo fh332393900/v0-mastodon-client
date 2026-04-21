@@ -153,7 +153,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
               )}
 
             {/* Bottom index and alt bar */}
-              <div className="absolute bottom-4 left-1/2 z-50 w-[min(90%,600px)] -translate-x-1/2 px-4">
+              <div className="absolute -bottom-3 left-1/2 z-50 max-w-[min(90%,600px)] -translate-x-1/2 px-4">
                 {canNavigate && (
                   <div className="mb-2 text-center">
                     <span className="inline-flex items-center rounded-full bg-black/50 px-2.5 py-1 text-xs font-semibold text-white">
