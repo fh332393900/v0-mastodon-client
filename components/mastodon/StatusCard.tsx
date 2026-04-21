@@ -101,16 +101,8 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
             <UserHoverCard
               account={author}
               profileHref={profileHref}
-              className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 px-2 rounded-xl hover:bg-primary-foreground dark:hover:bg-muted"
+              className=""
             >
-              <span className="block md:shrink-0 truncate">
-                {renderDisplayName({
-                  displayName: author.displayName,
-                  username: author.username,
-                  emojis: author.emojis,
-                })}
-              </span>
-              <span className="block text-sm ml-1 text-muted-foreground truncate">@{author.acct}</span>
             </UserHoverCard>
             <span className="text-sm text-muted-foreground shrink-0 whitespace-nowrap">{formatDate(renderedStatus.createdAt)}</span>
             {renderedStatus.pinned ? (

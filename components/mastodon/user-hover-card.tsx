@@ -96,12 +96,15 @@ export function UserHoverCard({
   const trigger = children ? (
     <span className={className}>{children}</span>
   ) : profileHref ? (
-    <Link href={profileHref} className={className}>
-      {renderDisplayName({
-        displayName: account.displayName,
-        username: account.username,
-        emojis: account.emojis,
-      })}
+    <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 px-2 rounded-xl hover:bg-primary-foreground dark:hover:bg-muted">
+      <span className="block md:shrink-0 truncate">
+        {renderDisplayName({
+          displayName: account.displayName,
+          username: account.username,
+          emojis: account.emojis,
+        })}
+      </span>
+      <span className="block text-sm ml-1 text-muted-foreground truncate">@{account.acct}</span>
     </Link>
   ) : (
     <span className={className}>
@@ -159,7 +162,7 @@ export function UserHoverCard({
             <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <div className="text-sm font-semibold text-foreground">
+            <div className="text-sm line-clamp-1 font-semibold text-foreground">
               {renderDisplayName({
                 displayName: account.displayName,
                 username: account.username,
