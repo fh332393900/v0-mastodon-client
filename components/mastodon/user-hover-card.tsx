@@ -150,7 +150,7 @@ export function UserHoverCard({
         side="bottom"
         align="start"
         sideOffset={6}
-        className="w-80 rounded-xl border border-border bg-card p-4 shadow-lg data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
+        className="w-92 rounded-xl border border-border bg-card p-4 shadow-lg data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
         onMouseEnter={clearTimers}
         onMouseLeave={scheduleClose}
       >
@@ -178,9 +178,8 @@ export function UserHoverCard({
               disabled={isPending}
               variant={isFollowing || isRequested ? "outline" : "default"}
               className={cn(
-                "h-8 rounded-full px-3 text-xs",
+                "h-8 w-20 shrink-0 rounded-full px-3 text-xs",
                 isFollowing || isRequested ? "border-border text-foreground" : "bg-primary text-primary-foreground",
-                isFollowing && isHoveringButton && "border-destructive text-destructive",
               )}
               onMouseEnter={() => setIsHoveringButton(true)}
               onMouseLeave={() => setIsHoveringButton(false)}
@@ -197,7 +196,7 @@ export function UserHoverCard({
         </div>
 
         {account.note ? (
-          <div className="mt-3 text-xs text-muted-foreground">
+          <div className="mt-3 max-h-56 overflow-y-auto text-xs text-muted-foreground">
             <MastodonContent content={account.note} emojis={account.emojis} />
           </div>
         ) : null}

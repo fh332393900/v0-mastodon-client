@@ -83,12 +83,20 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
 
       <div className="flex gap-4">
         {profileHref ? (
-          <Link href={profileHref}>
-            <Avatar className="h-12 w-12 ring-2 ring-border/70">
-              <AvatarImage src={author.avatar} alt={authorNameText} />
-              <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
-            </Avatar>
-          </Link>
+          <div>
+            <UserHoverCard
+              account={author}
+              profileHref={profileHref}
+            >
+              <Link href={profileHref}>
+                <Avatar className="h-12 w-12 ring-2 ring-border/70">
+                  <AvatarImage src={author.avatar} alt={authorNameText} />
+                  <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
+                </Avatar>
+              </Link>
+            </UserHoverCard>
+          </div>
+          
         ) : (
           <Avatar className="h-12 w-12 ring-2 ring-border/70">
             <AvatarImage src={author.avatar} alt={authorNameText} />
