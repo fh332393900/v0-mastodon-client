@@ -14,6 +14,7 @@ import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "@/components/auth/masto-provider"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { ComposeEditor, type ComposeEditorHandle } from "@/components/mastodon/compose-editor"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
@@ -113,7 +114,7 @@ export default function ComposePage() {
   const { maxCharacters, maxMediaAttachments, maxPollOptions } = useInstanceConfig()
   const { isReady, uploadMedia, createStatus } = useComposeActions()
 
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
+  const editorRef = useRef<ComposeEditorHandle | null>(null)
   const imageInputRef = useRef<HTMLInputElement | null>(null)
   const videoInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -153,22 +154,11 @@ export default function ComposePage() {
   }, [content, isReady, isSubmitting, mediaList.length, pollEnabled, remaining])
 
   const handleInsertEmoji = (emoji: string) => {
-    const textarea = textareaRef.current
-    if (!textarea) {
+    if (editorRef.current) {
+      editorRef.current.insertText(emoji)
+    } else {
       setContent((prev) => prev + emoji)
-      return
     }
-
-    const start = textarea.selectionStart ?? content.length
-    const end = textarea.selectionEnd ?? content.length
-    const next = `${content.slice(0, start)}${emoji}${content.slice(end)}`
-    setContent(next)
-
-    requestAnimationFrame(() => {
-      textarea.focus()
-      const pos = start + emoji.length
-      textarea.setSelectionRange(pos, pos)
-    })
   }
 
   const resetMedia = () => {
@@ -364,14 +354,10 @@ export default function ComposePage() {
           ) : null}
 
           <div className="space-y-2">
-            <textarea
-              ref={textareaRef}
+            <ComposeEditor
               value={content}
-              onChange={(event) => setContent(event.target.value)}
-              placeholder="说点什么吧…"
-              className={cn(
-                "min-h-[160px] w-full resize-none rounded-xl border border-border/70 bg-background px-4 py-3 text-sm",
-              )}
+              onChange={setContent}
+              editorRef={editorRef}
             />
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <span>{notice ?? ""}</span>
