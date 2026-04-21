@@ -9,7 +9,7 @@ import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 
 /* ─── mini sparkline ────────────────────────────────────────────── */
-function TagTrend({ tag }: { tag: mastodon.v1.Tag }) {
+export function TagTrend({ tag }: { tag: mastodon.v1.Tag }) {
   const history = tag.history?.slice(0, 7).reverse() ?? []
   if (history.length < 2) return null
 

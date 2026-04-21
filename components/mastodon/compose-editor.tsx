@@ -261,7 +261,7 @@ export function ComposeEditor({
   }
 
   const renderHashtag = (tag: mastodon.v1.Tag) => {
-    const days = tag.history?.length ?? 0
+    const days = 2
     const people = tag.history?.[0]?.accounts ?? tag.history?.[0]?.uses ?? 0
 
     return (

@@ -1,5 +1,7 @@
 'use client'
 
+import TagHoverPopover from '@/components/mastodon/TagHoverPopover'
+
 export default function TagHoverWrapper({
   tagName,
   children,
@@ -8,11 +10,8 @@ export default function TagHoverWrapper({
   children: React.ReactNode
 }) {
   return (
-    <span
-      title={`#${tagName}`}
-      className="hover:underline cursor-pointer text-primary"
-    >
+    <TagHoverPopover tagName={tagName}>
       {children}
-    </span>
+    </TagHoverPopover>
   )
 }

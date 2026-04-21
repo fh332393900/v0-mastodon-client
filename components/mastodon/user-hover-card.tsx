@@ -241,7 +241,7 @@ export function UserHoverCard({
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-center rounded-md px-2 py-1 hover:bg-muted transition-colors"
+                className="text-center rounded-md px-4 py-1 hover:bg-muted transition-colors"
               >
                 <div className="text-base font-semibold text-foreground">{formatCompactNumber(item.value)}</div>
                 <div className="text-xs text-muted-foreground">{item.label}</div>

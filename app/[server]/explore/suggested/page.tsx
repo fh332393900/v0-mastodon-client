@@ -82,7 +82,7 @@ function SuggestionCard({
   }
 
   const btnContent = () => {
-    if (isPending || loadingRel) return <Loader2 className="h-4 w-4 animate-spin" />
+    if (isPending || loadingRel) return <><Loader2 className="h-4 w-4 animate-spin" />请求中</>
     if (isFollowing) {
       return isHovering ? (
         <><UserX className="h-4 w-4" />取消关注</>
@@ -140,8 +140,8 @@ function SuggestionCard({
           size="sm"
           variant={isFollowing ? "outline" : "default"}
           className={cn(
-            "shrink-0 gap-1.5 transition-all rounded-full",
-            isFollowing && isHovering && "border-destructive/60 text-destructive hover:bg-destructive/10",
+            "shrink-0 w-28 gap-1.5 transition-all rounded-full",
+            isFollowing && isHovering && "hover:text-destructive",
             !canInteract && "opacity-50 cursor-not-allowed",
           )}
           disabled={!canInteract || isPending || loadingRel || isRequested}
