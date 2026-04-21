@@ -11,6 +11,8 @@ import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import MastodonContent from "@/components/mastodon/MastodonContent"
+import { formatCompactNumber } from "@/lib/format-number"
+import { getAccountProfileHref } from "@/lib/mastodon/account"
 
 export function UserHoverCard({
   account,
@@ -23,7 +25,7 @@ export function UserHoverCard({
   className?: string
   children?: React.ReactNode
 }) {
-  const { client } = useMasto()
+  const { client, server } = useMasto()
   const { user } = useAuth()
   const [open, setOpen] = useState(false)
   const [relationship, setRelationship] = useState<mastodon.v1.Relationship | null>(null)
@@ -85,14 +87,14 @@ export function UserHoverCard({
     }
   }
 
-  const stats = useMemo(
-    () => [
-      { label: "贴文", value: account.statusesCount },
-      { label: "关注", value: account.followingCount },
-      { label: "粉丝", value: account.followersCount },
-    ],
-    [account.followersCount, account.followingCount, account.statusesCount],
-  )
+  const stats = useMemo(() => {
+    const base = server ? getAccountProfileHref(account, server) : profileHref ?? ""
+    return [
+      { label: "贴文", value: account.statusesCount, href: base || undefined },
+      { label: "关注", value: account.followingCount, href: base ? `${base}/following` : undefined },
+      { label: "粉丝", value: account.followersCount, href: base ? `${base}/followers` : undefined },
+    ]
+  }, [account, server, profileHref])
 
   const trigger = children ? (
     <span className={className}>{children}</span>
@@ -214,7 +216,9 @@ export function UserHoverCard({
                   : "已关注"
                 : isRequested
                   ? "请求中"
-                  : "关注"}
+                  : account.locked
+                    ? "请求关注"
+                    : "关注"}
             </Button>
           ) : null}
         </div>
@@ -226,12 +230,24 @@ export function UserHoverCard({
         ) : null}
 
         <div className="mt-4 flex items-center justify-between rounded-lg bg-muted/40 px-3 py-2">
-          {stats.map((item) => (
-            <div key={item.label} className="text-center">
-              <div className="text-base font-semibold text-foreground">{item.value}</div>
-              <div className="text-xs text-muted-foreground">{item.label}</div>
-            </div>
-          ))}
+          {stats.map((item) => {
+            const inner = (
+              <div key={item.label} className="text-center">
+                <div className="text-base font-semibold text-foreground">{formatCompactNumber(item.value)}</div>
+                <div className="text-xs text-muted-foreground">{item.label}</div>
+              </div>
+            )
+            return item.href ? (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="text-center rounded-md px-2 py-1 hover:bg-muted transition-colors"
+              >
+                <div className="text-base font-semibold text-foreground">{formatCompactNumber(item.value)}</div>
+                <div className="text-xs text-muted-foreground">{item.label}</div>
+              </Link>
+            ) : inner
+          })}
         </div>
       </PopoverContent>
     </Popover>
