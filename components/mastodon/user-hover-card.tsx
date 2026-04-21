@@ -99,15 +99,15 @@ export function UserHoverCard({
   const trigger = children ? (
     <span className={className}>{children}</span>
   ) : profileHref ? (
-    <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 px-2 rounded-xl hover:bg-primary-foreground dark:hover:bg-muted">
-      <span className="block md:shrink-0 truncate">
+    <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 w-full px-2 rounded-xl hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
+      <span className="block md:shrink-0 line-clamp-1 truncate max-w-full">
         {renderDisplayName({
           displayName: account.displayName,
           username: account.username,
           emojis: account.emojis,
         })}
       </span>
-      <span className="block text-sm ml-1 text-muted-foreground truncate">@{account.acct}</span>
+      <span className="block text-sm ml-1 line-clamp-1 text-muted-foreground truncate">@{account.acct}</span>
     </Link>
   ) : (
     <span className={className}>
@@ -167,7 +167,7 @@ export function UserHoverCard({
           onMouseLeave={scheduleClose}
           onFocus={scheduleOpen}
           onBlur={scheduleClose}
-          className="inline-flex"
+          className="inline-flex min-w-0 overflow-hidden"
         >
           {trigger}
         </span>
@@ -188,14 +188,14 @@ export function UserHoverCard({
             <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <div className="text-sm line-clamp-1 font-semibold text-foreground">
+            <div className="text-sm truncate font-semibold text-foreground">
               {renderDisplayName({
                 displayName: account.displayName,
                 username: account.username,
                 emojis: account.emojis,
               })}
             </div>
-            <div className="text-xs text-muted-foreground">@{account.acct}</div>
+            <div className="text-xs truncate text-muted-foreground">@{account.acct}</div>
           </div>
           {canInteract ? (
             <Button
