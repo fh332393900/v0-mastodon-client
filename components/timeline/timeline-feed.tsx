@@ -6,9 +6,12 @@ import { StatusCard } from "@/components/mastodon/StatusCard"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useTimelineCache, type TimelineType } from "@/hooks/mastodon/useTimelineCache"
+import { useAuth } from "@/components/auth/auth-provider"
+import { useMasto } from "@/components/auth/masto-provider"
 
 export function TimelineFeed() {
-  const [timelineType, setTimelineType] = useState<TimelineType>("home")
+  const { accessToken } = useMasto()
+  const [timelineType, setTimelineType] = useState<TimelineType>(() => accessToken ? "home" : "local")
 
   const { posts, query, isReady, user } = useTimelineCache({ timelineType })
   const { isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } = query

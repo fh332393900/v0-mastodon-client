@@ -63,7 +63,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         })
       })
       const { authUrl } = await res.json()
-      setIsLoading(false)
       location.href = authUrl
     } catch (error) {
       setIsLoading(false)
