@@ -13,11 +13,11 @@ import { useMasto } from "../auth/masto-provider"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 
 const navigationItems = [
-  { icon: Home, label: "Home", route: "timeline", color: "text-blue-500" },
-  { icon: Heart, label: "Favorites", route: "favorites", color: "text-red-500" },
-  { icon: PenSquare, label: "Compose", route: "compose", color: "text-purple-500" },
-  { icon: Search, label: "Explore", route: "explore", color: "text-green-500" },
-  { icon: Settings, label: "Settings", route: "settings", color: "text-yellow-500" },
+  { icon: Home, label: "Home", route: "timeline", color: "text-blue-300" },
+  { icon: Heart, label: "Favorites", route: "favorites", color: "text-red-300" },
+  { icon: PenSquare, label: "Compose", route: "compose", color: "text-purple-300" },
+  { icon: Search, label: "Explore", route: "explore", color: "text-green-300" },
+  { icon: Settings, label: "Settings", route: "settings", color: "text-orange-300" },
 ]
 
 export function Sidebar() {
@@ -67,17 +67,19 @@ export function Sidebar() {
           {/* Header */}
           <div className="flex items-center justify-between p-4">
             {!isCollapsed ? (
-              <div className="flex items-center space-x-2">
+              <Link href="/" className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">M</span>
                 </div>
                 <span className="text-lg font-bold">MastoClient</span>
-              </div>
+              </Link>
             ) : (
               <div className="flex items-center justify-center w-full">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">M</span>
-                </div>
+                <Link href="/">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">M</span>
+                  </div>
+                </Link>
               </div>
             )}
 
@@ -87,7 +89,7 @@ export function Sidebar() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
+          <nav className="flex-1 p-4 space-y-3">
             {navigationItems.map((item) => {
               const href = `/${server}/${item.route}`
               const isActive = pathname === href
