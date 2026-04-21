@@ -32,7 +32,17 @@ function sourceLabel(sources: string[]): string | null {
 }
 
 // ── 单条推荐卡片 ─────────────────────────────────────────
-function SuggestionCard({ suggestion, server }: { suggestion: AccountSuggestion; server?: string }) {
+function SuggestionCard({
+  suggestion,
+  server,
+  initialRelationship,
+  loadingRel,
+}: {
+  suggestion: AccountSuggestion
+  server?: string
+  initialRelationship: mastodon.v1.Relationship | null
+  loadingRel: boolean
+}) {
   const { client } = useMasto()
   const { user } = useAuth()
   const canInteract = !!client && !!user
@@ -40,31 +50,20 @@ function SuggestionCard({ suggestion, server }: { suggestion: AccountSuggestion;
   const a = suggestion.account
   const href = server ? getAccountProfileHref(a, server) : undefined
   const nameText = getDisplayNameText({ displayName: a.displayName, username: a.username })
-  console.log(suggestion, 'suggestion.sources')
   const reason = sourceLabel(suggestion.sources)
 
-  const [relationship, setRelationship] = useState<mastodon.v1.Relationship | null>(null)
-  const [loadingRel, setLoadingRel] = useState(false)
+  const [relationship, setRelationship] = useState<mastodon.v1.Relationship | null>(initialRelationship)
   const [isPending, setIsPending] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
 
-  // 初始加载 relationship
+  // 当外层批量结果到达时同步进来（仅首次，避免覆盖用户操作后的状态）
+  const [synced, setSynced] = useState(false)
   useEffect(() => {
-    if (!canInteract) return
-    let cancelled = false
-    setLoadingRel(true)
-    ;(async () => {
-      try {
-        const rels = await client!.v1.accounts.relationships.fetch({ id: [a.id] })
-        if (!cancelled) setRelationship(rels[0] ?? null)
-      } catch {
-        /* ignore */
-      } finally {
-        if (!cancelled) setLoadingRel(false)
-      }
-    })()
-    return () => { cancelled = true }
-  }, [canInteract, a.id])
+    if (!synced && initialRelationship !== null) {
+      setRelationship(initialRelationship)
+      setSynced(true)
+    }
+  }, [initialRelationship, synced])
 
   const isFollowing = !!relationship?.following
   const isRequested = !!relationship?.requested
@@ -160,10 +159,37 @@ function SuggestionCard({ suggestion, server }: { suggestion: AccountSuggestion;
 // ── 页面 ─────────────────────────────────────────────────
 export default function ExploreSuggestedPage() {
   const { suggestions, query, isReady } = useExploreSuggestedAccountsCache()
-  const { server } = useMasto()
+  const { server, client } = useMasto()
+  const { user } = useAuth()
   const { isLoading } = query
 
   const title = useMemo(() => "Suggested", [])
+
+  // 批量拉取所有账号的 relationship（一次请求）
+  const [relationshipMap, setRelationshipMap] = useState<Map<string, mastodon.v1.Relationship>>(new Map())
+  const [loadingRel, setLoadingRel] = useState(false)
+
+  useEffect(() => {
+    if (!client || !user || suggestions.length === 0) return
+    let cancelled = false
+    setLoadingRel(true)
+    ;(async () => {
+      try {
+        const ids = suggestions.map((s) => s.account.id)
+        const rels = await client.v1.accounts.relationships.fetch({ id: ids })
+        if (!cancelled) {
+          const map = new Map<string, mastodon.v1.Relationship>()
+          rels.forEach((r) => map.set(r.id, r))
+          setRelationshipMap(map)
+        }
+      } catch {
+        /* ignore */
+      } finally {
+        if (!cancelled) setLoadingRel(false)
+      }
+    })()
+    return () => { cancelled = true }
+  }, [client, user, suggestions])
 
   if (!isReady || isLoading) {
     return (
@@ -198,7 +224,13 @@ export default function ExploreSuggestedPage() {
       ) : (
         <div className="space-y-3">
           {suggestions.map((s) => (
-            <SuggestionCard key={s.account.id} suggestion={s} server={server} />
+            <SuggestionCard
+              key={s.account.id}
+              suggestion={s}
+              server={server}
+              initialRelationship={relationshipMap.get(s.account.id) ?? null}
+              loadingRel={loadingRel}
+            />
           ))}
         </div>
       )}
