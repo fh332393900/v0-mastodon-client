@@ -72,8 +72,8 @@ export default function HomePage() {
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground">
-                A Better Way to<br />Experience
-                <span className="bg-gradient-to-r from-violet-600 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
+                <span>A Better Way to<br />Experience</span>
+                <span className="bg-gradient-to-r ml-2 from-violet-600 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
                   Mastodon
                 </span>
               </h1>
