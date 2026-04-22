@@ -57,7 +57,7 @@ export default function HomePage() {
 
       <main>
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden px-6 pt-16 pb-0 md:pt-24">
+        <section className="relative overflow-hidden px-6 pt-16 pb-6 md:pt-24">
           {/* background orbs */}
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute left-1/4 top-0 h-[500px] w-[700px] rounded-full bg-gradient-to-b from-violet-400/15 via-indigo-400/8 to-transparent blur-3xl dark:from-violet-600/12 dark:via-indigo-600/6" />
@@ -119,10 +119,28 @@ export default function HomePage() {
             </div>
 
             {/* ── Right: App preview ── */}
-            <div className="relative">
+            <div className="relative" style={{ perspective: "1200px" }}>
               {/* glow */}
               <div className="absolute -inset-4 bg-violet-500/10 blur-3xl rounded-full pointer-events-none" />
-              <div className="relative rounded-2xl overflow-hidden border border-black/8 dark:border-white/8 shadow-[0_20px_60px_-10px_rgba(109,40,217,0.18)] dark:shadow-[0_20px_60px_-10px_rgba(109,40,217,0.3)] bg-white dark:bg-[#111116]">
+              <div
+                className="relative rounded-2xl overflow-hidden border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116]"
+                style={{
+                  transform: "rotateY(-22deg) rotateX(6deg)",
+                  transformOrigin: "right center",
+                  boxShadow: "8px 16px 48px -8px rgba(109,40,217,0.22), 24px 32px 80px -16px rgba(0,0,0,0.18)",
+                  transition: "transform 0.4s ease, box-shadow 0.4s ease",
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget
+                  el.style.transform = "rotateY(-8deg) rotateX(1deg)"
+                  el.style.boxShadow = "4px 8px 32px -4px rgba(109,40,217,0.18), 12px 20px 48px -8px rgba(0,0,0,0.12)"
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget
+                  el.style.transform = "rotateY(-22deg) rotateX(3deg)"
+                  el.style.boxShadow = "8px 16px 48px -8px rgba(109,40,217,0.22), 24px 32px 80px -16px rgba(0,0,0,0.18)"
+                }}
+              >
                 {/* titlebar */}
                 <div className="flex items-center gap-2 px-4 py-2.5 bg-[#f0f0f5] dark:bg-[#1a1a22] border-b border-black/5 dark:border-white/5">
                   <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
@@ -168,22 +186,22 @@ export default function HomePage() {
                   {/* main */}
                   <div className="flex-1 min-w-0">
                     {/* profile header image */}
-                    <div className="h-16 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 relative">
+                    {/* <div className="h-16 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 relative">
                       <div className="absolute inset-0 opacity-40" style={{backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.3'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")"}} />
-                    </div>
+                    </div> */}
 
-                    <div className="px-4 pb-3">
+                    <div className="px-4 py-3">
                       {/* avatar + follow row */}
-                      <div className="flex items-end justify-between -mt-5 mb-3">
-                        <div className="w-12 h-12 rounded-full border-2 border-white dark:border-[#111116] bg-white overflow-hidden flex items-center justify-center shadow-sm">
-                          <div className="w-full h-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-base font-bold">P</div>
-                        </div>
-                        <div className="mb-1 px-3 py-1 rounded-full bg-violet-600 text-white text-[10px] font-medium">查看主页</div>
-                      </div>
 
                       {/* name */}
-                      <div className="font-bold text-[13px] text-foreground">Post Growth Institute</div>
-                      <div className="text-muted-foreground/60 text-[10px] mb-2">@postgrowthinstitute@mastodon.social</div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="font-bold text-[13px] text-foreground">Post Growth Institute</div>
+                          <div className="text-muted-foreground/60 text-[10px] mb-2">@postgrowthinstitute</div>
+                        </div>
+                        <div className="mb-1 px-3 py-1 rounded-full bg-violet-600 text-white text-[10px] font-medium">Follow</div>
+                      </div>
+                      
 
                       {/* bio */}
                       <p className="text-[10px] text-muted-foreground leading-relaxed mb-2 line-clamp-2">
