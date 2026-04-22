@@ -102,7 +102,6 @@ export default function TagHoverPopover({
           onMouseLeave={scheduleClose}
           onFocus={scheduleOpen}
           onBlur={scheduleClose}
-          title={`#${tagName}`}
           className="hover:underline cursor-pointer text-primary"
         >
           {children}

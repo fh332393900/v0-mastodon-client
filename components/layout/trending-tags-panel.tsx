@@ -13,14 +13,15 @@ export function TrendingTagsPanel() {
   const { tags, query } = useExploreTagsCache({ limit: 5 })
 
   return (
-    <Card className="flex-1 bg-card/50 backdrop-blur-sm border-border/50 shadow-lg shadow-primary/5 overflow-hidden">
+    <Card className="h-full flex flex-col bg-card/50 backdrop-blur-sm border-border/50 shadow-lg shadow-primary/5 overflow-hidden">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm font-medium flex items-center gap-1.5">
           <Hash className="h-3.5 w-3.5 text-primary" />
           热门话题
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-0 px-0 pb-0 flex flex-col">
+      <CardContent className="pt-0 px-0 pb-0 flex-1 flex flex-col overflow-hidden">
+        <div className="min-h-0 overflow-y-auto">
         {query.isLoading ? (
           <div className="space-y-3 px-4 pb-3">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -57,7 +58,8 @@ export function TrendingTagsPanel() {
             })}
           </div>
         )}
-        <div className="border-t border-border/40 px-4 py-2">
+  </div>
+  <div className="border-t border-border/40 px-4 py-2">
           <Button
             asChild
             variant="ghost"
