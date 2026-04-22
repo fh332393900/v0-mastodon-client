@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
@@ -49,7 +49,7 @@ export default function HomePage() {
           <ThemeToggle />
           <LoginModal>
             <Button size="sm" className="rounded-full px-5 h-8 text-xs font-medium bg-foreground text-background hover:bg-foreground/90">
-              登录
+              Sign In
             </Button>
           </LoginModal>
         </div>
@@ -68,18 +68,18 @@ export default function HomePage() {
             <div className="space-y-7">
               <div className="inline-flex items-center gap-2 rounded-full border border-violet-200 dark:border-violet-800/60 bg-violet-50 dark:bg-violet-950/40 px-4 py-1.5 text-xs font-medium text-violet-600 dark:text-violet-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-violet-500 animate-pulse" />
-                去中心化 · 无广告 · 完全开放
+                Decentralized Social Mediea
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground">
-                社交网络，<br />
+                A Better Way to<br />Experience
                 <span className="bg-gradient-to-r from-violet-600 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
-                  不出售你的数据
+                  Mastodon
                 </span>
               </h1>
 
               <p className="text-[16px] text-muted-foreground leading-relaxed max-w-sm">
-                一个现代、快速、精美的 Mastodon 客户端。连接去中心化社交网络，掌控你的数字生活。
+                A modern, fast, and beautiful Mastodon client. Connect to the decentralized social network and take control of your digital life.
               </p>
 
               <div className="flex flex-wrap gap-3">
@@ -88,7 +88,7 @@ export default function HomePage() {
                     size="lg"
                     className="h-11 px-7 rounded-full font-medium bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-xl shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-300 hover:scale-[1.02]"
                   >
-                    立即开始
+                    Get Started
                     <ArrowRight className="w-4 h-4 ml-1.5" />
                   </Button>
                 </LoginModal>
@@ -99,16 +99,16 @@ export default function HomePage() {
                   className="h-11 px-7 rounded-full font-medium border-foreground/15 dark:border-foreground/10 hover:bg-foreground/5 transition-all duration-200"
                 >
                   <Globe className="w-4 h-4 mr-1.5" />
-                  访客浏览
+                  Browse as Guest
                 </Button>
               </div>
 
               {/* stats */}
               <div className="flex gap-8 pt-1">
                 {[
-                  { value: "10M+", label: "活跃用户" },
-                  { value: "10K+", label: "独立实例" },
-                  { value: "100%", label: "无广告" },
+                  { value: "10M+", label: "Active Users" },
+                  { value: "10K+", label: "Instances" },
+                  { value: "100%", label: "Ad-free" },
                 ].map((s, i) => (
                   <div key={s.label} className={`text-left ${i > 0 ? "pl-8 border-l border-border/50" : ""}`}>
                     <div className="text-xl font-bold text-foreground">{s.value}</div>
@@ -179,7 +179,7 @@ export default function HomePage() {
                     {/* footer hint */}
                     <div className="px-1 space-y-2">
                       <div className="text-[9px] text-muted-foreground/40 leading-relaxed">正在查看 m.webtoo.ls 的公共数据</div>
-                      <div className="w-full rounded-lg bg-violet-600 text-white text-center py-1 text-[10px] font-medium cursor-pointer">登录</div>
+                      <div className="w-full rounded-lg bg-violet-600 text-white text-center py-1 text-[10px] font-medium cursor-pointer">Sign In</div>
                     </div>
                   </div>
 
@@ -237,15 +237,15 @@ export default function HomePage() {
 
                       {/* join date */}
                       <div className="flex items-center gap-3 text-[9px] text-muted-foreground/50 mb-3">
-                        <span>📅 加入于 2022年11月17日</span>
-                        <span>⚡ 最近活跃 2025-10-24</span>
+                        <span>📅 Joined Nov 17, 2022</span>
+                        <span>⚡ Last active Oct 24, 2025</span>
                       </div>
 
                       {/* stats bar */}
                       <div className="flex items-center gap-1 text-[10px]">
-                        <span className="font-bold text-foreground">266</span><span className="text-muted-foreground/60 mr-2">贴文</span>
-                        <span className="font-bold text-foreground">35</span><span className="text-muted-foreground/60 mr-2">正在关注</span>
-                        <span className="font-bold text-foreground">1,159</span><span className="text-muted-foreground/60">关注者</span>
+                        <span className="font-bold text-foreground">266</span><span className="text-muted-foreground/60 mr-2">Posts</span>
+                        <span className="font-bold text-foreground">35</span><span className="text-muted-foreground/60 mr-2">Following</span>
+                        <span className="font-bold text-foreground">1,159</span><span className="text-muted-foreground/60">Followers</span>
                       </div>
                     </div>
                   </div>
@@ -260,7 +260,7 @@ export default function HomePage() {
                     {/* trending */}
                     <div>
                       <div className="flex items-center gap-1 text-[9px] font-semibold text-foreground mb-2">
-                        <span className="text-orange-400">#</span> 热门话题
+                        <span className="text-orange-400">#</span> Trending
                       </div>
                       {[
                         { tag: "#introduction", sub: "10人·10 帖文" },
@@ -279,7 +279,7 @@ export default function HomePage() {
                         </div>
                       ))}
                       <div className="text-[9px] text-muted-foreground/50 flex items-center gap-0.5 cursor-pointer hover:text-primary transition-colors">
-                        查看更多热门标签 →
+                        View more trending tags →
                       </div>
                     </div>
                   </div>
@@ -292,8 +292,8 @@ export default function HomePage() {
         {/* ── Bento feature grid ── */}
         <section className="mx-auto max-w-5xl px-6 pt-32 pb-8">
           <div className="text-center space-y-3 mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">一切你需要的，<span className="text-muted-foreground font-normal">都在这里</span></h2>
-            <p className="text-muted-foreground text-[15px]">精心设计的每一个细节，只为更好的社交体验。</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Everything You Need,<span className="text-muted-foreground font-normal"> All in One Place</span></h2>
+            <p className="text-muted-foreground text-[15px]">Every detail crafted for a better social experience.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -301,12 +301,12 @@ export default function HomePage() {
             <div className="md:col-span-2 rounded-3xl bg-gradient-to-br from-violet-600 to-indigo-700 p-8 text-white shadow-xl shadow-violet-500/20 relative overflow-hidden">
               <div className="absolute right-0 top-0 w-48 h-48 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="absolute right-12 bottom-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/3" />
-              <p className="text-xs font-semibold uppercase tracking-widest text-violet-200 mb-3">连接所有服务器</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-violet-200 mb-3">CONNECT ACROSS SERVERS</p>
               <h3 className="text-2xl md:text-3xl font-bold leading-snug mb-3">
-                一个账号，<br />无限连接
+                One Account,<br />Infinite Connections
               </h3>
               <p className="text-sm text-violet-100/80 max-w-xs leading-relaxed">
-                关注任意服务器上的用户。共同构建更好的互联网。
+                Follow users on any server. Together we build a better internet.
               </p>
             </div>
 
@@ -316,8 +316,8 @@ export default function HomePage() {
                 <Rss className="w-5 h-5 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg leading-snug mb-1.5">你的时间轴，<br />你的规则</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">无算法，纯时序。看到你真正想看的内容。</p>
+                <h3 className="font-semibold text-lg leading-snug mb-1.5">Your Timeline,<br />Your Rules</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">No algorithm, pure chronology. See exactly what you want to see.</p>
               </div>
               <div className="space-y-1.5 pt-1">
                 {["Home", "Favorites", "Compose", "Explore"].map((item) => (
@@ -335,8 +335,8 @@ export default function HomePage() {
                 <Lock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-1.5">隐私优先</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">你的数据属于你。我们保护你的隐私，而非出售它。</p>
+                <h3 className="font-semibold text-lg mb-1.5">Privacy First</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">Your data belongs to you. We protect your privacy, not sell it.</p>
               </div>
             </div>
 
@@ -346,8 +346,8 @@ export default function HomePage() {
                 <Github className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-1.5 text-white">开放源码，<br />社区驱动</h3>
-                <p className="text-sm text-white/50 leading-relaxed">全球开发者共同构建，透明、可审计、可信赖。</p>
+                <h3 className="font-semibold text-lg mb-1.5 text-white">Open Source,<br />Community Driven</h3>
+                <p className="text-sm text-white/50 leading-relaxed">Built by developers worldwide. Transparent, auditable, and trustworthy.</p>
               </div>
             </div>
 
@@ -357,8 +357,8 @@ export default function HomePage() {
                 <Globe className="w-5 h-5 text-orange-500" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-1.5">随处可用</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">在网页、桌面或移动端无缝使用，体验始终如一。</p>
+                <h3 className="font-semibold text-lg mb-1.5">Works Everywhere</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">Seamlessly use it on web, desktop, or mobile. Consistent experience across all platforms.</p>
               </div>
             </div>
           </div>
@@ -368,10 +368,10 @@ export default function HomePage() {
         <section className="mx-auto max-w-5xl px-6 pt-16 pb-8">
           <div className="grid md:grid-cols-2 gap-x-16 gap-y-8">
             {[
-              { icon: Users, title: "去中心化", desc: "连接跨服务器，数据归你所有。任何人无法掌控整个网络。" },
-              { icon: Github, title: "开放源码", desc: "代码完全透明，社区共同审计，没有隐藏逻辑。" },
-              { icon: Rss, title: "时序动态流", desc: "按时间顺序看到真实内容，无推荐算法干预。" },
-              { icon: Shield, title: "隐私保护", desc: "无广告，无追踪，无操纵。这是我们的承诺。" },
+              { icon: Users, title: "Decentralized", desc: "Connect across servers. Your data belongs to you. No one controls the whole network." },
+              { icon: Github, title: "Open Source", desc: "Fully transparent code, community-audited, no hidden logic." },
+              { icon: Rss, title: "Chronological Feed", desc: "See real content in chronological order, free from recommendation algorithms." },
+              { icon: Shield, title: "Privacy Protection", desc: "No ads, no tracking, no manipulation. That is our promise." },
             ].map((item) => (
               <div key={item.title} className="flex gap-4 items-start">
                 <div className="w-9 h-9 shrink-0 rounded-xl bg-foreground/5 dark:bg-foreground/8 border border-foreground/8 flex items-center justify-center">
@@ -391,15 +391,15 @@ export default function HomePage() {
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-violet-600 via-indigo-600 to-blue-600 p-12 text-center text-white shadow-2xl shadow-violet-500/25">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.15),transparent_60%)]" />
             <div className="relative space-y-5">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">准备好加入联邦宇宙了吗？</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ready to Join the Fediverse?</h2>
               <p className="text-violet-100/80 max-w-md mx-auto text-[15px] leading-relaxed">
-                注册任意 Mastodon 实例，即可连接到整个去中心化社交网络。
+                Sign up for any Mastodon instance to connect to the entire decentralized social network.
               </p>
               <div className="flex flex-wrap gap-3 justify-center pt-2">
                 <LoginModal>
                   <Button size="lg" className="h-12 px-8 rounded-full font-medium bg-white text-violet-700 hover:bg-white/90 shadow-lg transition-all duration-200 hover:scale-[1.02]">
                     <MessageCircle className="w-4 h-4 mr-2" />
-                    立即登录
+                    Sign In Now
                   </Button>
                 </LoginModal>
                 <Button
@@ -408,7 +408,7 @@ export default function HomePage() {
                   onClick={handleGuestMode}
                   className="h-12 px-8 rounded-full font-medium border-white/30 text-white hover:bg-white/10 bg-transparent"
                 >
-                  访客浏览
+                  Browse as Guest
                 </Button>
               </div>
             </div>

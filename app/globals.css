@@ -47,7 +47,7 @@
   --card-foreground: oklch(0.92 0.006 280);
   --popover: oklch(0.105 0.010 280);
   --popover-foreground: oklch(0.92 0.006 280);
-  --primary: oklch(0.72 0.22 292);           /* violet-400 */
+  --primary: #5966f3;           /* violet-400 */
   --primary-foreground: oklch(0.10 0.01 282);
   --secondary: oklch(0.68 0.20 265);         /* indigo-400 */
   --secondary-foreground: oklch(0.10 0.01 282);
