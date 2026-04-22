@@ -181,6 +181,14 @@
   margin-bottom: .5rem;
 }
 
+.content-rich blockquote {
+  margin: 0.5rem 0;
+  padding: 0.25rem 0.75rem;
+  border-left: 3px solid var(--primary);
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
 /* ── Skeleton shimmer ─────────────────────────────────────────── */
 @keyframes skeleton-loading {
   0%   { background-position: 100% 50%; }

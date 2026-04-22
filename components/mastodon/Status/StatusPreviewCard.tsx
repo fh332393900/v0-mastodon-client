@@ -181,7 +181,7 @@ function NormalCard({ card }: StatusPreviewCardProps) {
         )}
         <div className="flex items-center gap-1 text-xs text-muted-foreground pt-0.5">
           <ProviderIcon url={card.url} providerName={card.providerName} className="h-3 w-3" />
-          <span className="truncate">{card.providerName || hostname}</span>
+          <span className="truncate font-bold">{card.providerName || hostname}</span>
         </div>
       </div>
       <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground" />
