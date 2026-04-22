@@ -34,7 +34,7 @@ export function useProfileAccountsList({
     },
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage, _pages, lastPageParam) => {
-      if (!lastPage || lastPage.length < limit) return undefined
+      if (!lastPage || lastPage.length === 0) return undefined
       const lastId = lastPage[lastPage.length - 1]?.id
       if (!lastId) return undefined
       if (lastPageParam && lastId === lastPageParam) return undefined

@@ -42,7 +42,7 @@ export function useExplorePostsCache({ limit = 20 }: UseExplorePostsCacheOptions
     enabled: isReady && !!client,
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage, pages) => {
-      if (!lastPage || lastPage.length < limit) return undefined
+      if (!lastPage || lastPage.length === 0) return undefined
       return String(pages.length * limit)
     },
     staleTime: 60_000,

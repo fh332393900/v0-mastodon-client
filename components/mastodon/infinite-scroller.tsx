@@ -68,7 +68,7 @@ export function InfiniteScroller({
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
       root: null, // viewport
-      rootMargin: "400px", // trigger 400px before the sentinel is visible
+      rootMargin: "800px", // trigger 800px  before the sentinel is visible
       threshold: 0.1,
     })
 

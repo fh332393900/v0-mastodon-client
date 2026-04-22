@@ -61,7 +61,9 @@ export function useTimelineCache({ timelineType, limit = 20 }: UseTimelineCacheO
     enabled: isReady && !!client && (timelineType !== "home" || !!user),
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage, _pages, lastPageParam) => {
-      if (!lastPage || lastPage.length < limit) return undefined
+      // Only stop when the page is truly empty — Mastodon may return fewer
+      // items than `limit` even when more data exists (filtered/boosted posts).
+      if (!lastPage || lastPage.length === 0) return undefined
       const lastId = lastPage[lastPage.length - 1]?.id
       if (!lastId) return undefined
       if (lastPageParam && lastId === lastPageParam) return undefined
