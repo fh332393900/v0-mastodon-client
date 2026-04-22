@@ -12,7 +12,7 @@ import { useMasto } from "@/components/auth/masto-provider"
 // 逐字母手写动画
 function HandwrittenText({ text }: { text: string }) {
   return (
-    <span className="handwritten-font">
+    <span className="handwritten-font cartoon-text">
       {text.split("").map((char, i) => (
         <span
           key={i}
@@ -186,7 +186,7 @@ export default function HomePage() {
         {/* 功能特性 */}
         <section className="mt-28 space-y-12">
           <div className="text-center space-y-3">
-            <h2 className="text-3xl lg:text-4xl font-bold shadow-3d-text">为什么选择 MastoClient？</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold">为什么选择 MastoClient？</h2>
             <p className="text-lg text-muted-foreground max-w-xl mx-auto">
               专为现代 Web 打造，注重细节与用户体验。
             </p>
@@ -254,7 +254,7 @@ export default function HomePage() {
 
         {/* CTA */}
         <section className="mt-24 text-center space-y-6 py-16 rounded-3xl bg-primary/5 border border-primary/10">
-          <h2 className="text-3xl font-bold shadow-3d-text">准备好加入联邦宇宙了吗？</h2>
+          <h2 className="text-3xl font-bold">准备好加入联邦宇宙了吗？</h2>
           <p className="text-muted-foreground max-w-md mx-auto">
             注册任意 Mastodon 实例，即可连接到整个去中心化社交网络。
           </p>

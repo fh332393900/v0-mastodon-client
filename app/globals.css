@@ -219,6 +219,13 @@
   animation: neon-flicker 3.2s ease-in-out infinite alternate;
 }
 
+.handwritten-font.cartoon-text {
+  background: none;
+  color: var(--primary);
+  font-family: "Comic Sans MS", "Chalkboard SE", "Segoe Print", cursive;
+  text-shadow: 0 0 1px rgba(255,255,255,0.9), 0 4px 8px rgba(99, 102, 241, 0.2);
+}
+
 .letter-draw-anim {
   display: inline-block;
   opacity: 0;
@@ -235,6 +242,19 @@
   border-radius: 9999px;
   filter: blur(34px);
   opacity: 0.7;
+}
+
+.hero-headline-main,
+.hero-headline-sub {
+  display: inline-block;
+  font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+  color: var(--foreground);
+  letter-spacing: -0.04em;
+}
+
+.hero-headline-sub {
+  font-weight: 900;
+  text-shadow: 0 2px 12px rgba(98, 69, 253, 0.12);
 }
 
 .hero-glow-card {
