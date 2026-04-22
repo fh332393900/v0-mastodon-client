@@ -39,7 +39,7 @@ export default function HomePage() {
         <ThemeToggle />
       </header>
 
-      <main className="container mx-auto px-6 py-16">
+      <main className="container mx-auto px-8 py-16">
         {/* Hero Section */}
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-8">
@@ -140,7 +140,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid px-12 md:grid-cols-3 gap-6">
             {[
               {
                 icon: MessageCircle,

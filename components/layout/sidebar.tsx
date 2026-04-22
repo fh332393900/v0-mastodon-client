@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Heart, Search, Settings, Menu, X, LogOut, PenSquare } from "lucide-react"
+import { Home, Heart, Search, Settings, Menu, X, LogOut, PenSquare, MessageCircle } from "lucide-react"
 import { LoginModal } from "@/components/auth/login-modal"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -68,16 +68,16 @@ export function Sidebar() {
           <div className="flex items-center justify-between p-4">
             {!isCollapsed ? (
               <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">M</span>
+                <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/60 rounded-lg flex items-center justify-center">
+                  <MessageCircle className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <span className="text-lg font-bold">MastoClient</span>
               </Link>
             ) : (
               <div className="flex items-center justify-center w-full">
                 <Link href="/">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">M</span>
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/60 rounded-lg flex items-center justify-center">
+                    <MessageCircle className="w-5 h-5 text-primary-foreground" />
                   </div>
                 </Link>
               </div>
