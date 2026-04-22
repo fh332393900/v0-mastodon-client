@@ -57,117 +57,217 @@ export default function HomePage() {
 
       <main>
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden px-6 pt-20 pb-0 md:pt-28">
+        <section className="relative overflow-hidden px-6 pt-16 pb-0 md:pt-24">
           {/* background orbs */}
           <div className="pointer-events-none absolute inset-0 -z-10">
-            <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[600px] w-[800px] rounded-full bg-gradient-to-b from-violet-400/20 via-indigo-400/10 to-transparent blur-3xl dark:from-violet-600/15 dark:via-indigo-600/8" />
+            <div className="absolute left-1/4 top-0 h-[500px] w-[700px] rounded-full bg-gradient-to-b from-violet-400/15 via-indigo-400/8 to-transparent blur-3xl dark:from-violet-600/12 dark:via-indigo-600/6" />
           </div>
 
-          <div className="mx-auto max-w-5xl text-center space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-violet-200 dark:border-violet-800/60 bg-violet-50 dark:bg-violet-950/40 px-4 py-1.5 text-xs font-medium text-violet-600 dark:text-violet-400">
-              <span className="h-1.5 w-1.5 rounded-full bg-violet-500 animate-pulse" />
-              去中心化 · 无广告 · 完全开放
-            </div>
+          <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-12 items-center">
+            {/* ── Left: text ── */}
+            <div className="space-y-7">
+              <div className="inline-flex items-center gap-2 rounded-full border border-violet-200 dark:border-violet-800/60 bg-violet-50 dark:bg-violet-950/40 px-4 py-1.5 text-xs font-medium text-violet-600 dark:text-violet-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-violet-500 animate-pulse" />
+                去中心化 · 无广告 · 完全开放
+              </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.08] text-foreground">
-              社交网络，<br />
-              <span className="bg-gradient-to-r from-violet-600 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
-                不出售你的数据
-              </span>
-            </h1>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground">
+                社交网络，<br />
+                <span className="bg-gradient-to-r from-violet-600 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
+                  不出售你的数据
+                </span>
+              </h1>
 
-            <p className="mx-auto max-w-xl text-[17px] text-muted-foreground leading-relaxed">
-              一个现代、快速、精美的 Mastodon 客户端。<br />
-              连接去中心化社交网络，掌控你的数字生活。
-            </p>
+              <p className="text-[16px] text-muted-foreground leading-relaxed max-w-sm">
+                一个现代、快速、精美的 Mastodon 客户端。连接去中心化社交网络，掌控你的数字生活。
+              </p>
 
-            <div className="flex flex-wrap justify-center gap-3 pt-2">
-              <LoginModal>
+              <div className="flex flex-wrap gap-3">
+                <LoginModal>
+                  <Button
+                    size="lg"
+                    className="h-11 px-7 rounded-full font-medium bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-xl shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-300 hover:scale-[1.02]"
+                  >
+                    立即开始
+                    <ArrowRight className="w-4 h-4 ml-1.5" />
+                  </Button>
+                </LoginModal>
                 <Button
                   size="lg"
-                  className="h-12 px-8 rounded-full font-medium bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-xl shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-300 hover:scale-[1.02]"
+                  variant="outline"
+                  onClick={handleGuestMode}
+                  className="h-11 px-7 rounded-full font-medium border-foreground/15 dark:border-foreground/10 hover:bg-foreground/5 transition-all duration-200"
                 >
-                  立即开始
-                  <ArrowRight className="w-4 h-4 ml-1.5" />
+                  <Globe className="w-4 h-4 mr-1.5" />
+                  访客浏览
                 </Button>
-              </LoginModal>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={handleGuestMode}
-                className="h-12 px-8 rounded-full font-medium border-foreground/15 dark:border-foreground/10 hover:bg-foreground/5 transition-all duration-200"
-              >
-                <Globe className="w-4 h-4 mr-1.5" />
-                访客浏览
-              </Button>
-            </div>
-
-            {/* stats */}
-            <div className="flex justify-center gap-10 pt-6 pb-2">
-              {[
-                { value: "10M+", label: "活跃用户" },
-                { value: "10K+", label: "独立实例" },
-                { value: "100%", label: "无广告" },
-              ].map((s) => (
-                <div key={s.label} className="text-center">
-                  <div className="text-2xl font-bold text-foreground">{s.value}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{s.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* App preview card */}
-          <div className="relative mx-auto mt-14 max-w-4xl">
-            <div className="relative rounded-2xl overflow-hidden border border-black/8 dark:border-white/8 shadow-[0_30px_80px_-10px_rgba(0,0,0,0.18)] dark:shadow-[0_30px_80px_-10px_rgba(0,0,0,0.5)] bg-white dark:bg-[#111116]">
-              {/* fake titlebar */}
-              <div className="flex items-center gap-2 px-5 py-3 bg-[#f0f0f5] dark:bg-[#1a1a22] border-b border-black/5 dark:border-white/5">
-                <span className="h-3 w-3 rounded-full bg-red-400" />
-                <span className="h-3 w-3 rounded-full bg-yellow-400" />
-                <span className="h-3 w-3 rounded-full bg-green-400" />
-                <span className="ml-4 text-xs text-muted-foreground/60 font-mono">mastoclient.app / timeline</span>
               </div>
-              {/* preview body */}
-              <div className="flex">
-                {/* sidebar stub */}
-                <div className="hidden md:flex flex-col gap-5 px-6 py-8 border-r border-black/5 dark:border-white/5 min-w-[180px] bg-[#fafafa] dark:bg-[#0f0f14]">
-                  {["Home", "Favorites", "Compose", "Explore", "Settings"].map((item, i) => (
-                    <div key={item} className={`flex items-center gap-2.5 text-sm ${i === 0 ? "text-violet-600 dark:text-violet-400 font-semibold" : "text-muted-foreground/60"}`}>
-                      <span className={`h-1.5 w-1.5 rounded-full ${i === 0 ? "bg-violet-500" : "bg-muted-foreground/20"}`} />
-                      {item}
-                    </div>
-                  ))}
-                </div>
-                {/* feed stub */}
-                <div className="flex-1 p-5 space-y-4">
-                  {[
-                    { name: "Post Growth Institute", handle: "@postgrowthinstitute", avatar: "P", text: "Ceechu 4 is now available: the first magazine about New Economies in Spanish.", likes: 6, reblogs: 1 },
-                    { name: "Formula 1 🏎", handle: "@formula1bot", avatar: "F", text: "Round 4 of the F1 Sim Racing Championship is coming to you LIVE tonight 🏁 Session times confirmed 🎙", likes: 8, reblogs: 3 },
-                    { name: "Tech Weekly", handle: "@techweekly", avatar: "T", text: "The open web is thriving. Fediverse reaches new milestones in 2026 — more servers, more communities, more voices.", likes: 24, reblogs: 7 },
-                  ].map((post) => (
-                    <div key={post.handle} className="flex gap-3 rounded-2xl border border-border/50 bg-card/60 p-4">
-                      <div className="h-10 w-10 shrink-0 rounded-full bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white text-sm font-bold">
-                        {post.avatar}
-                      </div>
-                      <div className="min-w-0 flex-1 space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold truncate">{post.name}</span>
-                          <span className="text-xs text-muted-foreground truncate">{post.handle}</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{post.text}</p>
-                        <div className="flex gap-5 pt-1 text-xs text-muted-foreground/60">
-                          <span>💬 2</span>
-                          <span>🔁 {post.reblogs}</span>
-                          <span>❤️ {post.likes}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+
+              {/* stats */}
+              <div className="flex gap-8 pt-1">
+                {[
+                  { value: "10M+", label: "活跃用户" },
+                  { value: "10K+", label: "独立实例" },
+                  { value: "100%", label: "无广告" },
+                ].map((s, i) => (
+                  <div key={s.label} className={`text-left ${i > 0 ? "pl-8 border-l border-border/50" : ""}`}>
+                    <div className="text-xl font-bold text-foreground">{s.value}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">{s.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
-            {/* glow under card */}
-            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-20 bg-violet-500/20 blur-3xl rounded-full pointer-events-none" />
+
+            {/* ── Right: App preview ── */}
+            <div className="relative">
+              {/* glow */}
+              <div className="absolute -inset-4 bg-violet-500/10 blur-3xl rounded-full pointer-events-none" />
+              <div className="relative rounded-2xl overflow-hidden border border-black/8 dark:border-white/8 shadow-[0_20px_60px_-10px_rgba(109,40,217,0.18)] dark:shadow-[0_20px_60px_-10px_rgba(109,40,217,0.3)] bg-white dark:bg-[#111116]">
+                {/* titlebar */}
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-[#f0f0f5] dark:bg-[#1a1a22] border-b border-black/5 dark:border-white/5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                  <span className="ml-3 text-[10px] text-muted-foreground/50 font-mono">mastoclient.app / @postgrowthinstitute</span>
+                </div>
+
+                {/* body */}
+                <div className="flex text-[11px]">
+                  {/* sidebar */}
+                  <div className="hidden sm:flex flex-col justify-between py-5 px-4 border-r border-black/5 dark:border-white/5 min-w-[130px] bg-[#fafafa] dark:bg-[#0f0f14]">
+                    {/* logo */}
+                    <div>
+                      <div className="flex items-center gap-1.5 mb-5 px-1">
+                        <div className="w-5 h-5 rounded-md bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
+                          <MessageCircle className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="text-[11px] font-semibold">MastoClient</span>
+                      </div>
+                      <div className="space-y-0.5">
+                        {[
+                          { label: "Home", icon: "🏠", active: false },
+                          { label: "Favorites", icon: "🤍", active: false },
+                          { label: "Compose", icon: "✏️", active: false },
+                          { label: "Explore", icon: "🔍", active: false },
+                          { label: "Settings", icon: "⚙️", active: false },
+                        ].map((item, i) => (
+                          <div key={item.label} className={`flex items-center gap-2 px-2 py-1.5 rounded-lg ${i === 0 ? "bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 font-medium" : "text-muted-foreground/60"}`}>
+                            <span>{item.icon}</span>
+                            <span>{item.label}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    {/* footer hint */}
+                    <div className="px-1 space-y-2">
+                      <div className="text-[9px] text-muted-foreground/40 leading-relaxed">正在查看 m.webtoo.ls 的公共数据</div>
+                      <div className="w-full rounded-lg bg-violet-600 text-white text-center py-1 text-[10px] font-medium cursor-pointer">登录</div>
+                    </div>
+                  </div>
+
+                  {/* main */}
+                  <div className="flex-1 min-w-0">
+                    {/* profile header image */}
+                    <div className="h-16 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 relative">
+                      <div className="absolute inset-0 opacity-40" style={{backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.3'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")"}} />
+                    </div>
+
+                    <div className="px-4 pb-3">
+                      {/* avatar + follow row */}
+                      <div className="flex items-end justify-between -mt-5 mb-3">
+                        <div className="w-12 h-12 rounded-full border-2 border-white dark:border-[#111116] bg-white overflow-hidden flex items-center justify-center shadow-sm">
+                          <div className="w-full h-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-base font-bold">P</div>
+                        </div>
+                        <div className="mb-1 px-3 py-1 rounded-full bg-violet-600 text-white text-[10px] font-medium">查看主页</div>
+                      </div>
+
+                      {/* name */}
+                      <div className="font-bold text-[13px] text-foreground">Post Growth Institute</div>
+                      <div className="text-muted-foreground/60 text-[10px] mb-2">@postgrowthinstitute@mastodon.social</div>
+
+                      {/* bio */}
+                      <p className="text-[10px] text-muted-foreground leading-relaxed mb-2 line-clamp-2">
+                        Exploring a just and livable <span className="text-violet-500">#postgrowth</span> world beyond capitalism 🌍 Post Growth Fellowship, Offers and Needs Markets, Jobs Board & more
+                      </p>
+
+                      {/* tags */}
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {["#solidarityeconomy", "#postgrowth", "#postcapitalism"].map(t => (
+                          <span key={t} className="px-1.5 py-0.5 rounded-md bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 text-[9px]">{t}</span>
+                        ))}
+                      </div>
+
+                      {/* meta grid */}
+                      <div className="grid grid-cols-2 gap-1.5 mb-3 rounded-xl bg-muted/30 p-2.5 text-[9px]">
+                        <div>
+                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">WEBSITE</div>
+                          <div className="text-violet-500 truncate">linktr.ee/postgrowthinstitute</div>
+                        </div>
+                        <div>
+                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">BLUESKY</div>
+                          <div className="text-violet-500 truncate">bsky.app/profile/…</div>
+                        </div>
+                        <div>
+                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">INSTAGRAM</div>
+                          <div className="text-violet-500 truncate">instagram.com/postgrowth/</div>
+                        </div>
+                        <div>
+                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">ORGANIZATION</div>
+                          <div className="text-foreground/70">Not-For-Profit</div>
+                        </div>
+                      </div>
+
+                      {/* join date */}
+                      <div className="flex items-center gap-3 text-[9px] text-muted-foreground/50 mb-3">
+                        <span>📅 加入于 2022年11月17日</span>
+                        <span>⚡ 最近活跃 2025-10-24</span>
+                      </div>
+
+                      {/* stats bar */}
+                      <div className="flex items-center gap-1 text-[10px]">
+                        <span className="font-bold text-foreground">266</span><span className="text-muted-foreground/60 mr-2">贴文</span>
+                        <span className="font-bold text-foreground">35</span><span className="text-muted-foreground/60 mr-2">正在关注</span>
+                        <span className="font-bold text-foreground">1,159</span><span className="text-muted-foreground/60">关注者</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* right panel */}
+                  <div className="hidden lg:flex flex-col gap-3 p-3 min-w-[110px] border-l border-black/5 dark:border-white/5 bg-[#fafafa] dark:bg-[#0f0f14]">
+                    {/* search */}
+                    <div className="flex items-center gap-1.5 rounded-lg bg-muted/40 px-2 py-1.5">
+                      <span className="text-muted-foreground/40 text-[9px]">🔍</span>
+                      <span className="text-[9px] text-muted-foreground/40">Search hashtags…</span>
+                    </div>
+                    {/* trending */}
+                    <div>
+                      <div className="flex items-center gap-1 text-[9px] font-semibold text-foreground mb-2">
+                        <span className="text-orange-400">#</span> 热门话题
+                      </div>
+                      {[
+                        { tag: "#introduction", sub: "10人·10 帖文" },
+                        { tag: "#cats", sub: "13人·18 帖文" },
+                        { tag: "#rustlang", sub: "2人·2 帖文" },
+                      ].map((t) => (
+                        <div key={t.tag} className="flex items-center justify-between mb-2">
+                          <div>
+                            <div className="text-[9px] font-medium text-violet-600 dark:text-violet-400">{t.tag}</div>
+                            <div className="text-[8px] text-muted-foreground/50">{t.sub}</div>
+                          </div>
+                          {/* mini sparkline */}
+                          <svg width="32" height="12" viewBox="0 0 32 12" className="text-violet-400 opacity-60">
+                            <polyline points="0,10 8,4 16,8 24,2 32,6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                      ))}
+                      <div className="text-[9px] text-muted-foreground/50 flex items-center gap-0.5 cursor-pointer hover:text-violet-500 transition-colors">
+                        查看更多热门标签 →
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
