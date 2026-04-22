@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Repeat2, Pin } from "lucide-react"
+import { Pin } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -18,6 +18,7 @@ import { useStatusActions } from "@/hooks/mastodon/useStatusActions"
 import { StatusPoll } from "./StatusPoll"
 import { StatusMedia } from "./StatusMedia"
 import { StatusActions } from "./StatusActions"
+import { StatusRepostHeader } from "./StatusRepostHeader"
 
 type Status = mastodon.v1.Status
 
@@ -42,36 +43,13 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
     displayName: author.displayName,
     username: author.username,
   })
-  const reblogAuthorNameText = getDisplayNameText({
-    displayName: status.account.displayName,
-    username: status.account.username,
-  })
 
   const profileHref = server ? getAccountProfileHref(author, server) : undefined
 
   return (
     <article className="rounded-3xl border border-border/70 bg-card/90 p-4 shadow-sm">
-      {status.reblog ? (
-        <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
-          <Repeat2 className="h-5 w-5 text-accent" />
-          <Link
-            href={`/${server}/${status.account.acct}`}
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary"
-          >
-            <Avatar className="h-7 w-7 ring-2 ring-border/70">
-              <AvatarImage src={status.account.avatar} alt={reblogAuthorNameText} />
-              <AvatarFallback>{reblogAuthorNameText.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <span className="inline-flex flex-wrap items-center gap-1">
-              {renderDisplayName({
-                displayName: status.account.displayName,
-                username: status.account.username,
-                emojis: status.account.emojis,
-              })}
-              <span>转发了这条贴文</span>
-            </span>
-          </Link>
-        </div>
+      {status.reblog && server ? (
+        <StatusRepostHeader account={status.account} server={server} />
       ) : null}
 
       <div className="flex gap-4">
