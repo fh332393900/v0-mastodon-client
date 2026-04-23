@@ -1,11 +1,11 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useParams } from "next/navigation"
 import type { mastodon } from "masto"
 
 import { StatusCard } from "@/components/mastodon/Status"
-import { StatusThread } from "@/components/mastodon/Status/StatusThread"
 import { ComposeEditor, type ComposeEditorHandle } from "@/components/mastodon/compose-editor"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -13,8 +13,156 @@ import { LoginModal } from "@/components/auth/login-modal"
 import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useComposeActions } from "@/hooks/mastodon/useComposeActions"
+import MastodonContent from "@/components/mastodon/MastodonContent"
+import { UserHoverCard } from "@/components/mastodon/user-hover-card"
+import { formatRelativeTime, formatFullDate } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { getDisplayNameText } from "@/lib/mastodon/contentToReactNode"
-import { groupThreadPosts } from "@/lib/mastodon/groupThreads"
+import { getAccountProfileHref } from "@/lib/mastodon/account"
+import { useStatusActions } from "@/hooks/mastodon/useStatusActions"
+import { StatusActions } from "@/components/mastodon/Status/StatusActions"
+import { StatusMedia } from "@/components/mastodon/Status/StatusMedia"
+import { StatusPoll } from "@/components/mastodon/Status/StatusPoll"
+import { StatusPreviewCard } from "@/components/mastodon/Status/StatusPreviewCard"
+
+type ReplyGroup = {
+  root: mastodon.v1.Status
+  replies: mastodon.v1.Status[]
+}
+
+function buildReplyGroups(
+  replies: mastodon.v1.Status[],
+  rootId: string,
+): ReplyGroup[] {
+  const byId = new Map<string, mastodon.v1.Status>()
+  replies.forEach((reply) => byId.set(reply.id, reply))
+
+  const roots = replies.filter((reply) => reply.inReplyToId === rootId)
+  const children = replies.filter((reply) => reply.inReplyToId && reply.inReplyToId !== rootId)
+
+  const groups: ReplyGroup[] = roots.map((root) => ({ root, replies: [] }))
+  const groupMap = new Map<string, ReplyGroup>()
+  groups.forEach((group) => groupMap.set(group.root.id, group))
+
+  children.forEach((reply) => {
+    const parentId = reply.inReplyToId
+    if (!parentId) return
+    const group = groupMap.get(parentId)
+    if (group) {
+      group.replies.push(reply)
+    }
+  })
+
+  groups.sort(
+    (a, b) => new Date(a.root.createdAt).getTime() - new Date(b.root.createdAt).getTime(),
+  )
+  groups.forEach((group) => {
+    group.replies.sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    )
+  })
+
+  return groups
+}
+
+function ReplyItem({
+  status,
+  showThreadLine,
+}: {
+  status: mastodon.v1.Status
+  showThreadLine?: boolean
+}) {
+  const { server } = useMasto()
+  const {
+    renderedStatus,
+    isLoading,
+    canReblog,
+    toggleReblog,
+    toggleFavourite,
+    toggleBookmark,
+  } = useStatusActions({ status })
+
+  const author = renderedStatus.account
+  const authorNameText = getDisplayNameText({
+    displayName: author.displayName,
+    username: author.username,
+  })
+  const profileHref = server ? getAccountProfileHref(author, server) : undefined
+  const detailHref = server ? `/${server}/@${author.username}/${renderedStatus.id}` : undefined
+
+  return (
+  <div className="space-y-4">
+      <div className="flex gap-4">
+        <div className="flex flex-col items-center">
+          {profileHref ? (
+            <UserHoverCard account={author} profileHref={profileHref}>
+              <Link href={profileHref}>
+                <Avatar className="h-10 w-10 ring-2 ring-border/70 shrink-0">
+                  <AvatarImage src={author.avatar} alt={authorNameText} />
+                  <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
+                </Avatar>
+              </Link>
+            </UserHoverCard>
+          ) : (
+            <Avatar className="h-10 w-10 ring-2 ring-border/70 shrink-0">
+              <AvatarImage src={author.avatar} alt={authorNameText} />
+              <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
+            </Avatar>
+          )}
+          {showThreadLine ? (
+            <div className="mt-2 w-0.5 flex-1 min-h-4 bg-border/60 rounded-full" />
+          ) : null}
+        </div>
+
+        <div className="min-w-0 flex-1 space-y-3">
+          {detailHref ? (
+            <Link href={detailHref} className="block group">
+              <div className="flex gap-2 md:gap-4 justify-between items-center">
+                <UserHoverCard account={author} profileHref={profileHref} className="" />
+                <span
+                  className="text-xs text-muted-foreground shrink-0 whitespace-nowrap group-hover:text-primary transition-colors"
+                  title={formatFullDate(renderedStatus.createdAt)}
+                >
+                  {formatRelativeTime(renderedStatus.createdAt)}
+                </span>
+              </div>
+
+              {renderedStatus.spoilerText ? (
+                <div className="rounded-2xl bg-muted/70 px-3 py-2 text-xs text-muted-foreground">
+                  {renderedStatus.spoilerText}
+                </div>
+              ) : null}
+
+              <div className="[&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2">
+                <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
+              </div>
+
+              {renderedStatus.poll ? (
+                <StatusPoll poll={renderedStatus.poll} />
+              ) : null}
+
+              <StatusMedia attachments={renderedStatus.mediaAttachments} />
+
+              {renderedStatus.card ? (
+                <StatusPreviewCard card={renderedStatus.card} />
+              ) : null}
+            </Link>
+          ) : null}
+
+          <StatusActions
+            renderedStatus={renderedStatus}
+            isLoading={isLoading}
+            canReblog={canReblog}
+            toggleReblog={toggleReblog}
+            toggleFavourite={toggleFavourite}
+            toggleBookmark={toggleBookmark}
+          />
+        </div>
+      </div>
+
+    </div>
+  )
+}
 
 export default function StatusDetailPage() {
   const params = useParams()
@@ -67,7 +215,10 @@ export default function StatusDetailPage() {
     }
   }, [client, isReady, statusId])
 
-  const replyGroups = useMemo(() => groupThreadPosts(replies), [replies])
+  const replyGroups = useMemo(() => {
+    if (!statusId) return []
+    return buildReplyGroups(replies, statusId)
+  }, [replies, statusId])
 
   const handleSubmit = async () => {
     if (!statusId) return
@@ -119,9 +270,6 @@ export default function StatusDetailPage() {
   return (
     <div className="space-y-8">
       <div className="space-y-3">
-        <p className="text-xs text-muted-foreground/70">
-          @{account}@{server} · 帖文详情
-        </p>
         <StatusCard status={status} />
       </div>
 
@@ -162,9 +310,18 @@ export default function StatusDetailPage() {
             还没有回复
           </div>
         ) : (
-          <div className="space-y-5 pl-6">
+          <div className="space-y-6">
             {replyGroups.map((group) => (
-              <StatusThread key={group[0].id} statuses={group} />
+              <div key={group.root.id} className="space-y-4">
+                <ReplyItem status={group.root} showThreadLine={group.replies.length > 0} />
+                {group.replies.length > 0 ? (
+                  <div className="space-y-4 border-l border-border/50 pl-6">
+                    {group.replies.map((reply) => (
+                      <ReplyItem key={reply.id} status={reply} />
+                    ))}
+                  </div>
+                ) : null}
+              </div>
             ))}
           </div>
         )}
