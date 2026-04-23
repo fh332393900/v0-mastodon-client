@@ -1,5 +1,9 @@
 'use client'
 
+import { useTheme } from 'next-themes'
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs'
+
 export default function ContentCode({
   code,
   lang,
@@ -7,9 +11,39 @@ export default function ContentCode({
   code: string
   lang?: string
 }) {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
+  const decoded = decodeURIComponent(code)
+
   return (
-    <pre className="overflow-x-auto bg-gray-100 p-3 rounded">
-      <code>{decodeURIComponent(code)}</code>
-    </pre>
+    <div className="my-3 rounded-lg overflow-hidden border border-border/60 text-[13px]">
+      {/* title bar */}
+      {lang && (
+        <div className="flex items-center justify-between px-3.5 py-1.5 bg-muted/60 border-b border-border/50">
+          <span className="text-[11px] font-mono text-muted-foreground/70 tracking-wide">{lang}</span>
+          <div className="flex gap-1">
+            <span className="h-2 w-2 rounded-full bg-red-400/70" />
+            <span className="h-2 w-2 rounded-full bg-yellow-400/70" />
+            <span className="h-2 w-2 rounded-full bg-green-400/70" />
+          </div>
+        </div>
+      )}
+      <SyntaxHighlighter
+        language={lang || 'text'}
+        style={isDark ? atomOneDark : atomOneLight}
+        customStyle={{
+          margin: 0,
+          padding: '0.85rem 1rem',
+          background: isDark ? 'oklch(0.105 0.010 280)' : 'oklch(0.975 0.003 270)',
+          fontSize: '13px',
+          lineHeight: '1.6',
+          borderRadius: 0,
+        }}
+        codeTagProps={{ style: { fontFamily: 'var(--font-mono), ui-monospace, monospace' } }}
+        wrapLongLines={false}
+      >
+        {decoded}
+      </SyntaxHighlighter>
+    </div>
   )
 }

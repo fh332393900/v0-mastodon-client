@@ -37,13 +37,40 @@ export function contentToReactNode(
   const tree = parse(content)
   const emojiMap = buildEmojiMap(emojis)
 
-  return (
-    <>
-      {(tree.children || []).map((node: any, i: number) => (
-        <Fragment key={i}>{treeToReactNode(node, emojiMap)}</Fragment>
-      ))}
-    </>
-  )
+  const nodes: React.ReactNode[] = []
+  const children = tree.children || []
+
+  for (let i = 0; i < children.length; i += 1) {
+    const node = children[i]
+
+    if (node?.type === ELEMENT_NODE && node.name === 'p') {
+      const raw = getTextWithBreaks(node.children)
+
+      if (raw?.trim().startsWith('```')) {
+        let combined = raw
+        let j = i + 1
+
+        while (j < children.length && !combined.trim().endsWith('```')) {
+          const next = children[j]
+          const nextText = getTextWithBreaks(next?.children || [])
+          combined += `\n${nextText}`
+          if (combined.trim().endsWith('```')) break
+          j += 1
+        }
+
+        const codeBlock = parseMarkdownCodeBlockFromText(combined)
+        if (codeBlock) {
+          nodes.push(<Fragment key={`md-code-${i}`}>{codeBlock}</Fragment>)
+          i = j
+          continue
+        }
+      }
+    }
+
+    nodes.push(<Fragment key={i}>{treeToReactNode(node, emojiMap)}</Fragment>)
+  }
+
+  return <>{nodes}</>
 }
 
 export type DisplayNameLike = {
@@ -76,7 +103,7 @@ function treeToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
   if (!node) return null
 
   if (node.type === TEXT_NODE) {
-    return renderTextWithEmojis(decode(node.value), emojiMap)
+    return renderTextWithMarkdownAndEmojis(decode(node.value), emojiMap)
   }
 
   if (node.type === ELEMENT_NODE) {
@@ -88,6 +115,11 @@ function treeToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
 
 function elementToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
   const { name, attributes = {}, children = [] } = node
+
+  if (name === 'p') {
+    const codeBlock = parseMarkdownCodeBlock(node)
+    if (codeBlock) return codeBlock
+  }
 
   // mention / hashtag
   if (name === 'a' && attributes.class?.includes('mention')) {
@@ -237,4 +269,64 @@ function renderTextWithEmojis(text: string, emojiMap: EmojiMap) {
   if (lastIndex < text.length) nodes.push(text.slice(lastIndex))
 
   return nodes.length === 1 ? nodes[0] : nodes
+}
+
+function renderTextWithMarkdownAndEmojis(text: string, emojiMap: EmojiMap): React.ReactNode {
+  if (!text) return text
+
+  const nodes: React.ReactNode[] = []
+  const regex = /(\*\*[^*]+\*\*|\*[^*]+\*)/g
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+
+  while ((match = regex.exec(text))) {
+    const [token] = match
+    const start = match.index
+    const end = start + token.length
+
+    if (start > lastIndex) {
+      const raw = text.slice(lastIndex, start)
+      nodes.push(renderTextWithEmojis(raw, emojiMap))
+    }
+
+    const content = token.startsWith('**') ? token.slice(2, -2) : token.slice(1, -1)
+    const rendered = renderTextWithEmojis(content, emojiMap)
+    nodes.push(
+      token.startsWith('**') ? <strong key={`md-bold-${start}`}>{rendered}</strong> : <em key={`md-italic-${start}`}>{rendered}</em>,
+    )
+
+    lastIndex = end
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(renderTextWithEmojis(text.slice(lastIndex), emojiMap))
+  }
+
+  return nodes.length === 1 ? nodes[0] : nodes
+}
+
+function parseMarkdownCodeBlock(node: any): React.ReactNode | null {
+  const raw = getTextWithBreaks(node.children)
+  return parseMarkdownCodeBlockFromText(raw)
+}
+
+function parseMarkdownCodeBlockFromText(raw: string): React.ReactNode | null {
+  if (!raw?.trim().startsWith('```')) return null
+
+  const normalized = raw.replace(/\r\n/g, '\n').trim()
+  const match = normalized.match(/^```(\w+)?\n([\s\S]*?)\n```$/)
+  if (!match) return null
+
+  const [, lang, code] = match
+  return <ContentCode code={encodeURIComponent(code)} lang={lang} />
+}
+
+function getTextWithBreaks(children: any[] = []): string {
+  return children
+    .map((child) => {
+      if (child?.type === TEXT_NODE) return decode(child.value || '')
+      if (child?.type === ELEMENT_NODE && child.name === 'br') return '\n'
+      return extractText(child)
+    })
+    .join('')
 }
