@@ -91,7 +91,7 @@ export default function HomePage() {
                   size="lg"
                   variant="outline"
                   onClick={handleGuestMode}
-                  className="h-11 px-7 rounded-full font-medium border-foreground/15 dark:border-foreground/10 hover:bg-foreground/5 transition-all duration-200"
+                  className="h-11 px-7 rounded-full font-medium transition-all duration-200"
                 >
                   <Globe className="w-4 h-4 mr-1.5" />
                   Browse as Guest
