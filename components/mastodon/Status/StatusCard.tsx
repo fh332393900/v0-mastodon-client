@@ -1,5 +1,8 @@
 "use client"
 
+import { useRouter } from "next/navigation"
+import type { MouseEvent } from "react"
+
 import Link from "next/link"
 import { Pin } from "lucide-react"
 
@@ -30,6 +33,7 @@ type StatusCardProps = {
 
 export function StatusCard({ status, showActions = true }: StatusCardProps) {
   const { server } = useMasto()
+  const router = useRouter()
   const {
     renderedStatus,
     isLoading,
@@ -47,6 +51,14 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
 
   const profileHref = server ? getAccountProfileHref(author, server) : undefined
   const detailHref = server ? `/${server}/@${author.username}/${renderedStatus.id}` : undefined
+
+  const handleContentClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (!detailHref) return
+    const target = event.target as HTMLElement
+    console.log(target.closest("a, button, [role='link'], [data-clickable]"))
+    if (target.closest("a, button")) return
+    router.push(detailHref)
+  }
 
   return (
     <article className="rounded-3xl border border-border/70 bg-card/90 p-4 shadow-sm">
@@ -74,81 +86,52 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
         )}
 
         <div className="min-w-0 flex-1 space-y-3">
-          {detailHref ? (
-            <Link href={detailHref} className="block group">
-              <div className="flex gap-2 md:gap-4 justify-between items-center">
-                <UserHoverCard account={author} profileHref={profileHref} className="" />
-                <span
-                  className="text-sm text-muted-foreground shrink-0 whitespace-nowrap group-hover:text-primary transition-colors"
-                  title={formatFullDate(renderedStatus.createdAt)}
-                >
-                  {formatRelativeTime(renderedStatus.createdAt)}
-                </span>
-                {renderedStatus.pinned ? (
-                  <Badge variant="outline">
-                    <Pin className="mr-1 h-3 w-3" />置顶
-                  </Badge>
-                ) : null}
-              </div>
+          <div className="flex gap-2 md:gap-4 justify-between items-center">
+            <UserHoverCard account={author} profileHref={profileHref} className="" />
+            <span
+              className="text-sm text-muted-foreground shrink-0 whitespace-nowrap"
+              title={formatFullDate(renderedStatus.createdAt)}
+            >
+              {formatRelativeTime(renderedStatus.createdAt)}
+            </span>
+            {renderedStatus.pinned ? (
+              <Badge variant="outline">
+                <Pin className="mr-1 h-3 w-3" />置顶
+              </Badge>
+            ) : null}
+          </div>
 
-              {renderedStatus.spoilerText ? (
-                <div className="rounded-2xl bg-muted/70 px-4 py-3 text-sm text-muted-foreground">
-                  {renderedStatus.spoilerText}
-                </div>
-              ) : null}
+          {renderedStatus.spoilerText ? (
+            <div className="rounded-2xl bg-muted/70 px-4 py-3 text-sm text-muted-foreground">
+              {renderedStatus.spoilerText}
+            </div>
+          ) : null}
 
-              <div className="[&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2">
-                <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
-              </div>
+          <div
+            role={detailHref ? "link" : undefined}
+            tabIndex={detailHref ? 0 : -1}
+            className="cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 [&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2"
+            onClick={handleContentClick}
+            onKeyDown={(event) => {
+              if (!detailHref) return
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault()
+                router.push(detailHref)
+              }
+            }}
+          >
+            <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
+          </div>
 
-              {renderedStatus.poll ? (
-                <StatusPoll poll={renderedStatus.poll} />
-              ) : null}
+          {renderedStatus.poll ? (
+            <StatusPoll poll={renderedStatus.poll} />
+          ) : null}
 
-              <StatusMedia attachments={renderedStatus.mediaAttachments} />
+          <StatusMedia attachments={renderedStatus.mediaAttachments} />
 
-              {renderedStatus.card ? (
-                <StatusPreviewCard card={renderedStatus.card} />
-              ) : null}
-            </Link>
-          ) : (
-            <>
-              <div className="flex gap-2 md:gap-4 justify-between items-center">
-                <UserHoverCard account={author} profileHref={profileHref} className="" />
-                <span
-                  className="text-sm text-muted-foreground shrink-0 whitespace-nowrap"
-                  title={formatFullDate(renderedStatus.createdAt)}
-                >
-                  {formatRelativeTime(renderedStatus.createdAt)}
-                </span>
-                {renderedStatus.pinned ? (
-                  <Badge variant="outline">
-                    <Pin className="mr-1 h-3 w-3" />置顶
-                  </Badge>
-                ) : null}
-              </div>
-
-              {renderedStatus.spoilerText ? (
-                <div className="rounded-2xl bg-muted/70 px-4 py-3 text-sm text-muted-foreground">
-                  {renderedStatus.spoilerText}
-                </div>
-              ) : null}
-
-              <div className="[&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2">
-                <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
-              </div>
-
-              {renderedStatus.poll ? (
-                <StatusPoll poll={renderedStatus.poll} />
-              ) : null}
-
-              <StatusMedia attachments={renderedStatus.mediaAttachments} />
-
-              {renderedStatus.card ? (
-                <StatusPreviewCard card={renderedStatus.card} />
-              ) : null}
-            </>
-          )}
+          {renderedStatus.card ? (
+            <StatusPreviewCard card={renderedStatus.card} />
+          ) : null}
 
           {showActions ? (
             <StatusActions
