@@ -28,14 +28,23 @@ const POPULAR_SERVERS = [
 ]
 
 interface LoginModalProps {
-  children: React.ReactNode
+  children?: React.ReactNode
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
-export function LoginModal({ children }: LoginModalProps) {
+export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
   const [server, setServer] = useState("")
-  const [open, setOpen] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
   const [error, setError] = useState("")
   const { login, isLoading } = useAuth()
+
+  const isControlled = typeof open !== "undefined"
+  const dialogOpen = isControlled ? open : internalOpen
+  const handleOpenChange = (value: boolean) => {
+    if (!isControlled) setInternalOpen(value)
+    onOpenChange?.(value)
+  }
 
   const handleLogin = async () => {
     if (!server) {
@@ -51,8 +60,8 @@ export function LoginModal({ children }: LoginModalProps) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
+        {children ? <DialogTrigger asChild>{children}</DialogTrigger> : null}
       <DialogContent className="sm:max-w-lg bg-card/95 backdrop-blur-sm border-border/50">
         <DialogHeader className="space-y-1">
           <DialogTitle className="text-2xl font-bold text-center">登录 Mastodon</DialogTitle>
