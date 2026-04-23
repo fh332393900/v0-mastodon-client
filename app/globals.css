@@ -4,7 +4,7 @@
 
 :root {
   /* Light  Apple #f5f5f7 base  violet-indigo accent */
-  --background: oklch(0.968 0.003 270);      /* #f5f5f7 */
+  --background: oklch(0.98 0 0);      /* #f5f5f7 */
   --foreground: oklch(0.12 0.006 275);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.12 0.006 275);
@@ -14,8 +14,8 @@
   --primary-foreground: oklch(0.98 0.005 292);
   --secondary: oklch(0.56 0.22 265);         /* indigo-600 */
   --secondary-foreground: oklch(0.98 0.005 265);
-  --muted: #8ea1e1;
-  --muted-foreground: oklch(0.48 0.02 250);
+  --muted: #f5f3ff;;
+  --muted-foreground: oklch(0.46 0.03 250);
   --accent: oklch(0.64 0.22 278);
   --accent-foreground: oklch(0.98 0.005 278);
   --destructive: oklch(0.62 0.22 25);
@@ -47,17 +47,17 @@
   --card-foreground: oklch(0.92 0.006 280);
   --popover: oklch(0.105 0.010 280);
   --popover-foreground: oklch(0.92 0.006 280);
-  --primary: #5966f3;           /* violet-400 */
+  --primary: oklch(0.68 0.20 265);           /* violet-400 */
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.68 0.20 265);         /* indigo-400 */
   --secondary-foreground: oklch(0.10 0.01 282);
   --muted: oklch(0.14 0.010 280);
-  --muted-foreground: oklch(0.52 0.010 275);
+  --muted-foreground: oklch(0.92 0.006 280);
   --accent: oklch(0.62 0.22 265);
   --accent-foreground: oklch(0.92 0.006 280);
   --destructive: oklch(0.62 0.24 27);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.20 0.010 278);
+  --border: oklch(0.25 0.008 226);
   --input: oklch(0.16 0.010 280);
   --ring: oklch(0.72 0.22 292 / 0.45);
   --chart-1: oklch(0.72 0.22 292);

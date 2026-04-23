@@ -43,15 +43,10 @@ export default function HomePage() {
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
             <MessageCircle className="w-4.5 h-4.5 text-white" />
           </div>
-          <span className="text-[15px] font-semibold tracking-tight text-foreground">MastoClient</span>
+          <span className="text-base font-semibold tracking-tight text-foreground">MastoClient</span>
         </div>
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <LoginModal>
-            <Button size="sm" className="rounded-full px-5 h-8 text-xs font-medium bg-foreground text-background hover:bg-foreground/90">
-              Sign In
-            </Button>
-          </LoginModal>
         </div>
       </header>
 
@@ -397,7 +392,7 @@ export default function HomePage() {
               </p>
               <div className="flex flex-wrap gap-3 justify-center pt-2">
                 <LoginModal>
-                  <Button size="lg" className="h-12 px-8 rounded-full font-medium bg-white text-violet-700 hover:bg-white/90 shadow-lg transition-all duration-200 hover:scale-[1.02]">
+                  <Button size="lg" className="h-12 px-8 rounded-full font-medium bg-white text-primary hover:bg-white/90 shadow-lg transition-all duration-200 hover:scale-[1.02]">
                     <MessageCircle className="w-4 h-4 mr-2" />
                     Sign In Now
                   </Button>
@@ -427,7 +422,7 @@ export default function HomePage() {
           </div>
           <p className="text-xs text-muted-foreground">
             A better internet is possible.{" "}
-            <span className="text-violet-500 dark:text-violet-400">Join the fediverse today.</span>
+            <span className="text-primary">Join the fediverse today.</span>
           </p>
           <p className="text-xs text-muted-foreground">Built with <Heart className="inline w-3 h-3 text-red-400" /> for the open web</p>
         </div>

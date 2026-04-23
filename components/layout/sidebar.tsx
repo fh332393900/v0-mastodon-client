@@ -14,8 +14,8 @@ import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToR
 
 const navigationItems = [
   { icon: Home, label: "Home", route: "timeline", color: "text-blue-300" },
-  { icon: Heart, label: "Favorites", route: "favorites", color: "text-red-300" },
-  { icon: PenSquare, label: "Compose", route: "compose", color: "text-purple-300" },
+  { icon: Heart, label: "Favorites", route: "favorites", color: "text-red-500" },
+  { icon: PenSquare, label: "Compose", route: "compose", color: "text-purple-200" },
   { icon: Search, label: "Explore", route: "explore", color: "text-green-300" },
   { icon: Settings, label: "Settings", route: "settings", color: "text-orange-300" },
 ]
