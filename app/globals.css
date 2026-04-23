@@ -42,17 +42,17 @@
 .dark {
   /* Dark  #0a0a0f base  violet accent */
   --background: oklch(0.088 0.012 282);      /* #0a0a0f */
-  --foreground: oklch(0.92 0.006 280);
+  --foreground: oklch(0.95 0.006 280);
   --card: oklch(0.105 0.010 280);            /* #111116 */
-  --card-foreground: oklch(0.92 0.006 280);
+  --card-foreground: oklch(0.95 0.006 280);
   --popover: oklch(0.105 0.010 280);
-  --popover-foreground: oklch(0.92 0.006 280);
+  --popover-foreground: oklch(0.95 0.006 280);
   --primary: oklch(0.68 0.20 265);           /* violet-400 */
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.68 0.20 265);         /* indigo-400 */
   --secondary-foreground: oklch(0.10 0.01 282);
   --muted: oklch(0.14 0.010 280);
-  --muted-foreground: oklch(0.92 0.006 280);
+  --muted-foreground: oklch(0.65 0.008 225);;
   --accent: oklch(0.62 0.22 265);
   --accent-foreground: oklch(0.92 0.006 280);
   --destructive: oklch(0.62 0.24 27);
