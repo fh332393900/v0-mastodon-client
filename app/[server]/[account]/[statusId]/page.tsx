@@ -15,6 +15,7 @@ import {
   buildReplyGroups,
 } from "@/components/mastodon/status-detail/ReplyList"
 import { ReplyComposer } from "@/components/mastodon/status-detail/ReplyComposer"
+import { LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
 
 export default function StatusDetailPage() {
   const params = useParams()
@@ -73,18 +74,13 @@ export default function StatusDetailPage() {
   }
 
   if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div className="h-40 rounded-3xl bg-muted/40 animate-pulse" />
-        <div className="h-32 rounded-3xl bg-muted/40 animate-pulse" />
-      </div>
-    )
+    return <LoadingSkeleton />
   }
 
   if (!data?.status || error) {
     return (
       <div className="rounded-3xl border border-border/60 bg-card/90 p-6 text-sm text-muted-foreground">
-        {error ? "加载失败，请稍后重试" : "未找到该贴文"}
+        { error ? "加载失败，请稍后重试" : null }
       </div>
     )
   }

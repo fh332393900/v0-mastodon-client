@@ -19,7 +19,7 @@ interface InfiniteScrollerProps {
 export function LoadingSkeleton() {
   return (
     <div className="space-y-6 mt-6">
-      {[...Array(3)].map((_, i) => (
+      {[...Array(5)].map((_, i) => (
         <Card key={`skeleton-${i}`} className="animate-pulse">
           <CardHeader>
             <div className="flex items-center space-x-3">

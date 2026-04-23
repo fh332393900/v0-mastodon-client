@@ -14,7 +14,7 @@ export function TrendingTagsPanel() {
 
   return (
     <Card className="h-full flex flex-col bg-card/50 backdrop-blur-sm border-border/50 shadow-lg shadow-primary/5 overflow-hidden">
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 px-4">
         <CardTitle className="text-sm font-medium flex items-center gap-1.5">
           <Hash className="h-3.5 w-3.5 text-primary" />
           热门话题

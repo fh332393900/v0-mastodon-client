@@ -51,7 +51,7 @@ export function TimelineFeed() {
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-primary">{timelineTitle}</h1>
         <div className="flex items-center space-x-2">
-          <div className="flex rounded-lg border border-border/50 p-1">
+          <div className="flex gap-1 rounded-lg border border-border/50 p-1">
             {(["public", "local", "home"] as const).map((type) => (
               <Button
                 key={type}

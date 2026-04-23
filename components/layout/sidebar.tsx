@@ -60,12 +60,12 @@ export function Sidebar() {
         className={cn(
           isMobileOpen ? "fixed inset-y-0 left-0 z-50 bg-card border-r border-border/60" : "hidden lg:block bg-card border-r border-border/60",
           isCollapsed ? "w-20 lg:w-20" : "w-72 lg:w-72",
-          "transition-all duration-200 lg:sticky lg:top-0 lg:h-screen",
+          "lg:sticky lg:top-0 lg:h-screen",
         )}
       >
         <div className="flex h-full flex-col gap-4">
           {/* Header */}
-          <div className="flex items-center justify-between p-4">
+          <div className="flex items-center justify-between p-4 border-b border-border/40">
             {!isCollapsed ? (
               <Link href="/" className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-indigo-600  rounded-lg flex items-center justify-center">
@@ -82,10 +82,6 @@ export function Sidebar() {
                 </Link>
               </div>
             )}
-
-            {/* <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)} className="hidden lg:flex">
-              <Menu className="h-5 w-5" />
-            </Button> */}
           </div>
 
           {/* Navigation */}
@@ -99,7 +95,7 @@ export function Sidebar() {
                     <Button
                       variant={isActive ? "default" : "ghost"}
                       className={cn(
-                        "w-full justify-start transition-all duration-200 hover:scale-[1.02] py-5",
+                        "w-full justify-start transition-bg duration-200 hover:scale-[1.02] py-5",
                         isCollapsed && "px-2",
                       )}
                       onClick={() => setIsMobileOpen(false)}
