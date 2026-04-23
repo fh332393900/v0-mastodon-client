@@ -58,7 +58,7 @@ export function Sidebar() {
       {/* Sidebar */}
       <aside
         className={cn(
-          isMobileOpen ? "fixed inset-y-0 left-0 z-50 bg-card border-r border-border" : "hidden lg:block bg-card border-r border-border",
+          isMobileOpen ? "fixed inset-y-0 left-0 z-50 bg-card border-r border-border/60" : "hidden lg:block bg-card border-r border-border/60",
           isCollapsed ? "w-20 lg:w-20" : "w-72 lg:w-72",
           "transition-all duration-200 lg:sticky lg:top-0 lg:h-screen",
         )}
@@ -123,7 +123,7 @@ export function Sidebar() {
           {/* User Info */}
           {!isInitialized ? (
             /* 骨架屏：等待鉴权初始化完成，避免未登录/已登录状态闪烁 */
-            <div className="border-t border-border py-4 mx-4">
+            <div className="border-t border-border/60 py-4 mx-4">
               <div className={cn("flex items-center space-x-3 p-3 rounded-lg", isCollapsed && "justify-center")}>
                 <div className="h-12 w-12 shrink-0 rounded-full bg-muted animate-pulse" />
                 {!isCollapsed && (
@@ -135,7 +135,7 @@ export function Sidebar() {
               </div>
             </div>
           ) : !user ? (
-            <div className="border-t border-border py-4 mx-4">
+            <div className="border-t border-border/60 py-4 mx-4">
               <div className="space-y-3">
                 <p className="text-sm text-muted-foreground">
                   正在查看 <span className="font-semibold text-foreground">{server}</span> 的公共数据
@@ -149,7 +149,7 @@ export function Sidebar() {
               </div>
             </div>
           ) : (
-            <div className="py-2 px-2 border-t border-border mx-4">
+            <div className="py-2 px-2 border-t border-border/60 mx-4">
               <div
                 className={cn(
                   "flex items-center space-x-3 p-3 rounded-lg",
