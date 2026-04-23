@@ -126,7 +126,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
               </div>
               <DialogTitle className="text-xl font-bold tracking-tight">登录 Mastodon</DialogTitle>
             </div>
-            <p className="text-center text-[13px] text-muted-foreground">
+            <p className="text-center text-[13px] text-foreground">
               选择下方热门服务器，或手动输入你的实例地址
             </p>
           </DialogHeader>
@@ -140,7 +140,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
         >
           {/* 热门服务器卡片 */}
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/60 mb-3">热门实例</p>
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-foreground/60 mb-3">热门实例</p>
             <div className="grid grid-cols-3 gap-2">
               {POPULAR_SERVERS.map((s) => {
                 const Icon = s.icon
@@ -188,7 +188,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
               <span className="w-full border-t border-border/60" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-card px-3 text-[11px] text-muted-foreground/50 font-medium tracking-wide uppercase">
+              <span className="bg-card px-3 text-[11px] text-foreground/60 font-medium tracking-wide uppercase">
                 或手动输入
               </span>
             </div>
@@ -196,9 +196,9 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
 
           {/* 手动输入 */}
           <div className="space-y-2">
-            <Label htmlFor="server" className="text-[12px] font-medium text-muted-foreground">服务器地址</Label>
+            <Label htmlFor="server" className="text-[12px] font-medium text-foreground/60">服务器地址</Label>
             <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground/60 select-none font-mono">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[11px] text-foreground/90 select-none font-mono">
                 https://
               </span>
               <Input

@@ -127,7 +127,7 @@ export default function HomePage() {
                 }}
                 onMouseEnter={e => {
                   const el = e.currentTarget
-                  el.style.transform = "rotateY(-8deg) rotateX(1deg) scale(1.1)"
+                  el.style.transform = "rotateY(-16deg) rotateX(1deg) scale(1.1)"
                   el.style.boxShadow = "4px 8px 32px -4px rgba(109,40,217,0.18), 12px 20px 48px -8px rgba(0,0,0,0.12)"
                 }}
                 onMouseLeave={e => {
