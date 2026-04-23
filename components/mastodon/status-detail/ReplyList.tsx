@@ -53,10 +53,10 @@ export function ReplyList({ groups }: { groups: ReplyGroup[] }) {
   return (
     <div className="space-y-6">
       {groups.map((group) => (
-        <div key={group.root.id} className="space-y-4">
+        <div key={group.root.id} className="space-y-4 border-b pb-4 border-border/60">
           <ReplyItem status={group.root} showThreadLine={group.replies.length > 0} />
           {group.replies.length > 0 ? (
-            <div className="space-y-4 border-l border-border/50 pl-6">
+            <div className="space-y-4 pl-6">
               {group.replies.map((reply) => (
                 <ReplyItem key={reply.id} status={reply} />
               ))}

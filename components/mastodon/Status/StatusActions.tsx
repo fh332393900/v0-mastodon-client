@@ -43,7 +43,7 @@ export function StatusActions({
   return (
     <>
       <LoginModal open={isLoginOpen} onOpenChange={setIsLoginOpen} />
-      <div className="flex w-full items-center justify-between border-t border-border pt-3 mt-2 gap-4 text-sm text-muted-foreground">
+      <div className="flex w-full items-center justify-between pt-3 mt-2 gap-4 text-sm text-muted-foreground">
         <div className="flex w-full justify-between gap-4">
           <button
             type="button"

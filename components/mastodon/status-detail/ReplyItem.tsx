@@ -42,7 +42,7 @@ export function ReplyItem({
   const detailHref = server ? `/${server}/@${author.username}/${renderedStatus.id}` : undefined
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 px-4">
       <div className="flex gap-4">
         <div className="flex flex-col items-center">
           {profileHref ? (
@@ -61,7 +61,7 @@ export function ReplyItem({
             </Avatar>
           )}
           {showThreadLine ? (
-            <div className="mt-2 w-0.5 flex-1 min-h-4 bg-border/60 rounded-full" />
+            <div className="mt-2 w-0.5 flex-1 min-h-4 bg-border/60 dark:bg-border rounded-full" />
           ) : null}
         </div>
 
