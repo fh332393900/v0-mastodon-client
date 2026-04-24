@@ -130,10 +130,10 @@ function NormalCard({ card }: StatusPreviewCardProps) {
         href={card.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex overflow-hidden rounded-2xl border border-border/60 bg-card hover:border-border transition-colors no-underline group"
+        className="flex min-h-40 overflow-hidden rounded-2xl border border-border/60 bg-card hover:border-border transition-colors no-underline group"
       >
         {/* Thumbnail */}
-        <div className="relative shrink-0 w-28 sm:w-36 bg-muted overflow-hidden">
+        <div className="relative shrink-0 w-32 sm:w-40 bg-muted overflow-hidden">
           <img
             src={card.image ?? undefined}
             alt={card.title ?? ""}
@@ -142,15 +142,15 @@ function NormalCard({ card }: StatusPreviewCardProps) {
         </div>
 
         {/* Content */}
-        <div className="flex flex-col justify-between min-w-0 flex-1 p-3">
+        <div className="flex flex-col justify-center min-w-0 flex-1 p-3">
           <div className="space-y-1 min-w-0">
             {card.title && (
-              <div className="text-sm font-semibold text-foreground line-clamp-2 leading-snug">
+              <div className="text-base font-semibold text-foreground line-clamp-3 leading-snug">
                 {card.title}
               </div>
             )}
             {card.description && (
-              <div className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+              <div className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
                 {card.description}
               </div>
             )}
@@ -170,7 +170,7 @@ function NormalCard({ card }: StatusPreviewCardProps) {
       href={card.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-3 overflow-hidden rounded-2xl border border-border/60 bg-card hover:border-border transition-colors no-underline px-4 py-3"
+      className="flex min-h-20 items-center gap-3 overflow-hidden rounded-2xl border border-border/60 bg-card hover:border-border transition-colors no-underline px-4 py-3.5"
     >
       <div className="min-w-0 flex-1 space-y-0.5">
         {card.title && (
