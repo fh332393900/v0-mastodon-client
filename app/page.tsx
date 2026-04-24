@@ -48,10 +48,12 @@ export default function HomePage() {
       {/* ── Header ── */}
       <header className="sticky top-0 z-20 flex items-center justify-between px-8 py-4 bg-[#f5f5f7]/80 dark:bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-black/5 dark:border-white/5">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-            <MessageCircle className="w-4.5 h-4.5 text-white" />
-          </div>
-          <span className="text-base font-semibold tracking-tight text-foreground">MastoClient</span>
+          <img
+            src="/icon.svg"
+            alt="MastoClient"
+            className="h-9 w-9 rounded-lg"
+          />
+          <span className="text-2xl font-bold text-foreground font-['Quicksand']">MastoClient</span>
         </div>
         <div className="flex items-center gap-3">
           <ThemeToggle />
@@ -74,14 +76,14 @@ export default function HomePage() {
                 Decentralized Social Media
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground">
+              <h1 className="text-4xl font-['Quicksand'] md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground">
                 <span>A Better Way to<br />Experience</span>
                 <span className="bg-gradient-to-r ml-2 from-violet-600 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
                   Mastodon
                 </span>
               </h1>
 
-              <p className="text-[16px] text-muted-foreground leading-relaxed max-w-sm">
+              <p className="text-base text-muted-foreground leading-relaxed max-w-sm">
                 A modern, fast, and beautiful Mastodon client. Connect to the decentralized social network and take control of your digital life.
               </p>
 
@@ -307,7 +309,7 @@ export default function HomePage() {
 
         {/* ── Bento feature grid ── */}
         <section className="mx-auto max-w-5xl px-6 pt-18 pb-8">
-          <div className="text-center space-y-3 mb-14">
+          <div className="text-center space-y-3 mb-14 font-['Quicksand']">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Everything You Need,<span className="text-muted-foreground font-normal"> All in One Place</span></h2>
             <p className="text-muted-foreground text-[15px]">Every detail crafted for a better social experience.</p>
           </div>
@@ -318,7 +320,7 @@ export default function HomePage() {
               <div className="absolute right-0 top-0 w-48 h-48 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="absolute right-12 bottom-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/3" />
               <p className="text-xs font-semibold uppercase tracking-widest text-violet-200 mb-3">CONNECT ACROSS SERVERS</p>
-              <h3 className="text-2xl md:text-3xl font-bold leading-snug mb-3">
+              <h3 className="text-2xl md:text-3xl font-bold leading-snug mb-3 font-['Quicksand']">
                 One Account,<br />Infinite Connections
               </h3>
               <p className="text-sm text-violet-100/80 max-w-xs leading-relaxed">
@@ -394,7 +396,7 @@ export default function HomePage() {
                   <item.icon className="w-4.5 h-4.5 text-foreground/70" />
                 </div>
                 <div>
-                  <div className="font-semibold text-[15px] mb-1">{item.title}</div>
+                  <div className="font-semibold text-[15px] mb-1 font-['Quicksand']">{item.title}</div>
                   <div className="text-sm text-muted-foreground leading-relaxed">{item.desc}</div>
                 </div>
               </div>
@@ -407,7 +409,7 @@ export default function HomePage() {
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-violet-600 via-indigo-600 to-blue-600 p-12 text-center text-white shadow-2xl shadow-violet-500/25">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.15),transparent_60%)]" />
             <div className="relative space-y-5">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ready to Join the Fediverse?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight font-['Quicksand']">Ready to Join the Fediverse?</h2>
               <p className="text-violet-100/80 max-w-md mx-auto text-[15px] leading-relaxed">
                 Sign up for any Mastodon instance to connect to the entire decentralized social network.
               </p>
@@ -448,11 +450,13 @@ export default function HomePage() {
       {/* ── Footer ── */}
       <footer className="border-t border-black/5 dark:border-white/5 bg-[#f0f0f5]/60 dark:bg-[#060608]/60">
         <div className="mx-auto max-w-5xl px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
-              <MessageCircle className="w-3.5 h-3.5 text-white" />
-            </div>
-            <span className="text-sm font-medium">MastoClient</span>
+          <div className="flex items-center gap-2.5">
+            <img
+              src="/icon.svg"
+              alt="MastoClient"
+              className="h-7 w-7 rounded-lg"
+            />
+            <span className="text-xl font-bold text-foreground font-['Quicksand']">MastoClient</span>
           </div>
           <p className="text-xs text-muted-foreground">
             A better internet is possible.{" "}

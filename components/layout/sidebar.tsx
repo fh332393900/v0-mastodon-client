@@ -71,17 +71,21 @@ export function Sidebar() {
           <div className="flex items-center justify-between p-4 border-b border-border/40">
             {!isCollapsed ? (
               <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-indigo-600  rounded-lg flex items-center justify-center">
-                  <MessageCircle className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <span className="text-lg font-bold">MastoClient</span>
+                <img
+                  src="/icon.svg"
+                  alt="MastoClient"
+                  className="h-9 w-9 rounded-lg"
+                />
+                <span className="text-2xl font-bold text-foreground font-['Quicksand']">MastoClient</span>
               </Link>
             ) : (
               <div className="flex items-center justify-center w-full">
                 <Link href="/">
-                  <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/60 rounded-lg flex items-center justify-center">
-                    <MessageCircle className="w-5 h-5 text-primary-foreground" />
-                  </div>
+                  <img
+                    src="/icon.svg"
+                    alt="MastoClient"
+                    className="h-8 w-8 rounded-lg"
+                  />
                 </Link>
               </div>
             )}

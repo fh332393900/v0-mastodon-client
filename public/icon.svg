@@ -1,0 +1,30 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGradient" x1="16" y1="8" x2="112" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6" />
+      <stop offset="1" stop-color="#4F46E5" />
+    </linearGradient>
+    <linearGradient id="bubbleGradient" x1="44" y1="38" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="1" stop-color="#EDE9FE" />
+    </linearGradient>
+    <filter id="softShadow" x="0" y="0" width="128" height="128" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4" />
+      <feOffset dy="6" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.22" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <rect x="12" y="12" width="104" height="104" rx="24" fill="url(#iconGradient)" filter="url(#softShadow)" />
+  <path
+    d="M44 46C44 41.5817 47.5817 38 52 38H76C82.6274 38 88 43.3726 88 50V69C88 75.6274 82.6274 81 76 81H60.5L52 90V81H52C47.5817 81 44 77.4183 44 73V46Z"
+    fill="url(#bubbleGradient)"
+  />
+  <circle cx="58" cy="60" r="4" fill="#6D28D9" />
+  <circle cx="70" cy="60" r="4" fill="#6D28D9" />
+</svg>
