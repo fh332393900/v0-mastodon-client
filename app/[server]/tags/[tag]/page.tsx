@@ -74,20 +74,22 @@ export default function TagPage() {
   if (!isReady || isLoading) {
     return (
       <div className="space-y-6">
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/60 bg-background/80 px-1 py-3 backdrop-blur">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/60 bg-background/80 px-4 py-3 backdrop-blur">
           <h1 className="text-2xl font-bold text-primary">{headerTitle}</h1>
           <Button variant="ghost" size="sm" className="text-muted-foreground">
             <Star className="h-4 w-4" />
           </Button>
         </div>
-        <LoadingSkeleton />
+        <div className="px-4">
+          <LoadingSkeleton />
+        </div>
       </div>
     )
   }
 
   return (
     <div className="space-y-6">
-      <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/60 bg-background/80 px-1 py-3 backdrop-blur">
+      <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/60 bg-background/80 px-4 py-3 backdrop-blur">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold text-primary">{headerTitle}</h1>
           <Badge variant="outline" className="text-accent border-accent/50">

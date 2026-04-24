@@ -33,6 +33,7 @@ const VOID_ELEMENTS = new Set([
 export function contentToReactNode(
   content: string,
   emojis: mastodon.v1.CustomEmoji[] = [],
+  currentServer?: string,
 ): React.ReactNode {
   const tree = parse(content)
   const emojiMap = buildEmojiMap(emojis)
@@ -67,7 +68,7 @@ export function contentToReactNode(
       }
     }
 
-    nodes.push(<Fragment key={i}>{treeToReactNode(node, emojiMap)}</Fragment>)
+    nodes.push(<Fragment key={i}>{treeToReactNode(node, emojiMap, currentServer)}</Fragment>)
   }
 
   return <>{nodes}</>
@@ -91,15 +92,19 @@ export function renderDisplayName(input: DisplayNameLike): React.ReactNode {
   return renderTextWithEmojis(text, buildEmojiMap(emojis))
 }
 
-function renderChildrenWithKeys(children: any[] = [], emojiMap: EmojiMap = {}): React.ReactNode[] {
+function renderChildrenWithKeys(
+  children: any[] = [],
+  emojiMap: EmojiMap = {},
+  currentServer?: string,
+): React.ReactNode[] {
   return children.map((child: any, i: number) => (
-    <Fragment key={i}>{treeToReactNode(child, emojiMap)}</Fragment>
+    <Fragment key={i}>{treeToReactNode(child, emojiMap, currentServer)}</Fragment>
   ))
 }
 
 type EmojiMap = Record<string, { shortcode: string; url?: string | null }>
 
-function treeToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
+function treeToReactNode(node: any, emojiMap: EmojiMap, currentServer?: string): React.ReactNode {
   if (!node) return null
 
   if (node.type === TEXT_NODE) {
@@ -107,13 +112,17 @@ function treeToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
   }
 
   if (node.type === ELEMENT_NODE) {
-    return elementToReactNode(node, emojiMap)
+    return elementToReactNode(node, emojiMap, currentServer)
   }
 
   return null
 }
 
-function elementToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
+function elementToReactNode(
+  node: any,
+  emojiMap: EmojiMap,
+  currentServer?: string,
+): React.ReactNode {
   const { name, attributes = {}, children = [] } = node
 
   if (name === 'p') {
@@ -123,7 +132,7 @@ function elementToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
 
   // mention / hashtag
   if (name === 'a' && attributes.class?.includes('mention')) {
-    const handled = handleMention(node)
+    const handled = handleMention(node, currentServer)
     if (handled) return handled
   }
 
@@ -135,7 +144,7 @@ function elementToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
 
   // link
   if (name === 'a') {
-    return renderLink(node, emojiMap)
+    return renderLink(node, emojiMap, currentServer)
   }
 
   if (VOID_ELEMENTS.has(name)) {
@@ -145,11 +154,11 @@ function elementToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
   return React.createElement(
     name,
     normalizeProps(attributes),
-    renderChildrenWithKeys(children, emojiMap),
+    renderChildrenWithKeys(children, emojiMap, currentServer),
   )
 }
 
-function handleMention(node: any): React.ReactNode | null {
+function handleMention(node: any, currentServer?: string): React.ReactNode | null {
   const href = node.attributes?.href
   if (!href) return null
 
@@ -157,12 +166,18 @@ function handleMention(node: any): React.ReactNode | null {
   const userMatch = href.match(/https?:\/\/([^/]+)\/@([^/]+)/)
   if (userMatch) {
     const [, server, username] = userMatch
+    const normalizedCurrent = currentServer?.toLowerCase()
+    const normalizedMention = server.toLowerCase()
+    const isSameServer = normalizedCurrent && normalizedCurrent === normalizedMention
     const handle = `${username}@${server}`
+    const routeAccount = isSameServer ? username : handle
+    const routeServer = currentServer || server
+    const displayHandle = isSameServer ? `@${username}` : `@${handle}`
 
     return (
       <AccountHoverWrapper handle={handle}>
-        <Link href={`/${server}/@${username}`} className="text-primary">
-          {renderChildrenWithKeys(node.children)}
+        <Link href={`/${routeServer}/@${routeAccount}`} className="text-primary hover:underline cursor-pointer">
+          {displayHandle}
         </Link>
       </AccountHoverWrapper>
     )
@@ -175,8 +190,8 @@ function handleMention(node: any): React.ReactNode | null {
 
     return (
       <TagHoverWrapper tagName={tag}>
-        <Link href={`/mastodon.social/tags/${tag}`} className="text-primary">
-          {renderChildrenWithKeys(node.children)}
+        <Link href={`${currentServer}/tags/${tag}`} className="text-primary">
+          {renderChildrenWithKeys(node.children, undefined, currentServer)}
         </Link>
       </TagHoverWrapper>
     )
@@ -185,7 +200,11 @@ function handleMention(node: any): React.ReactNode | null {
   return null
 }
 
-function renderLink(node: any, emojiMap: EmojiMap): React.ReactNode {
+function renderLink(
+  node: any,
+  emojiMap: EmojiMap,
+  currentServer?: string,
+): React.ReactNode {
   const { attributes = {}, children = [] } = node
 
   return (
@@ -196,10 +215,14 @@ function renderLink(node: any, emojiMap: EmojiMap): React.ReactNode {
           child.name !== 'bdi' &&
           child.attributes?.class?.includes('ellipsis')
         ) {
-          return <bdi key={i}>{renderChildrenWithKeys(child.children, emojiMap)}</bdi>
+          return (
+            <bdi key={i}>
+              {renderChildrenWithKeys(child.children, emojiMap, currentServer)}
+            </bdi>
+          )
         }
 
-        return <Fragment key={i}>{treeToReactNode(child, emojiMap)}</Fragment>
+        return <Fragment key={i}>{treeToReactNode(child, emojiMap, currentServer)}</Fragment>
       })}
     </a>
   )

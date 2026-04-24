@@ -49,7 +49,7 @@ export function TrendingTagsPanel() {
                       #{tag.name}
                     </div>
                     <div className="text-xs text-muted-foreground mt-0.5">
-                      {accounts} 人 · {todayUses} 嘟文
+                      最近 {accounts} 人 · {todayUses} 次使用
                     </div>
                   </div>
                   <TagTrend tag={tag} />

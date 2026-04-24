@@ -87,7 +87,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
               <X className="h-3 w-3" />
             </button>
             <div className="pr-6">
-              <div className="text-[11px] font-semibold text-slate-500">描述</div>
+              <div className="text-[11px] font-semibold text-primary/70">描述</div>
               <div className="mt-1 leading-relaxed">{altText}</div>
             </div>
           </PopoverContent>
