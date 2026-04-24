@@ -1,11 +1,18 @@
 import { NextResponse } from "next/server"
 import { getMastodonAuth } from "@/app/api/_lib/mastodon"
 
+const RESPONSE_HEADERS = {
+  "Cache-Control": "private, no-cache, max-age=0, must-revalidate",
+}
+
 export async function GET(request: Request) {
   try {
     const auth = await getMastodonAuth()
     if (!auth) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+      return NextResponse.json(
+        { error: "Not authenticated" },
+        { status: 401, headers: RESPONSE_HEADERS },
+      )
     }
 
     const { searchParams } = new URL(request.url)
@@ -14,7 +21,10 @@ export async function GET(request: Request) {
     const resolve = searchParams.get("resolve") ?? "true"
 
     if (!q.trim()) {
-      return NextResponse.json({ error: "Invalid search params" }, { status: 400 })
+      return NextResponse.json(
+        { error: "Invalid search params" },
+        { status: 400, headers: RESPONSE_HEADERS },
+      )
     }
 
     // Mastodon v2 search supports searching statuses via type=statuses
@@ -29,21 +39,26 @@ export async function GET(request: Request) {
         Authorization: `Bearer ${auth.token}`,
         accept: "application/json",
       },
-      cache: "no-store",
     })
 
     if (!response.ok) {
       const text = await response.text()
       return NextResponse.json(
         { error: text || "Search failed" },
-        { status: response.status },
+        { status: response.status, headers: RESPONSE_HEADERS },
       )
     }
 
     const data = await response.json()
-    return NextResponse.json({ statuses: data.statuses ?? [] })
+    return NextResponse.json(
+      { statuses: data.statuses ?? [] },
+      { headers: RESPONSE_HEADERS },
+    )
   } catch (error) {
     console.error("Statuses search error:", error)
-    return NextResponse.json({ error: "Search failed" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Search failed" },
+      { status: 500, headers: RESPONSE_HEADERS },
+    )
   }
 }

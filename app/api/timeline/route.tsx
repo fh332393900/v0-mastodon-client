@@ -2,6 +2,10 @@ import { type NextRequest, NextResponse } from "next/server"
 import { createRestAPIClient } from "masto"
 import { cookies } from "next/headers"
 
+const RESPONSE_HEADERS = {
+  "Cache-Control": "private, no-cache, max-age=0, must-revalidate",
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -13,7 +17,7 @@ export async function GET(request: NextRequest) {
     const serverUrl = (await cookieStore).get("mastodon_server")?.value
 
     if (!token || !serverUrl) {
-      return NextResponse.json(getMockTimeline())
+      return NextResponse.json(getMockTimeline(), { headers: RESPONSE_HEADERS })
     }
 
     const client = createRestAPIClient({
@@ -33,10 +37,10 @@ export async function GET(request: NextRequest) {
         timeline = await client.v1.timelines.public.list({ limit })
     }
 
-    return NextResponse.json(timeline)
+    return NextResponse.json(timeline, { headers: RESPONSE_HEADERS })
   } catch (error) {
     console.error("Timeline fetch error:", error)
-    return NextResponse.json(getMockTimeline())
+    return NextResponse.json(getMockTimeline(), { headers: RESPONSE_HEADERS })
   }
 }
 
