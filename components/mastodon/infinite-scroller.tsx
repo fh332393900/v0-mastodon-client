@@ -20,20 +20,20 @@ export function LoadingSkeleton() {
   return (
     <div className="space-y-6 mt-6">
       {[...Array(5)].map((_, i) => (
-        <Card key={`skeleton-${i}`} className="animate-pulse">
+        <Card key={`skeleton-${i}`} className="animate-pulse border-border/60">
           <CardHeader>
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-muted/60 dark:bg-muted-foreground/40 rounded-full" />
+              <div className="w-10 h-10 bg-border/60 dark:bg-muted-foreground/40 rounded-full" />
               <div className="space-y-2">
-                <div className="w-32 h-4 bg-muted/60 dark:bg-muted-foreground/40 rounded" />
-                <div className="w-24 h-3 bg-muted/60 dark:bg-muted-foreground/40 rounded" />
+                <div className="w-32 h-4 bg-border/60 dark:bg-muted-foreground/40 rounded" />
+                <div className="w-24 h-3 bg-border/60 dark:bg-muted-foreground/40 rounded" />
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <div className="w-full h-4 bg-muted/60 dark:bg-muted-foreground/40 rounded" />
-              <div className="w-3/4 h-4 bg-muted/60 dark:bg-muted-foreground/40 rounded" />
+              <div className="w-full h-4 bg-border/60 dark:bg-muted-foreground/40 rounded" />
+              <div className="w-3/4 h-4 bg-border/60 dark:bg-muted-foreground/40 rounded" />
             </div>
           </CardContent>
         </Card>

@@ -26,8 +26,8 @@ export function TrendingTagsPanel() {
           <div className="space-y-3 px-4 pb-3">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex items-center gap-3 animate-pulse">
-                <div className="h-4 w-24 bg-muted rounded" />
-                <div className="ml-auto h-7 w-16 bg-muted rounded" />
+                <div className="h-4 w-24 bg-border/60 dark:bg-muted-foreground/40 rounded" />
+                <div className="ml-auto h-7 w-16 bg-border/60 dark:bg-muted-foreground/40 rounded" />
               </div>
             ))}
           </div>

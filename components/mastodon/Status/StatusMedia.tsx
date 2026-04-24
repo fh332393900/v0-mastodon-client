@@ -42,6 +42,12 @@ function AutoPlayVideo({ src }: { src?: string }) {
     const video = videoRef.current
     if (!video || !src) return
 
+    const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent)
+    if (isIOS) {
+      video.pause()
+      return
+    }
+
     const threshold = video.clientHeight > window.innerHeight ? 0.5 : 0.7
 
     const observer = new IntersectionObserver(
@@ -71,6 +77,9 @@ function AutoPlayVideo({ src }: { src?: string }) {
       ref={videoRef}
       src={src}
       controls
+      muted
+      playsInline
+      preload="metadata"
       className="h-auto w-full max-h-[100vh] object-cover"
     />
   )

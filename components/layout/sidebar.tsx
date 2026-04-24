@@ -136,11 +136,11 @@ export function Sidebar() {
             /* 骨架屏：等待鉴权初始化完成，避免未登录/已登录状态闪烁 */
             <div className="border-t border-border/60 py-4 mx-4">
               <div className={cn("flex items-center space-x-3 p-3 rounded-lg", isCollapsed && "justify-center")}>
-                <div className="h-12 w-12 shrink-0 rounded-full bg-muted animate-pulse" />
+                <div className="h-12 w-12 shrink-0 rounded-full bg-border/60 dark:bg-muted-foreground/40 animate-pulse" />
                 {!isCollapsed && (
                   <div className="flex-1 space-y-2 min-w-0">
-                    <div className="h-3 w-24 rounded bg-muted animate-pulse" />
-                    <div className="h-3 w-32 rounded bg-muted animate-pulse" />
+                    <div className="h-3 w-24 rounded bg-border/60 dark:bg-muted-foreground/40 animate-pulse" />
+                    <div className="h-3 w-32 rounded bg-border/60 dark:bg-muted-foreground/40 animate-pulse" />
                   </div>
                 )}
               </div>
