@@ -3,5 +3,129 @@
     "language": "Langue",
     "switchLanguage": "Changer de langue",
     "Theme": "Thème"
+  },
+  "home": {
+    "hero": {
+      "badge": "Réseau social décentralisé",
+      "title": "Une meilleure façon de {br} vivre",
+      "titleHighlight": "Mastodon",
+      "subtitle": "Un client Mastodon moderne, rapide et élégant. Connectez-vous au réseau social décentralisé et reprenez le contrôle de votre vie numérique.",
+      "cta": {
+        "timeline": "Aller au fil",
+        "getStarted": "Commencer",
+        "guest": "Explorer en invité"
+      },
+      "stats": {
+        "activeUsers": "Utilisateurs actifs",
+        "instances": "Instances",
+        "adFree": "Sans publicité"
+      }
+    },
+    "preview": {
+      "windowUrl": "mastoclient.app / @postgrowthinstitute",
+      "sidebar": {
+        "home": "Accueil",
+        "favorites": "Favoris",
+        "compose": "Composer",
+        "explore": "Explorer",
+        "settings": "Paramètres",
+        "viewing": "Données publiques · {server}",
+        "signIn": "Se connecter"
+      },
+      "profile": {
+        "name": "Post Growth Institute",
+        "handle": "@postgrowthinstitute",
+        "follow": "Suivre",
+        "bio": "Explorer un monde juste et vivable <tag>#postgrowth</tag> au-delà du capitalisme 🌍 Post Growth Fellowship, Offers and Needs Markets, Jobs Board & plus",
+        "meta": {
+          "website": "SITE WEB",
+          "bluesky": "BLUESKY",
+          "instagram": "INSTAGRAM",
+          "organization": "ORGANISATION",
+          "organizationValue": "À but non lucratif"
+        },
+        "joined": "📅 Inscrit le 17 nov. 2022",
+        "lastActive": "⚡ Dernière activité le 24 oct. 2025",
+        "stats": {
+          "posts": "Publications",
+          "following": "Abonnements",
+          "followers": "Abonnés"
+        }
+      },
+      "right": {
+        "search": "Rechercher des hashtags…",
+        "trending": "Tendance",
+        "trends": {
+          "introduction": "10 personnes · 10 posts",
+          "cats": "13 personnes · 18 posts",
+          "rustlang": "2 personnes · 2 posts"
+        },
+        "viewMore": "Voir plus de tags tendance →"
+      }
+    },
+    "bento": {
+      "title": {
+        "main": "Tout ce qu'il vous faut,",
+        "sub": "au même endroit"
+      },
+      "subtitle": "Chaque détail est pensé pour une meilleure expérience sociale.",
+      "connect": {
+        "tag": "SE CONNECTER ENTRE SERVEURS",
+        "title": "Un seul compte,{br}des connexions infinies",
+        "desc": "Suivez des utilisateurs sur n'importe quel serveur. Ensemble, nous construisons un meilleur internet."
+      },
+      "timeline": {
+        "title": "Votre fil,{br}vos règles",
+        "desc": "Pas d'algorithme, seulement la chronologie. Voyez exactement ce que vous voulez voir.",
+        "items": {
+          "home": "Accueil",
+          "favorites": "Favoris",
+          "compose": "Composer",
+          "explore": "Explorer"
+        }
+      },
+      "privacy": {
+        "title": "La confidentialité d'abord",
+        "desc": "Vos données vous appartiennent. Nous protégeons votre vie privée, sans la vendre."
+      },
+      "opensource": {
+        "title": "Open source,{br}porté par la communauté",
+        "desc": "Construit par des développeurs du monde entier. Transparent, auditable et digne de confiance."
+      },
+      "everywhere": {
+        "title": "Fonctionne partout",
+        "desc": "Utilisez-le sur le web, le bureau ou le mobile. Une expérience cohérente sur toutes les plateformes."
+      }
+    },
+    "features": {
+      "decentralized": {
+        "title": "Décentralisé",
+        "desc": "Connectez-vous entre serveurs. Vos données vous appartiennent. Personne ne contrôle tout le réseau."
+      },
+      "opensource": {
+        "title": "Open source",
+        "desc": "Code transparent, vérifié par la communauté, sans logique cachée."
+      },
+      "chronological": {
+        "title": "Fil chronologique",
+        "desc": "Du contenu réel dans l'ordre chronologique, sans algorithmes de recommandation."
+      },
+      "privacy": {
+        "title": "Protection de la vie privée",
+        "desc": "Pas de pubs, pas de tracking, pas de manipulation. C'est notre promesse."
+      }
+    },
+    "cta": {
+      "title": "Prêt à rejoindre le Fediverse ?",
+      "subtitle": "Inscrivez-vous à n'importe quelle instance Mastodon pour vous connecter à tout le réseau social décentralisé.",
+      "timeline": "Aller au fil",
+      "signIn": "Se connecter",
+      "guest": "Explorer en invité"
+    },
+    "footer": {
+      "tagline": "Un meilleur internet est possible.",
+      "taglineHighlight": "Rejoignez le fediverse dès aujourd'hui.",
+      "builtWith": "Conçu avec <heart/> pour le web ouvert"
+    }
   }
 }

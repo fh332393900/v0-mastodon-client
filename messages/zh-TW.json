@@ -3,5 +3,129 @@
     "language": "語言",
     "switchLanguage": "切換語言",
     "Theme": "主題"
+  },
+  "home": {
+    "hero": {
+      "badge": "去中心化社群媒體",
+      "title": "更好的方式{br}體驗",
+      "titleHighlight": "Mastodon",
+      "subtitle": "一款現代、快速且美觀的 Mastodon 用戶端。連結去中心化社群網路，掌控你的數位生活。",
+      "cta": {
+        "timeline": "前往時間軸",
+        "getStarted": "立即開始",
+        "guest": "訪客瀏覽"
+      },
+      "stats": {
+        "activeUsers": "活躍用戶",
+        "instances": "實例數量",
+        "adFree": "無廣告"
+      }
+    },
+    "preview": {
+      "windowUrl": "mastoclient.app / @postgrowthinstitute",
+      "sidebar": {
+        "home": "首頁",
+        "favorites": "收藏",
+        "compose": "發布",
+        "explore": "探索",
+        "settings": "設定",
+        "viewing": "正在查看 {server} 的公開資料",
+        "signIn": "登入"
+      },
+      "profile": {
+        "name": "Post Growth Institute",
+        "handle": "@postgrowthinstitute",
+        "follow": "追蹤",
+        "bio": "探索超越資本主義的公正與永續世界 <tag>#postgrowth</tag> 🌍 Post Growth Fellowship、Offers and Needs Markets、Jobs Board 等",
+        "meta": {
+          "website": "網站",
+          "bluesky": "BLUESKY",
+          "instagram": "INSTAGRAM",
+          "organization": "組織",
+          "organizationValue": "非營利"
+        },
+        "joined": "📅 於 2022 年 11 月 17 日加入",
+        "lastActive": "⚡ 最近活躍 2025 年 10 月 24 日",
+        "stats": {
+          "posts": "貼文",
+          "following": "追蹤中",
+          "followers": "追蹤者"
+        }
+      },
+      "right": {
+        "search": "搜尋話題…",
+        "trending": "趨勢",
+        "trends": {
+          "introduction": "10 人 · 10 貼",
+          "cats": "13 人 · 18 貼",
+          "rustlang": "2 人 · 2 貼"
+        },
+        "viewMore": "查看更多趨勢話題 →"
+      }
+    },
+    "bento": {
+      "title": {
+        "main": "你所需要的一切，",
+        "sub": "盡在一處"
+      },
+      "subtitle": "每個細節都為更好的社群體驗而打造。",
+      "connect": {
+        "tag": "跨伺服器連結",
+        "title": "一個帳號，{br}無限連結",
+        "desc": "在任何伺服器上追蹤用戶，一起打造更好的網路。"
+      },
+      "timeline": {
+        "title": "你的時間軸，{br}你的規則",
+        "desc": "沒有演算法，只有時間順序。只看你想看的內容。",
+        "items": {
+          "home": "首頁",
+          "favorites": "收藏",
+          "compose": "發布",
+          "explore": "探索"
+        }
+      },
+      "privacy": {
+        "title": "隱私優先",
+        "desc": "你的資料屬於你。我們守護隱私，而不是出售它。"
+      },
+      "opensource": {
+        "title": "開源，{br}社群驅動",
+        "desc": "由全球開發者共同打造。透明、可審計、值得信賴。"
+      },
+      "everywhere": {
+        "title": "隨處可用",
+        "desc": "在網頁、桌面或行動裝置上無縫使用。跨平台一致體驗。"
+      }
+    },
+    "features": {
+      "decentralized": {
+        "title": "去中心化",
+        "desc": "跨伺服器連結。資料歸你所有，沒有人掌控整個網路。"
+      },
+      "opensource": {
+        "title": "開源",
+        "desc": "程式碼完全透明，社群審計，沒有隱藏邏輯。"
+      },
+      "chronological": {
+        "title": "時間排序",
+        "desc": "真實內容依時間排序，沒有推薦演算法。"
+      },
+      "privacy": {
+        "title": "隱私保護",
+        "desc": "沒有廣告、沒有追蹤、沒有操控。這是我們的承諾。"
+      }
+    },
+    "cta": {
+      "title": "準備加入聯邦宇宙了嗎？",
+      "subtitle": "註冊任一 Mastodon 實例，即可連結整個去中心化社群網路。",
+      "timeline": "前往時間軸",
+      "signIn": "立即登入",
+      "guest": "訪客瀏覽"
+    },
+    "footer": {
+      "tagline": "更好的網路是可能的。",
+      "taglineHighlight": "今天就加入聯邦宇宙。",
+      "builtWith": "為開放網路傾注 <heart/>"
+    }
   }
 }

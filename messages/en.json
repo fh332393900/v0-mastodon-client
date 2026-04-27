@@ -3,5 +3,129 @@
     "language": "Language",
     "switchLanguage": "Switch language",
     "Theme": "Theme"
+  },
+  "home": {
+    "hero": {
+      "badge": "Decentralized Social Media",
+      "title": "A Better Way to {br} Experience",
+      "titleHighlight": "Mastodon",
+      "subtitle": "A modern, fast, and beautiful Mastodon client. Connect to the decentralized social network and take control of your digital life.",
+      "cta": {
+        "timeline": "Go to Timeline",
+        "getStarted": "Get Started",
+        "guest": "Browse as Guest"
+      },
+      "stats": {
+        "activeUsers": "Active Users",
+        "instances": "Instances",
+        "adFree": "Ad-free"
+      }
+    },
+    "preview": {
+      "windowUrl": "mastoclient.app / @postgrowthinstitute",
+      "sidebar": {
+        "home": "Home",
+        "favorites": "Favorites",
+        "compose": "Compose",
+        "explore": "Explore",
+        "settings": "Settings",
+        "viewing": "Viewing {server} public data",
+        "signIn": "Sign In"
+      },
+      "profile": {
+        "name": "Post Growth Institute",
+        "handle": "@postgrowthinstitute",
+        "follow": "Follow",
+        "bio": "Exploring a just and livable <tag>#postgrowth</tag> world beyond capitalism 🌍 Post Growth Fellowship, Offers and Needs Markets, Jobs Board & more",
+        "meta": {
+          "website": "WEBSITE",
+          "bluesky": "BLUESKY",
+          "instagram": "INSTAGRAM",
+          "organization": "ORGANIZATION",
+          "organizationValue": "Not-For-Profit"
+        },
+        "joined": "📅 Joined Nov 17, 2022",
+        "lastActive": "⚡ Last active Oct 24, 2025",
+        "stats": {
+          "posts": "Posts",
+          "following": "Following",
+          "followers": "Followers"
+        }
+      },
+      "right": {
+        "search": "Search hashtags…",
+        "trending": "Trending",
+        "trends": {
+          "introduction": "10 People · 10 Posts",
+          "cats": "13 People · 18 Posts",
+          "rustlang": "2 People · 2 Posts"
+        },
+        "viewMore": "View more trending tags →"
+      }
+    },
+    "bento": {
+      "title": {
+        "main": "Everything You Need,",
+        "sub": "All in One Place"
+      },
+      "subtitle": "Every detail crafted for a better social experience.",
+      "connect": {
+        "tag": "CONNECT ACROSS SERVERS",
+        "title": "One Account,{br}Infinite Connections",
+        "desc": "Follow users on any server. Together we build a better internet."
+      },
+      "timeline": {
+        "title": "Your Timeline,{br}Your Rules",
+        "desc": "No algorithm, pure chronology. See exactly what you want to see.",
+        "items": {
+          "home": "Home",
+          "favorites": "Favorites",
+          "compose": "Compose",
+          "explore": "Explore"
+        }
+      },
+      "privacy": {
+        "title": "Privacy First",
+        "desc": "Your data belongs to you. We protect your privacy, not sell it."
+      },
+      "opensource": {
+        "title": "Open Source,{br}Community Driven",
+        "desc": "Built by developers worldwide. Transparent, auditable, and trustworthy."
+      },
+      "everywhere": {
+        "title": "Works Everywhere",
+        "desc": "Seamlessly use it on web, desktop, or mobile. Consistent experience across all platforms."
+      }
+    },
+    "features": {
+      "decentralized": {
+        "title": "Decentralized",
+        "desc": "Connect across servers. Your data belongs to you. No one controls the whole network."
+      },
+      "opensource": {
+        "title": "Open Source",
+        "desc": "Fully transparent code, community-audited, no hidden logic."
+      },
+      "chronological": {
+        "title": "Chronological Feed",
+        "desc": "See real content in chronological order, free from recommendation algorithms."
+      },
+      "privacy": {
+        "title": "Privacy Protection",
+        "desc": "No ads, no tracking, no manipulation. That is our promise."
+      }
+    },
+    "cta": {
+      "title": "Ready to Join the Fediverse?",
+      "subtitle": "Sign up for any Mastodon instance to connect to the entire decentralized social network.",
+      "timeline": "Go to Timeline",
+      "signIn": "Sign In Now",
+      "guest": "Browse as Guest"
+    },
+    "footer": {
+      "tagline": "A better internet is possible.",
+      "taglineHighlight": "Join the fediverse today.",
+      "builtWith": "Built with <heart/> for the open web"
+    }
   }
 }

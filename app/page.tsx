@@ -20,11 +20,13 @@ import {
 import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 import { LocaleSwitcher } from "@/components/i18n/locale-switcher"
+import { useTranslations } from "next-intl"
 
 export default function HomePage() {
   const router = useRouter()
   const { server, accessToken } = useMasto()
   const { isAuthenticated } = useAuth()
+  const t = useTranslations("home")
 
   useEffect(() => {
     if (accessToken) {
@@ -75,18 +77,18 @@ export default function HomePage() {
             <div className="space-y-7">
               <div className="inline-flex items-center gap-2 rounded-full border border-violet-200 dark:border-violet-500/60 bg-violet-50 dark:bg-primary/20 px-4 py-1.5 text-xs font-medium text-primary">
                 <span className="h-1.5 w-1.5 rounded-full bg-violet-500 animate-pulse" />
-                Decentralized Social Media
+                {t("hero.badge")}
               </div>
 
               <h1 className="text-4xl font-['Quicksand'] md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground">
-                <span>A Better Way to<br />Experience</span>
+                <span>{t.rich("hero.title", { br: () => <br /> })}</span>
                 <span className="bg-gradient-to-r ml-2 from-violet-600 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
-                  Mastodon
+                  {t("hero.titleHighlight")}
                 </span>
               </h1>
 
               <p className="text-base text-muted-foreground leading-relaxed max-w-sm">
-                A modern, fast, and beautiful Mastodon client. Connect to the decentralized social network and take control of your digital life.
+                {t("hero.subtitle")}
               </p>
 
               <div className="flex flex-wrap gap-3">
@@ -96,7 +98,7 @@ export default function HomePage() {
                     onClick={handleEnter}
                     className="h-11 px-7 rounded-full font-medium bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-xl shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-300 hover:scale-[1.02]"
                   >
-                    Go to Timeline
+                    {t("hero.cta.timeline")}
                     <ArrowRight className="w-4 h-4 ml-1.5" />
                   </Button>
                 ) : (
@@ -105,7 +107,7 @@ export default function HomePage() {
                       size="lg"
                       className="h-11 px-7 rounded-full font-medium bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-xl shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-300 hover:scale-[1.02]"
                     >
-                      Get Started
+                      {t("hero.cta.getStarted")}
                       <ArrowRight className="w-4 h-4 ml-1.5" />
                     </Button>
                   </LoginModal>
@@ -118,7 +120,7 @@ export default function HomePage() {
                   className="h-11 px-7 rounded-full font-medium transition-all duration-200"
                 >
                   <Globe className="w-4 h-4 mr-1.5" />
-                  Browse as Guest
+                  {t("hero.cta.guest")}
                 </Button>
                 )}
               </div>
@@ -126,9 +128,9 @@ export default function HomePage() {
               {/* stats */}
               <div className="flex gap-8 pt-1">
                 {[
-                  { value: "10M+", label: "Active Users" },
-                  { value: "10K+", label: "Instances" },
-                  { value: "100%", label: "Ad-free" },
+                  { value: "10M+", label: t("hero.stats.activeUsers") },
+                  { value: "10K+", label: t("hero.stats.instances") },
+                  { value: "100%", label: t("hero.stats.adFree") },
                 ].map((s, i) => (
                   <div key={s.label} className={`text-left ${i > 0 ? "pl-8 border-l border-border/50" : ""}`}>
                     <div className="text-xl font-bold text-foreground">{s.value}</div>
@@ -166,7 +168,7 @@ export default function HomePage() {
                   <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
                   <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
                   <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-                  <span className="ml-3 text-[10px] text-muted-foreground/50 font-mono">mastoclient.app / @postgrowthinstitute</span>
+                  <span className="ml-3 text-[10px] text-muted-foreground/50 font-mono">{t("preview.windowUrl")}</span>
                 </div>
 
                 {/* body */}
@@ -185,11 +187,11 @@ export default function HomePage() {
                       </div>
                       <div className="space-y-0.5">
                         {[
-                          { label: "Home", icon: "🏠", active: false },
-                          { label: "Favorites", icon: "🤍", active: false },
-                          { label: "Compose", icon: "✏️", active: false },
-                          { label: "Explore", icon: "🔍", active: false },
-                          { label: "Settings", icon: "⚙️", active: false },
+                          { label: t("preview.sidebar.home"), icon: "🏠", active: false },
+                          { label: t("preview.sidebar.favorites"), icon: "🤍", active: false },
+                          { label: t("preview.sidebar.compose"), icon: "✏️", active: false },
+                          { label: t("preview.sidebar.explore"), icon: "🔍", active: false },
+                          { label: t("preview.sidebar.settings"), icon: "⚙️", active: false },
                         ].map((item, i) => (
                           <div key={item.label} className={`flex items-center gap-2 px-2 py-1.5 rounded-lg ${i === 0 ? "bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 font-medium" : "text-muted-foreground/60"}`}>
                             <span>{item.icon}</span>
@@ -200,8 +202,10 @@ export default function HomePage() {
                     </div>
                     {/* footer hint */}
                     <div className="px-1 space-y-2">
-                      <div className="text-[9px] text-muted-foreground/40 leading-relaxed">Viewing <span className="font-bold">m.webtoo.ls</span> public data</div>
-                      <div className="w-full rounded-lg bg-violet-600 text-white text-center py-1 text-[10px] font-medium cursor-pointer">Sign In</div>
+                      <div className="text-[9px] text-muted-foreground/40 leading-relaxed">
+                        {t("preview.sidebar.viewing", { server: "m.webtoo.ls" })}
+                      </div>
+                      <div className="w-full rounded-lg bg-violet-600 text-white text-center py-1 text-[10px] font-medium cursor-pointer">{t("preview.sidebar.signIn")}</div>
                     </div>
                   </div>
 
@@ -218,16 +222,18 @@ export default function HomePage() {
                       {/* name */}
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="font-bold text-[13px] text-foreground">Post Growth Institute</div>
-                          <div className="text-muted-foreground/60 text-[10px] mb-2">@postgrowthinstitute</div>
+                          <div className="font-bold text-[13px] text-foreground">{t("preview.profile.name")}</div>
+                          <div className="text-muted-foreground/60 text-[10px] mb-2">{t("preview.profile.handle")}</div>
                         </div>
-                        <div className="mb-1 px-3 py-1 rounded-full bg-violet-600 text-white text-[10px] font-medium">Follow</div>
+                        <div className="mb-1 px-3 py-1 rounded-full bg-violet-600 text-white text-[10px] font-medium">{t("preview.profile.follow")}</div>
                       </div>
                       
 
                       {/* bio */}
                       <p className="text-[10px] text-muted-foreground leading-relaxed mb-2 line-clamp-2">
-                        Exploring a just and livable <span className="text-violet-500">#postgrowth</span> world beyond capitalism 🌍 Post Growth Fellowship, Offers and Needs Markets, Jobs Board & more
+                        {t.rich("preview.profile.bio", {
+                          tag: (chunks) => <span className="text-violet-500">{chunks}</span>,
+                        })}
                       </p>
 
                       {/* tags */}
@@ -240,34 +246,34 @@ export default function HomePage() {
                       {/* meta grid */}
                       <div className="grid grid-cols-2 gap-1.5 mb-3 rounded-xl bg-muted/30 p-2.5 text-[9px]">
                         <div>
-                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">WEBSITE</div>
+                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">{t("preview.profile.meta.website")}</div>
                           <div className="text-violet-500 truncate">linktr.ee/postgrowthinstitute</div>
                         </div>
                         <div>
-                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">BLUESKY</div>
+                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">{t("preview.profile.meta.bluesky")}</div>
                           <div className="text-violet-500 truncate">bsky.app/profile/…</div>
                         </div>
                         <div>
-                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">INSTAGRAM</div>
+                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">{t("preview.profile.meta.instagram")}</div>
                           <div className="text-violet-500 truncate">instagram.com/postgrowth/</div>
                         </div>
                         <div>
-                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">ORGANIZATION</div>
-                          <div className="text-foreground/70">Not-For-Profit</div>
+                          <div className="text-muted-foreground/50 uppercase tracking-wide mb-0.5">{t("preview.profile.meta.organization")}</div>
+                          <div className="text-foreground/70">{t("preview.profile.meta.organizationValue")}</div>
                         </div>
                       </div>
 
                       {/* join date */}
                       <div className="flex items-center gap-3 text-[9px] text-muted-foreground/50 mb-3">
-                        <span>📅 Joined Nov 17, 2022</span>
-                        <span>⚡ Last active Oct 24, 2025</span>
+                        <span>{t("preview.profile.joined")}</span>
+                        <span>{t("preview.profile.lastActive")}</span>
                       </div>
 
                       {/* stats bar */}
                       <div className="flex items-center gap-1 text-[10px]">
-                        <span className="font-bold text-foreground">266</span><span className="text-muted-foreground/60 mr-2">Posts</span>
-                        <span className="font-bold text-foreground">35</span><span className="text-muted-foreground/60 mr-2">Following</span>
-                        <span className="font-bold text-foreground">1,159</span><span className="text-muted-foreground/60">Followers</span>
+                        <span className="font-bold text-foreground">266</span><span className="text-muted-foreground/60 mr-2">{t("preview.profile.stats.posts")}</span>
+                        <span className="font-bold text-foreground">35</span><span className="text-muted-foreground/60 mr-2">{t("preview.profile.stats.following")}</span>
+                        <span className="font-bold text-foreground">1,159</span><span className="text-muted-foreground/60">{t("preview.profile.stats.followers")}</span>
                       </div>
                     </div>
                   </div>
@@ -277,17 +283,17 @@ export default function HomePage() {
                     {/* search */}
                     <div className="flex items-center gap-1.5 rounded-lg bg-muted/40 px-2 py-1.5">
                       <span className="text-muted-foreground/40 text-[9px]">🔍</span>
-                      <span className="text-[9px] text-muted-foreground/40">Search hashtags…</span>
+                      <span className="text-[9px] text-muted-foreground/40">{t("preview.right.search")}</span>
                     </div>
                     {/* trending */}
                     <div>
                       <div className="flex items-center gap-1 text-[9px] font-semibold text-foreground mb-2">
-                        <span className="text-orange-400">#</span> Trending
+                        <span className="text-orange-400">#</span> {t("preview.right.trending")}
                       </div>
                       {[
-                        { tag: "#introduction", sub: "10 People · 10 Posts" },
-                        { tag: "#cats", sub: "13 People · 18 Posts" },
-                        { tag: "#rustlang", sub: "2 People · 2 Posts" },
+                        { tag: "#introduction", sub: t("preview.right.trends.introduction") },
+                        { tag: "#cats", sub: t("preview.right.trends.cats") },
+                        { tag: "#rustlang", sub: t("preview.right.trends.rustlang") },
                       ].map((t) => (
                         <div key={t.tag} className="flex items-center justify-between mb-2">
                           <div>
@@ -301,7 +307,7 @@ export default function HomePage() {
                         </div>
                       ))}
                       <div className="text-[9px] text-muted-foreground/50 flex items-center gap-0.5 cursor-pointer hover:text-primary transition-colors">
-                        View more trending tags →
+                        {t("preview.right.viewMore")}
                       </div>
                     </div>
                   </div>
@@ -314,8 +320,11 @@ export default function HomePage() {
         {/* ── Bento feature grid ── */}
         <section className="mx-auto max-w-5xl px-6 pt-18 pb-8">
           <div className="text-center space-y-3 mb-14 font-['Quicksand']">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Everything You Need,<span className="text-muted-foreground font-normal"> All in One Place</span></h2>
-            <p className="text-muted-foreground text-[15px]">Every detail crafted for a better social experience.</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+              {t("bento.title.main")}
+              <span className="text-muted-foreground font-normal"> {t("bento.title.sub")}</span>
+            </h2>
+            <p className="text-muted-foreground text-[15px]">{t("bento.subtitle")}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -323,12 +332,12 @@ export default function HomePage() {
             <div className="md:col-span-2 rounded-3xl bg-gradient-to-br from-violet-600 to-indigo-700 p-8 text-white shadow-xl shadow-violet-500/20 relative overflow-hidden">
               <div className="absolute right-0 top-0 w-48 h-48 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="absolute right-12 bottom-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/3" />
-              <p className="text-xs font-semibold uppercase tracking-widest text-violet-200 mb-3">CONNECT ACROSS SERVERS</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-violet-200 mb-3">{t("bento.connect.tag")}</p>
               <h3 className="text-2xl md:text-3xl font-bold leading-snug mb-3 font-['Quicksand']">
-                One Account,<br />Infinite Connections
+                {t.rich("bento.connect.title", { br: () => <br /> })}
               </h3>
               <p className="text-sm text-violet-100/80 max-w-xs leading-relaxed">
-                Follow users on any server. Together we build a better internet.
+                {t("bento.connect.desc")}
               </p>
             </div>
 
@@ -338,11 +347,11 @@ export default function HomePage() {
                 <Rss className="w-5 h-5 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg leading-snug mb-1.5 font-['Quicksand']">Your Timeline,<br />Your Rules</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">No algorithm, pure chronology. See exactly what you want to see.</p>
+                <h3 className="font-semibold text-lg leading-snug mb-1.5 font-['Quicksand']">{t.rich("bento.timeline.title", { br: () => <br /> })}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{t("bento.timeline.desc")}</p>
               </div>
               <div className="space-y-1.5 pt-1">
-                {["Home", "Favorites", "Compose", "Explore"].map((item) => (
+                {[t("bento.timeline.items.home"), t("bento.timeline.items.favorites"), t("bento.timeline.items.compose"), t("bento.timeline.items.explore")].map((item) => (
                   <div key={item} className="flex items-center gap-2.5 text-sm text-muted-foreground">
                     <span className="h-1 w-1 rounded-full bg-muted-foreground/40" />
                     {item}
@@ -357,8 +366,8 @@ export default function HomePage() {
                 <Lock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-1.5 font-['Quicksand']">Privacy First</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">Your data belongs to you. We protect your privacy, not sell it.</p>
+                <h3 className="font-semibold text-lg mb-1.5 font-['Quicksand']">{t("bento.privacy.title")}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{t("bento.privacy.desc")}</p>
               </div>
             </div>
 
@@ -368,8 +377,8 @@ export default function HomePage() {
                 <Github className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-1.5 text-white font-['Quicksand']">Open Source,<br />Community Driven</h3>
-                <p className="text-sm text-white/50 leading-relaxed">Built by developers worldwide. Transparent, auditable, and trustworthy.</p>
+                <h3 className="font-semibold text-lg mb-1.5 text-white font-['Quicksand']">{t.rich("bento.opensource.title", { br: () => <br /> })}</h3>
+                <p className="text-sm text-white/50 leading-relaxed">{t("bento.opensource.desc")}</p>
               </div>
             </div>
 
@@ -379,8 +388,8 @@ export default function HomePage() {
                 <Globe className="w-5 h-5 text-orange-500" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-1.5 font-['Quicksand']">Works Everywhere</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">Seamlessly use it on web, desktop, or mobile. Consistent experience across all platforms.</p>
+                <h3 className="font-semibold text-lg mb-1.5 font-['Quicksand']">{t("bento.everywhere.title")}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{t("bento.everywhere.desc")}</p>
               </div>
             </div>
           </div>
@@ -390,10 +399,10 @@ export default function HomePage() {
         <section className="mx-auto max-w-5xl px-6 pt-16 pb-8">
           <div className="grid md:grid-cols-2 gap-x-16 gap-y-8">
             {[
-              { icon: Users, title: "Decentralized", desc: "Connect across servers. Your data belongs to you. No one controls the whole network." },
-              { icon: Github, title: "Open Source", desc: "Fully transparent code, community-audited, no hidden logic." },
-              { icon: Rss, title: "Chronological Feed", desc: "See real content in chronological order, free from recommendation algorithms." },
-              { icon: Shield, title: "Privacy Protection", desc: "No ads, no tracking, no manipulation. That is our promise." },
+              { icon: Users, title: t("features.decentralized.title"), desc: t("features.decentralized.desc") },
+              { icon: Github, title: t("features.opensource.title"), desc: t("features.opensource.desc") },
+              { icon: Rss, title: t("features.chronological.title"), desc: t("features.chronological.desc") },
+              { icon: Shield, title: t("features.privacy.title"), desc: t("features.privacy.desc") },
             ].map((item) => (
               <div key={item.title} className="flex gap-4 items-start">
                 <div className="w-9 h-9 shrink-0 rounded-xl bg-foreground/5 dark:bg-foreground/8 border border-foreground/8 flex items-center justify-center">
@@ -413,9 +422,9 @@ export default function HomePage() {
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-violet-600 via-indigo-600 to-blue-600 p-12 text-center text-white shadow-2xl shadow-violet-500/25">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.15),transparent_60%)]" />
             <div className="relative space-y-5">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight font-['Quicksand']">Ready to Join the Fediverse?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight font-['Quicksand']">{t("cta.title")}</h2>
               <p className="text-violet-100/80 max-w-md mx-auto text-[15px] leading-relaxed">
-                Sign up for any Mastodon instance to connect to the entire decentralized social network.
+                {t("cta.subtitle")}
               </p>
               <div className="flex flex-wrap gap-3 justify-center pt-2">
                 {accessToken ? (
@@ -425,13 +434,13 @@ export default function HomePage() {
                     className="h-12 px-8 rounded-full font-medium bg-white text-primary hover:bg-white/90 shadow-lg transition-all duration-200 hover:scale-[1.02]"
                   >
                     <MessageCircle className="w-4 h-4 mr-2" />
-                    Go to Timeline
+                    {t("cta.timeline")}
                   </Button>
                 ) : (
                   <LoginModal>
                     <Button size="lg" className="h-12 px-8 rounded-full font-medium bg-white text-primary hover:bg-white/90 shadow-lg transition-all duration-200 hover:scale-[1.02]">
                       <MessageCircle className="w-4 h-4 mr-2" />
-                      Sign In Now
+                      {t("cta.signIn")}
                     </Button>
                   </LoginModal>
                 )}
@@ -442,7 +451,7 @@ export default function HomePage() {
                   onClick={handleGuestMode}
                   className="h-12 px-8 rounded-full font-medium border-white/30 text-white bg-transparent dark:hover:text-white"
                 >
-                  Browse as Guest
+                  {t("cta.guest")}
                 </Button>
                 )}
               </div>
@@ -463,10 +472,10 @@ export default function HomePage() {
             <span className="text-xl font-bold text-foreground font-['Quicksand']">MastoClient</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            A better internet is possible.{" "}
-            <span className="text-primary">Join the fediverse today.</span>
+            {t("footer.tagline")}{" "}
+            <span className="text-primary">{t("footer.taglineHighlight")}</span>
           </p>
-          <p className="text-xs text-muted-foreground">Built with <Heart className="inline w-3 h-3 text-red-400" /> for the open web</p>
+          <p className="text-xs text-muted-foreground">{t.rich("footer.builtWith", { heart: () => <Heart className="inline w-3 h-3 text-red-400" /> })}</p>
         </div>
       </footer>
     </div>

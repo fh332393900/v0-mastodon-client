@@ -3,5 +3,129 @@
     "language": "언어",
     "switchLanguage": "언어 전환",
     "Theme": "테마"
+  },
+  "home": {
+    "hero": {
+      "badge": "분산형 소셜 미디어",
+      "title": "더 나은 방식으로 {br} 경험하세요",
+      "titleHighlight": "Mastodon",
+      "subtitle": "모던하고 빠르며 아름다운 Mastodon 클라이언트. 분산형 소셜 네트워크에 연결해 디지털 라이프를 직접 통제하세요.",
+      "cta": {
+        "timeline": "타임라인으로",
+        "getStarted": "시작하기",
+        "guest": "게스트로 둘러보기"
+      },
+      "stats": {
+        "activeUsers": "활성 사용자",
+        "instances": "인스턴스",
+        "adFree": "광고 없음"
+      }
+    },
+    "preview": {
+      "windowUrl": "mastoclient.app / @postgrowthinstitute",
+      "sidebar": {
+        "home": "홈",
+        "favorites": "즐겨찾기",
+        "compose": "작성",
+        "explore": "탐색",
+        "settings": "설정",
+        "viewing": "{server} 공개 데이터를 보는 중",
+        "signIn": "로그인"
+      },
+      "profile": {
+        "name": "Post Growth Institute",
+        "handle": "@postgrowthinstitute",
+        "follow": "팔로우",
+        "bio": "자본주의를 넘어선 공정하고 지속 가능한 세계를 <tag>#postgrowth</tag>로 탐구 🌍 Post Growth Fellowship, Offers and Needs Markets, Jobs Board 등",
+        "meta": {
+          "website": "웹사이트",
+          "bluesky": "BLUESKY",
+          "instagram": "INSTAGRAM",
+          "organization": "조직",
+          "organizationValue": "비영리"
+        },
+        "joined": "📅 2022년 11월 17일 가입",
+        "lastActive": "⚡ 마지막 활동 2025년 10월 24일",
+        "stats": {
+          "posts": "게시물",
+          "following": "팔로잉",
+          "followers": "팔로워"
+        }
+      },
+      "right": {
+        "search": "해시태그 검색…",
+        "trending": "트렌딩",
+        "trends": {
+          "introduction": "10명 · 10개 게시물",
+          "cats": "13명 · 18개 게시물",
+          "rustlang": "2명 · 2개 게시물"
+        },
+        "viewMore": "더 많은 트렌딩 태그 보기 →"
+      }
+    },
+    "bento": {
+      "title": {
+        "main": "필요한 모든 것,",
+        "sub": "한 곳에"
+      },
+      "subtitle": "더 나은 소셜 경험을 위해 모든 디테일을 설계했습니다.",
+      "connect": {
+        "tag": "서버 간 연결",
+        "title": "하나의 계정으로{br}무한한 연결",
+        "desc": "어떤 서버의 사용자든 팔로우하세요. 함께 더 나은 인터넷을 만듭니다."
+      },
+      "timeline": {
+        "title": "당신의 타임라인,{br}당신의 규칙",
+        "desc": "알고리즘 없이 순수한 최신순. 보고 싶은 것만 보세요.",
+        "items": {
+          "home": "홈",
+          "favorites": "즐겨찾기",
+          "compose": "작성",
+          "explore": "탐색"
+        }
+      },
+      "privacy": {
+        "title": "프라이버시 우선",
+        "desc": "데이터는 당신의 것입니다. 우리는 보호하고, 팔지 않습니다."
+      },
+      "opensource": {
+        "title": "오픈 소스,{br}커뮤니티 중심",
+        "desc": "전 세계 개발자가 함께 만듭니다. 투명하고 검증 가능하며 신뢰할 수 있습니다."
+      },
+      "everywhere": {
+        "title": "어디서나 사용",
+        "desc": "웹, 데스크톱, 모바일에서 매끄럽게. 모든 플랫폼에서 일관된 경험."
+      }
+    },
+    "features": {
+      "decentralized": {
+        "title": "분산형",
+        "desc": "서버를 넘어 연결하세요. 데이터는 당신의 것. 누구도 전체를 통제하지 않습니다."
+      },
+      "opensource": {
+        "title": "오픈 소스",
+        "desc": "완전히 투명한 코드, 커뮤니티 검증, 숨겨진 로직 없음."
+      },
+      "chronological": {
+        "title": "시간순 피드",
+        "desc": "추천 알고리즘 없이 실제 콘텐츠를 시간순으로 제공합니다."
+      },
+      "privacy": {
+        "title": "프라이버시 보호",
+        "desc": "광고도 추적도 조작도 없습니다. 우리의 약속입니다."
+      }
+    },
+    "cta": {
+      "title": "페디버스에 참여할 준비가 되셨나요?",
+      "subtitle": "어떤 Mastodon 인스턴스에 가입해도 분산형 소셜 네트워크 전체와 연결됩니다.",
+      "timeline": "타임라인으로",
+      "signIn": "지금 로그인",
+      "guest": "게스트로 둘러보기"
+    },
+    "footer": {
+      "tagline": "더 나은 인터넷은 가능합니다.",
+      "taglineHighlight": "오늘 바로 페디버스에 참여하세요.",
+      "builtWith": "오픈 웹을 위해 <heart/> 를 담아 만들었습니다"
+    }
   }
 }

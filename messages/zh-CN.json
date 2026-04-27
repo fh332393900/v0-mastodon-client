@@ -3,5 +3,129 @@
     "language": "语言",
     "switchLanguage": "切换语言",
     "Theme": "主题"
+  },
+  "home": {
+    "hero": {
+      "badge": "去中心化社交媒体",
+      "title": "更好的方式{br}体验",
+      "titleHighlight": "Mastodon",
+      "subtitle": "一款现代、快速且美观的 Mastodon 客户端。连接去中心化社交网络，掌控你的数字生活。",
+      "cta": {
+        "timeline": "进入时间线",
+        "getStarted": "立即开始",
+        "guest": "游客浏览"
+      },
+      "stats": {
+        "activeUsers": "活跃用户",
+        "instances": "实例数量",
+        "adFree": "无广告"
+      }
+    },
+    "preview": {
+      "windowUrl": "mastoclient.app / @postgrowthinstitute",
+      "sidebar": {
+        "home": "首页",
+        "favorites": "收藏",
+        "compose": "发布",
+        "explore": "探索",
+        "settings": "设置",
+        "viewing": "正在查看 {server} 的公共数据",
+        "signIn": "登录"
+      },
+      "profile": {
+        "name": "Post Growth Institute",
+        "handle": "@postgrowthinstitute",
+        "follow": "关注",
+        "bio": "探索超越资本主义的公正与可持续世界 <tag>#postgrowth</tag> 🌍 Post Growth Fellowship、Offers and Needs Markets、Jobs Board 等",
+        "meta": {
+          "website": "网站",
+          "bluesky": "BLUESKY",
+          "instagram": "INSTAGRAM",
+          "organization": "组织",
+          "organizationValue": "非营利"
+        },
+        "joined": "📅 加入于 2022 年 11 月 17 日",
+        "lastActive": "⚡ 最近活跃 2025 年 10 月 24 日",
+        "stats": {
+          "posts": "帖子",
+          "following": "关注",
+          "followers": "粉丝"
+        }
+      },
+      "right": {
+        "search": "搜索话题…",
+        "trending": "趋势",
+        "trends": {
+          "introduction": "10 人 · 10 帖",
+          "cats": "13 人 · 18 帖",
+          "rustlang": "2 人 · 2 帖"
+        },
+        "viewMore": "查看更多趋势话题 →"
+      }
+    },
+    "bento": {
+      "title": {
+        "main": "你所需要的一切，",
+        "sub": "尽在一处"
+      },
+      "subtitle": "每个细节都为更好的社交体验而打造。",
+      "connect": {
+        "tag": "跨服务器连接",
+        "title": "一个账号，{br}无限连接",
+        "desc": "在任何服务器上关注用户。一起构建更好的互联网。"
+      },
+      "timeline": {
+        "title": "你的时间线，{br}你的规则",
+        "desc": "没有算法，只有时间顺序。只看你想看的内容。",
+        "items": {
+          "home": "首页",
+          "favorites": "收藏",
+          "compose": "发布",
+          "explore": "探索"
+        }
+      },
+      "privacy": {
+        "title": "隐私优先",
+        "desc": "你的数据属于你。我们保护隐私，而不是出售它。"
+      },
+      "opensource": {
+        "title": "开源，{br}社区驱动",
+        "desc": "由全球开发者共同打造。透明、可审计、值得信赖。"
+      },
+      "everywhere": {
+        "title": "随处可用",
+        "desc": "在网页、桌面或移动端无缝使用。跨平台一致体验。"
+      }
+    },
+    "features": {
+      "decentralized": {
+        "title": "去中心化",
+        "desc": "跨服务器连接。数据归你所有，没有人掌控整个网络。"
+      },
+      "opensource": {
+        "title": "开源",
+        "desc": "代码完全透明，社区审计，没有隐藏逻辑。"
+      },
+      "chronological": {
+        "title": "时间顺序",
+        "desc": "真实内容按时间排列，没有推荐算法。"
+      },
+      "privacy": {
+        "title": "隐私保护",
+        "desc": "没有广告、没有跟踪、没有操控。这是我们的承诺。"
+      }
+    },
+    "cta": {
+      "title": "准备加入联邦宇宙了吗？",
+      "subtitle": "注册任意 Mastodon 实例，即可连接整个去中心化社交网络。",
+      "timeline": "进入时间线",
+      "signIn": "立即登录",
+      "guest": "游客浏览"
+    },
+    "footer": {
+      "tagline": "更好的互联网是可能的。",
+      "taglineHighlight": "今天就加入联邦宇宙。",
+      "builtWith": "为开放网络倾注 <heart/>"
+    }
   }
 }

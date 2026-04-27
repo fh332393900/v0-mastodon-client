@@ -3,5 +3,129 @@
     "language": "言語",
     "switchLanguage": "言語を切り替え",
     "Theme": "テーマ"
+  },
+  "home": {
+    "hero": {
+      "badge": "分散型ソーシャルメディア",
+      "title": "より良い方法で {br} 体験する",
+      "titleHighlight": "Mastodon",
+      "subtitle": "モダンで高速、そして美しいMastodonクライアント。分散型SNSに接続し、デジタルライフを自分でコントロール。",
+      "cta": {
+        "timeline": "タイムラインへ",
+        "getStarted": "始める",
+        "guest": "ゲストとして閲覧"
+      },
+      "stats": {
+        "activeUsers": "アクティブユーザー",
+        "instances": "インスタンス",
+        "adFree": "広告なし"
+      }
+    },
+    "preview": {
+      "windowUrl": "mastoclient.app / @postgrowthinstitute",
+      "sidebar": {
+        "home": "ホーム",
+        "favorites": "お気に入り",
+        "compose": "投稿",
+        "explore": "探索",
+        "settings": "設定",
+        "viewing": "{server} の公開データを表示中",
+        "signIn": "サインイン"
+      },
+      "profile": {
+        "name": "Post Growth Institute",
+        "handle": "@postgrowthinstitute",
+        "follow": "フォロー",
+        "bio": "資本主義の先にある公正で持続可能な世界を <tag>#postgrowth</tag> で探求 🌍 Post Growth Fellowship、Offers and Needs Markets、Jobs Board など",
+        "meta": {
+          "website": "ウェブサイト",
+          "bluesky": "BLUESKY",
+          "instagram": "INSTAGRAM",
+          "organization": "組織",
+          "organizationValue": "非営利"
+        },
+        "joined": "📅 2022年11月17日参加",
+        "lastActive": "⚡ 最終アクティブ 2025年10月24日",
+        "stats": {
+          "posts": "投稿",
+          "following": "フォロー中",
+          "followers": "フォロワー"
+        }
+      },
+      "right": {
+        "search": "ハッシュタグを検索…",
+        "trending": "トレンド",
+        "trends": {
+          "introduction": "10人・10投稿",
+          "cats": "13人・18投稿",
+          "rustlang": "2人・2投稿"
+        },
+        "viewMore": "さらにトレンドタグを見る →"
+      }
+    },
+    "bento": {
+      "title": {
+        "main": "必要なものをすべて、",
+        "sub": "ひとつの場所に"
+      },
+      "subtitle": "より良いソーシャル体験のために細部まで設計。",
+      "connect": {
+        "tag": "サーバー間でつながる",
+        "title": "1つのアカウントで{br}無限のつながり",
+        "desc": "どのサーバーのユーザーでもフォローできます。一緒により良いインターネットを作りましょう。"
+      },
+      "timeline": {
+        "title": "あなたのタイムライン,{br}あなたのルール",
+        "desc": "アルゴリズムなし、純粋な時系列。見たいものだけを表示。",
+        "items": {
+          "home": "ホーム",
+          "favorites": "お気に入り",
+          "compose": "投稿",
+          "explore": "探索"
+        }
+      },
+      "privacy": {
+        "title": "プライバシー第一",
+        "desc": "あなたのデータはあなたのもの。私たちは守り、売りません。"
+      },
+      "opensource": {
+        "title": "オープンソース,{br}コミュニティ主導",
+        "desc": "世界中の開発者が構築。透明で監査可能、信頼できる。"
+      },
+      "everywhere": {
+        "title": "どこでも使える",
+        "desc": "Web、デスクトップ、モバイルでシームレスに利用。あらゆるプラットフォームで一貫した体験。"
+      }
+    },
+    "features": {
+      "decentralized": {
+        "title": "分散型",
+        "desc": "サーバーを越えてつながる。データはあなたのもの。誰も全体を支配しません。"
+      },
+      "opensource": {
+        "title": "オープンソース",
+        "desc": "完全に透明なコード。コミュニティ監査済みで隠れたロジックなし。"
+      },
+      "chronological": {
+        "title": "時系列フィード",
+        "desc": "おすすめアルゴリズムなし。実際のコンテンツを時系列で。"
+      },
+      "privacy": {
+        "title": "プライバシー保護",
+        "desc": "広告も追跡も操作もなし。これが私たちの約束。"
+      }
+    },
+    "cta": {
+      "title": "Fediverse に参加する準備はできましたか？",
+      "subtitle": "どの Mastodon インスタンスでも登録して、分散型SNS全体とつながれます。",
+      "timeline": "タイムラインへ",
+      "signIn": "今すぐサインイン",
+      "guest": "ゲストとして閲覧"
+    },
+    "footer": {
+      "tagline": "より良いインターネットは実現できます。",
+      "taglineHighlight": "今日から fediverse に参加しよう。",
+      "builtWith": "オープンなウェブのために <heart/> を込めて"
+    }
   }
 }
