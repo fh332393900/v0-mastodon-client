@@ -125,7 +125,7 @@
     "footer": {
       "tagline": "A better internet is possible.",
       "taglineHighlight": "Join the fediverse today.",
-      "builtWith": "Built with <heart/> for the open web"
+      "builtWith": "Built with <heart></heart> for the open web"
     }
   }
 }

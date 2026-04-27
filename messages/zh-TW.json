@@ -125,7 +125,7 @@
     "footer": {
       "tagline": "更好的網路是可能的。",
       "taglineHighlight": "今天就加入聯邦宇宙。",
-      "builtWith": "為開放網路傾注 <heart/>"
+      "builtWith": "為開放網路傾注 <heart></heart>"
     }
   }
 }

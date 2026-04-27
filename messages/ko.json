@@ -125,7 +125,7 @@
     "footer": {
       "tagline": "더 나은 인터넷은 가능합니다.",
       "taglineHighlight": "오늘 바로 페디버스에 참여하세요.",
-      "builtWith": "오픈 웹을 위해 <heart/> 를 담아 만들었습니다"
+      "builtWith": "오픈 웹을 위해 <heart></heart> 를 담아 만들었습니다"
     }
   }
 }

@@ -125,7 +125,7 @@
     "footer": {
       "tagline": "更好的互联网是可能的。",
       "taglineHighlight": "今天就加入联邦宇宙。",
-      "builtWith": "为开放网络倾注 <heart/>"
+      "builtWith": "为开放网络倾注 <heart></heart>"
     }
   }
 }

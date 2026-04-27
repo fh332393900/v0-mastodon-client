@@ -125,7 +125,7 @@
     "footer": {
       "tagline": "より良いインターネットは実現できます。",
       "taglineHighlight": "今日から fediverse に参加しよう。",
-      "builtWith": "オープンなウェブのために <heart/> を込めて"
+      "builtWith": "オープンなウェブのために <heart></heart> を込めて"
     }
   }
 }
