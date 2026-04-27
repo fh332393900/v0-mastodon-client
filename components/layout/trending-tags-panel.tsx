@@ -20,8 +20,8 @@ export function TrendingTagsPanel() {
           热门话题
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-0 px-0 pb-0 flex-1 flex flex-col overflow-hidden">
-        <div className="min-h-0 overflow-y-auto">
+      <CardContent className="pt-0 px-0 pb-0 flex-1 flex flex-col min-h-0 overflow-hidden">
+        <div className="min-h-0 flex-1 overflow-y-auto">
         {query.isLoading ? (
           <div className="space-y-3 px-4 pb-3">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -58,8 +58,8 @@ export function TrendingTagsPanel() {
             })}
           </div>
         )}
-  </div>
-  <div className="border-t border-border/40 px-4 py-2">
+        </div>
+        <div className="border-t border-border/40 px-4 py-2">
           <Button
             asChild
             variant="ghost"

@@ -20,9 +20,7 @@ export function RightPanel() {
 
         {/* Trending Tags */}
         <div className="min-h-0 flex-1 overflow-hidden">
-          <div className="overflow-y-auto pr-1">
-            <TrendingTagsPanel />
-          </div>
+          <TrendingTagsPanel />
         </div>
 
         {/* Footer Section */}
