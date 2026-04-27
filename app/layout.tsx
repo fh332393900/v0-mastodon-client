@@ -12,8 +12,7 @@ import { MastoProvider } from "@/components/auth/masto-provider";
 import { AuthProvider } from "@/components/auth/auth-provider"
 import { ReactQueryProvider } from "@/components/providers/react-query-provider"
 import { NextIntlClientProvider } from "next-intl"
-import { localeCookieName, resolveLocaleFromCookie } from "@/app/i18n"
-import { getMessages } from "next-intl/server"
+import { getMessages, getLocale } from "next-intl/server"
 
 export const metadata: Metadata = {
   title: "Mastodon Client - Connect to the Fediverse",
@@ -33,7 +32,7 @@ export default async function RootLayout({
 
   const accessToken = (await cookieStore).get("mastodon_token")?.value ?? ""
   const server = (await cookieStore).get("mastodon_server")?.value ?? process.env.DEFAULT_MASTODON_SERVER ?? "m.webtoo.ls"
-  const locale = resolveLocaleFromCookie((await cookieStore).get(localeCookieName)?.value)
+  const locale = await getLocale()
   const messages = await getMessages()
 
   return (
