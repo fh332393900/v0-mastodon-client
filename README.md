@@ -1,6 +1,12 @@
-# Mastodon Client (Next.js)
+<p align="center">
+  <img src="./public/icon.svg" alt="MastoClient" width="72" height="72" />
+</p>
 
-![Mastodon Client cover](./public/QQ20260420-205629.png)
+<h1 align="center">Mastodon Client (Next.js)</h1>
+
+![Mastodon Client cover](./public/ScreenShotIndex.png)
+
+![Mastodon Client cover](./public/ScreenShotHome.png)
 
 一个基于 **Next.js App Router** 构建的 Mastodon Web Client，支持时间线浏览、收藏、发帖、探索与基础设置等功能。项目使用 **React Query** 做数据请求与缓存，并针对无限滚动与滚动位置恢复做了体验优化。
 
@@ -68,8 +74,3 @@ pnpm run dev
 ## Deployment
 
 项目可部署到 Vercel。
-
-- Vercel 项目地址（示例）：  
-  https://vercel.com/fh332393900s-projects/v0-mastodon-client
-
----
