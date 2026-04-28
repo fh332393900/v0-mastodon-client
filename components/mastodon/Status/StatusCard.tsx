@@ -10,8 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import { UserHoverCard } from "@/components/mastodon/user-hover-card"
-import { cn } from "@/lib/utils"
-import { formatRelativeTime, formatFullDate } from "@/lib/utils"
+import { useFormat } from "@/hooks/format"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import type { mastodon } from "masto"
 import { useMasto } from "@/components/auth/masto-provider"
@@ -35,6 +34,7 @@ type StatusCardProps = {
 export function StatusCard({ status, showActions = true }: StatusCardProps) {
   const { server } = useMasto()
   const router = useRouter()
+  const { formatRelativeTime, formatFullDate } = useFormat()
   const {
     renderedStatus,
     isLoading,

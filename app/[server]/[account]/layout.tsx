@@ -14,18 +14,7 @@ import type { MastodonFeaturedTag } from "@/lib/mastodon/account"
 import { normalizeAccountParam } from "@/lib/mastodon/account"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
-
-function formatCount(value: number) {
-  return new Intl.NumberFormat("en-US").format(value)
-}
-
-function formatJoinedDate(value: string) {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(new Date(value))
-}
+import { useFormat } from "@/hooks/format"
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -36,6 +25,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const server = Array.isArray(serverParam) ? serverParam[0] : serverParam
   const rawAccount = Array.isArray(accountParam) ? accountParam[0] : accountParam
   const statusId = Array.isArray(statusIdParam) ? statusIdParam[0] : statusIdParam
+  const { formatCompactNumber, formatRelativeTime } = useFormat()
 
   if (statusId) {
     return <div className="mx-auto max-w-4xl space-y-6 px-4 py-6">{children}</div>
@@ -170,12 +160,12 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
             <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-2">
                 <CalendarDays className="h-4 w-4" />
-                Join in {formatJoinedDate(account.createdAt)}
+                Join in {formatRelativeTime(account.createdAt)}
               </span>
               {account.lastStatusAt ? (
                 <span className="inline-flex items-center gap-2">
                   <Sparkles className="h-4 w-4" />
-                  {"Recently active"} {account.lastStatusAt}
+                  {"Recently active"} {formatRelativeTime(account.lastStatusAt)}
                 </span>
               ) : null}
               {account.moved?.acct ? (
@@ -188,15 +178,15 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
             <div className="flex flex-wrap gap-5 text-sm">
               <span className="text-muted-foreground">
-                <strong className="mr-1 text-lg font-semibold text-foreground">{formatCount(account.statusesCount)}</strong>
+                <strong className="mr-1 text-lg font-semibold text-foreground">{formatCompactNumber(account.statusesCount)}</strong>
                   Posts
               </span>
               <span className="text-muted-foreground">
-                <strong className="mr-1 text-lg font-semibold text-foreground">{formatCount(account.followingCount)}</strong>
+                <strong className="mr-1 text-lg font-semibold text-foreground">{formatCompactNumber(account.followingCount)}</strong>
                 {"Following"}
               </span>
               <span className="text-muted-foreground">
-                <strong className="mr-1 text-lg font-semibold text-foreground">{formatCount(account.followersCount)}</strong>
+                <strong className="mr-1 text-lg font-semibold text-foreground">{formatCompactNumber(account.followersCount)}</strong>
                 {"Followers"}
               </span>
             </div>
@@ -204,9 +194,9 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
           <ProfileTabs
             tabs={[
-              { href: baseHref, label: "Posts", count: account.statusesCount, exact: true },
-              { href: `${baseHref}/following`, label: "Following", count: account.followingCount },
-              { href: `${baseHref}/followers`, label: "Followers", count: account.followersCount },
+              { href: baseHref, label: "Posts", count: formatCompactNumber(account.statusesCount), exact: true },
+              { href: `${baseHref}/following`, label: "Following", count: formatCompactNumber(account.followingCount) },
+              { href: `${baseHref}/followers`, label: "Followers", count: formatCompactNumber(account.followersCount) },
             ]}
           />
         </div>

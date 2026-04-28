@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 type TabItem = {
   href: string
   label: string
-  count: number
+  count: number | string
   exact?: boolean
 }
 

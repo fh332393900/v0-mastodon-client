@@ -9,7 +9,7 @@ import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import MastodonContent from "@/components/mastodon/MastodonContent"
-import { formatCompactNumber } from "@/lib/format-number"
+import { useFormat } from "@/hooks/format"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
 import { FollowButton } from "@/components/mastodon/FollowButton"
 
@@ -35,6 +35,8 @@ export function UserHoverCard({
   const closeTimer = useRef<number | null>(null)
   const fetchGuard = useRef(false)
   const canInteract = !!user && user.id !== account.id
+
+  const { formatCompactNumber } = useFormat()
 
   const nameText = getDisplayNameText({
     displayName: account.displayName,
@@ -87,7 +89,7 @@ export function UserHoverCard({
   const trigger = children ? (
     <span className={className}>{children}</span>
   ) : profileHref ? (
-    <Link href={profileHref} className="font-semibold text-foreground flex flex-1 flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 -ml-3 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
+    <Link href={profileHref} className="font-semibold text-foreground flex flex-1 flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 py-1 -ml-3 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
       <span className="block md:shrink-0 line-clamp-1 truncate max-w-full">
         {renderDisplayName({
           displayName: account.displayName,
@@ -183,11 +185,7 @@ export function UserHoverCard({
               className="absolute inset-0 h-full w-full object-cover"
             />
             <div
-              className="absolute inset-x-0 bottom-0 h-36"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to bottom, transparent 0%, transparent 40%, var(--card) 75%)",
-              }}
+              className="absolute inset-0 bg-gradient-to-t from-card via-card/70 to-transparent"
             />
             <div className="absolute inset-x-0 bottom-0 px-4 pb-4">
               <div className="flex items-center justify-between gap-3">
@@ -201,7 +199,7 @@ export function UserHoverCard({
                       <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
-                      <div className="text-sm font-semibold truncate">
+                      <div className="text-base font-semibold truncate">
                         {renderDisplayName({
                           displayName: account.displayName,
                           username: account.username,
