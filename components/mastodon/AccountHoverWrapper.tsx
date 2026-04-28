@@ -17,6 +17,8 @@ export default function AccountHoverWrapper({
   const { client, server } = useMasto()
   const [account, setAccount] = useState<mastodon.v1.Account | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [lookupStarted, setLookupStarted] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
 
   const lookupCandidates = useMemo(() => {
     if (!server || !handle) return []
@@ -29,7 +31,7 @@ export default function AccountHoverWrapper({
   }, [account, server])
 
   useEffect(() => {
-    if (!client || isLoaded || lookupCandidates.length === 0) return
+    if (!lookupStarted || !client || isLoaded || lookupCandidates.length === 0) return
 
     let cancelled = false
     const lookup = async () => {
@@ -56,11 +58,22 @@ export default function AccountHoverWrapper({
     return () => {
       cancelled = true
     }
-  }, [client, isLoaded, lookupCandidates])
+  }, [client, isLoaded, lookupCandidates, lookupStarted])
+
+  const handleLookupTrigger = () => {
+    if (!lookupStarted && !isLoaded && lookupCandidates.length > 0) {
+      setLookupStarted(true)
+    }
+    setIsHovering(true)
+  }
+
+  const handleLookupLeave = () => {
+    setIsHovering(false)
+  }
 
   if (account) {
     return (
-      <UserHoverCard account={account} profileHref={profileHref}>
+      <UserHoverCard account={account} profileHref={profileHref} forceOpen={isHovering}>
         {children}
       </UserHoverCard>
     )
@@ -68,7 +81,14 @@ export default function AccountHoverWrapper({
 
   return (
     <span title={handle} className="hover:underline cursor-pointer text-blue-500">
-      {children}
+      <span
+        onMouseEnter={handleLookupTrigger}
+        onFocus={handleLookupTrigger}
+        onMouseLeave={handleLookupLeave}
+        onBlur={handleLookupLeave}
+      >
+        {children}
+      </span>
     </span>
   )
 }

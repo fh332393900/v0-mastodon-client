@@ -18,11 +18,13 @@ export function UserHoverCard({
   profileHref,
   className,
   children,
+  forceOpen,
 }: {
   account: mastodon.v1.Account
   profileHref?: string
   className?: string
   children?: React.ReactNode
+  forceOpen?: boolean
 }) {
   const { client, server } = useMasto()
   const { user } = useAuth()
@@ -140,6 +142,12 @@ export function UserHoverCard({
     closeTimer.current = window.setTimeout(() => setOpen(false), 150)
   }
 
+  useEffect(() => {
+    if (forceOpen) {
+      setOpen(true)
+    }
+  }, [forceOpen])
+
   useEffect(() => () => clearTimers(), [])
 
   return (
@@ -167,7 +175,7 @@ export function UserHoverCard({
         <div className="absolute -top-2 left-0 h-2 w-full" />
         <div className="flex items-center gap-3">
           {profileHref ? (
-            <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 py-1 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
+            <Link href={profileHref} className="font-semibold text-foreground flex gap-2 flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 py-1 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
               <Avatar className="h-12 w-12">
                 <AvatarImage src={account.avatar} alt={nameText} />
                 <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
