@@ -170,5 +170,12 @@
     "localCommunity": "本地社群",
     "publicFediverse": "公共聯邦宇宙",
     "loadingTimeline": "正在加載時間軸..."
+  },
+  "account": {
+    "allReplies": "所有回覆",
+    "writeReply": "寫下你的回覆...",
+    "loginToReply": "登入以回覆",
+    "sending": "正在發送...",
+    "postReply": "發佈回覆"
   }
 }

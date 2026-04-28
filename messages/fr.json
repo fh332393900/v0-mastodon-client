@@ -170,5 +170,12 @@
     "localCommunity": "Communauté locale",
     "publicFediverse": "Fediverse public",
     "loadingTimeline": "Chargement du fil..."
+  },
+  "account": {
+    "allReplies": "Toutes les réponses",
+    "writeReply": "Écrivez votre réponse...",
+    "loginToReply": "Connectez-vous pour répondre",
+    "sending": "Envoi en cours...",
+    "postReply": "Publier la réponse"
   }
 }

@@ -170,5 +170,12 @@
     "localCommunity": "ローカルコミュニティ",
     "publicFediverse": "公開Fediverse",
     "loadingTimeline": "タイムラインを読み込み中..."
+  },
+  "account": {
+    "allReplies": "すべての返信",
+    "writeReply": "返信を書き込む...",
+    "loginToReply": "返信するにはログインしてください",
+    "sending": "送信中...",
+    "postReply": "返信を投稿"
   }
 }

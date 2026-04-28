@@ -16,6 +16,7 @@ import {
 } from "@/components/mastodon/status-detail/ReplyList"
 import { ReplyComposer } from "@/components/mastodon/status-detail/ReplyComposer"
 import { LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
+import { useTranslations } from "next-intl"
 
 export default function StatusDetailPage() {
   const params = useParams()
@@ -27,6 +28,7 @@ export default function StatusDetailPage() {
   const { user, isAuthenticated } = useAuth()
   const { createStatus } = useComposeActions()
   const queryClient = useQueryClient()
+  const t = useTranslations()
 
   const { data, isLoading, error } = useStatusDetail(server, statusId)
 
@@ -109,7 +111,7 @@ export default function StatusDetailPage() {
       </section>
 
       <section className="space-y-4 bg-card/90 px-4 py-6 rounded-3xl">
-        <h3 className="text-base font-semibold text-muted-foreground">全部回复</h3>
+        <h3 className="text-base font-semibold text-muted-foreground">{t("account.allReplies")}</h3>
         <ReplyList groups={replyGroups} />
       </section>
     </div>

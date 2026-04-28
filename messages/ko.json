@@ -170,5 +170,12 @@
     "localCommunity": "로컬 커뮤니티",
     "publicFediverse": "공개 페디버스",
     "loadingTimeline": "타임라인을 불러오는 중..."
+  },
+  "account": {
+    "allReplies": "모든 답글",
+    "writeReply": "답글을 작성하세요...",
+    "loginToReply": "답글을 달려면 로그인하세요",
+    "sending": "보내는 중...",
+    "postReply": "답글 게시"
   }
 }

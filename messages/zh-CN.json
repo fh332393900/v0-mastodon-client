@@ -170,5 +170,12 @@
     "localCommunity": "本地社区",
     "publicFediverse": "公开联邦宇宙",
     "loadingTimeline": "正在加载时间线..."
+  },
+  "account": {
+    "allReplies": "全部回复",
+    "writeReply": "写下你的回复...",
+    "loginToReply": "登录后才能回复",
+    "sending": "发送中...",
+    "postReply": "发布回复"
   }
 }

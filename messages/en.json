@@ -170,5 +170,12 @@
     "localCommunity": "Local Community",
     "publicFediverse": "Public Fediverse",
     "loadingTimeline": "Loading Timeline..."
+  },
+  "account": {
+    "allReplies": "All Replies",
+    "writeReply": "Write your reply...",
+    "loginToReply": "Log in to reply",
+    "sending": "Sending...",
+    "postReply": "Post Reply"
   }
 }
