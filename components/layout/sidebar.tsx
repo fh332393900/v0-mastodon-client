@@ -26,7 +26,7 @@ export function Sidebar() {
     { icon: Home, label: t("common.menu.home"), route: "timeline", color: "text-blue-300" },
     { icon: Heart, label: t("common.menu.favorites"), route: "favorites", color: "text-red-500" },
     { icon: PenSquare, label: t("common.menu.compose"), route: "compose", color: "text-purple-200" },
-    { icon: Search, label: t("common.menu.explore"), route: "explore", color: "text-green-300" },
+    { icon: Search, label: t("common.menu.explore"), route: "explore", color: "text-[#8eff43]" },
     { icon: Settings, label: t("common.menu.settings"), route: "settings", color: "text-orange-300" },
   ]
 
