@@ -177,5 +177,17 @@
     "loginToReply": "Connectez-vous pour répondre",
     "sending": "Envoi en cours...",
     "postReply": "Publier la réponse"
+  },
+  "carbonBadge": {
+    "calculating": "calcul en cours…",
+    "badgeMiddle": "CO₂ / visite · plus propre que",
+    "co2PerVisit": "{c}g CO₂ / visite · plus propre que {p}%",
+    "title": "Empreinte carbone",
+    "descriptionPrefix": "Seulement",
+    "descriptionSuffix": "de CO₂ est produit à chaque visite de cette page.",
+    "cleanerPrefix": "C'est plus propre que",
+    "cleanerSuffix": "de toutes les pages web dans le monde.",
+    "learnMore": "websitecarbon.com →",
+    "ariaLabel": "Badge carbone du site web"
   }
 }

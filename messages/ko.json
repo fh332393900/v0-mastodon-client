@@ -177,5 +177,17 @@
     "loginToReply": "답글을 달려면 로그인하세요",
     "sending": "보내는 중...",
     "postReply": "답글 게시"
+  },
+  "carbonBadge": {
+    "calculating": "계산 중…",
+    "badgeMiddle": "CO₂ / 방문 · 보다 친환경적",
+    "co2PerVisit": "{c}g CO₂ / 방문 · {p}%보다 친환경적",
+    "title": "웹사이트 탄소",
+    "descriptionPrefix": "이 페이지를 방문할 때마다 단",
+    "descriptionSuffix": "의 CO₂만 발생합니다.",
+    "cleanerPrefix": "이는 전 세계 웹페이지의",
+    "cleanerSuffix": "보다 친환경적입니다.",
+    "learnMore": "websitecarbon.com →",
+    "ariaLabel": "웹사이트 탄소 배지"
   }
 }

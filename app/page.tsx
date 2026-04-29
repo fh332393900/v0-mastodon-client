@@ -22,6 +22,7 @@ import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 import { LocaleSwitcher } from "@/components/i18n/locale-switcher"
 import { useTranslations } from "next-intl"
+import { CarbonBadge } from "@/components/carbon-badge"
 
 export default function HomePage() {
   const router = useRouter()
@@ -481,13 +482,11 @@ export default function HomePage() {
           
           <p className="text-xs text-muted-foreground">{t.rich("footer.builtWith", { heart: () => <Heart className="inline w-3 h-3 text-red-400" /> })}</p>
         </div>
-        <div id="wcb" className="carbonbadge" />
+        <div className="flex justify-center pb-4">
+          <CarbonBadge />
+        </div>
       </footer>
-      <Script
-        src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js"
-        strategy="lazyOnload"
-        defer
-      />
+
     </div>
   )
 }

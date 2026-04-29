@@ -177,5 +177,17 @@
     "loginToReply": "登入以回覆",
     "sending": "正在發送...",
     "postReply": "發佈回覆"
+  },
+  "carbonBadge": {
+    "calculating": "計算中…",
+    "badgeMiddle": "CO₂ / 次訪問 · 優於",
+    "co2PerVisit": "{c}g CO₂ / 次訪問 · 優於 {p}%",
+    "title": "網站碳排放",
+    "descriptionPrefix": "每次有人訪問此頁面，僅產生",
+    "descriptionSuffix": "CO₂。",
+    "cleanerPrefix": "這比全球",
+    "cleanerSuffix": "的網頁更環保。",
+    "learnMore": "websitecarbon.com →",
+    "ariaLabel": "網站碳排放徽章"
   }
 }

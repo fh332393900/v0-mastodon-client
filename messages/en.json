@@ -177,5 +177,17 @@
     "loginToReply": "Log in to reply",
     "sending": "Sending...",
     "postReply": "Post Reply"
+  },
+  "carbonBadge": {
+    "calculating": "calculating…",
+    "badgeMiddle": "CO₂ / visit · cleaner than",
+    "co2PerVisit": "{c}g CO₂ / visit · cleaner than {p}%",
+    "title": "Website Carbon",
+    "descriptionPrefix": "Only",
+    "descriptionSuffix": "of CO₂ is produced every time someone visits this web page.",
+    "cleanerPrefix": "This is cleaner than",
+    "cleanerSuffix": "of all web pages globally.",
+    "learnMore": "websitecarbon.com →",
+    "ariaLabel": "Website Carbon Badge"
   }
 }

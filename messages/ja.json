@@ -177,5 +177,17 @@
     "loginToReply": "返信するにはログインしてください",
     "sending": "送信中...",
     "postReply": "返信を投稿"
+  },
+  "carbonBadge": {
+    "calculating": "計算中…",
+    "badgeMiddle": "CO₂ / 訪問 · より環境に優しい",
+    "co2PerVisit": "{c}g CO₂ / 訪問 · {p}%より環境に優しい",
+    "title": "ウェブサイトカーボン",
+    "descriptionPrefix": "このページへの訪問ごとにわずか",
+    "descriptionSuffix": "の CO₂ しか排出されません。",
+    "cleanerPrefix": "これは世界中のウェブページの",
+    "cleanerSuffix": "よりクリーンです。",
+    "learnMore": "websitecarbon.com →",
+    "ariaLabel": "ウェブサイトカーボンバッジ"
   }
 }
