@@ -33,7 +33,8 @@
     "trendingTopics": "Tendances",
     "search": "Rechercher",
     "viewMoreTrendingTags": "Voir plus de tags tendance",
-    "justNow": "À l'instant"
+    "justNow": "À l'instant",
+    "close": "Fermer"
   },
   "home": {
     "hero": {
@@ -170,6 +171,45 @@
     "localCommunity": "Communauté locale",
     "publicFediverse": "Fediverse public",
     "loadingTimeline": "Chargement du fil..."
+  },
+  "favorites": {
+    "favorites": "Favoris",
+    "signInToViewFavorites": "Connectez-vous pour voir les favoris",
+    "emptyFavoritesLoggedIn": "Vos publications favorites apparaîtront ici une fois que vous aurez commencé à aimer du contenu.",
+    "emptyFavoritesLoggedOut": "Veuillez vous connecter pour voir vos publications favorites."
+  },
+  "compose": {
+    "compose": "Composer",
+    "title": "Composer un post",
+    "subtitle": "Publiez de nouvelles mises à jour, médias ou sondages sur {server}.",
+    "whatIsHappening": "Quoi de neuf ?",
+    "addMedia": "Ajouter des médias",
+    "post": "Publier",
+    "pollOption": "Option {number}",
+    "addOption": "Ajouter une option",
+    "multiple": "Multiple",
+    "pollExpires": {
+      "1h": "1 heure",
+      "6h": "6 heures",
+      "1d": "1 jour",
+      "3d": "3 jours",
+      "7d": "7 jours"
+    },
+    "posting": "Publication…",
+    "postThread": "Publier le fil",
+    "visibility": {
+      "public": "Public",
+      "unlisted": "Non répertorié",
+      "followersOnly": "Réservé aux abonnés",
+      "direct": "Direct"
+    },
+    "emoji": "Emoji",
+    "image": "Image",
+    "video": "Vidéo",
+    "poll": "Sondage",
+    "contentWarning": "Avertissement de contenu",
+    "contentWarningPlaceholder": "Saisissez un avertissement de contenu (facultatif)",
+    "pollSettings": "Paramètres du sondage"
   },
   "account": {
     "allReplies": "Toutes les réponses",

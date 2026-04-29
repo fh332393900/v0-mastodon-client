@@ -1,18 +1,20 @@
 "use client"
 
-import { useMemo } from "react"
+import { use, useMemo } from "react"
 import { Heart } from "lucide-react"
 import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
 import { StatusCard, StatusThread } from "@/components/mastodon/Status"
 import { Badge } from "@/components/ui/badge"
 import { useFavoritesCache } from "@/hooks/mastodon/useFavoritesCache"
 import { groupThreadPosts } from "@/lib/mastodon/groupThreads"
+import { useTranslations } from "next-intl"
 
 export default function FavoritesPage() {
   const { posts, query, isReady, user } = useFavoritesCache()
   const { isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = query
+  const t = useTranslations()
 
-  const headerTitle = useMemo(() => (user ? "Favorites" : "Sign in to view favorites"), [user])
+  const headerTitle = useMemo(() => (user ? t("favorites.favorites") : t("favorites.signInToViewFavorites")), [user, t])
   const groupedPosts = useMemo(() => groupThreadPosts(posts), [posts])
 
   const handleLoadMore = () => {
@@ -24,7 +26,7 @@ export default function FavoritesPage() {
       <div className="space-y-6 px-4 py-6">
         <div className="flex items-center space-x-3 border-b border-border pb-4">
           <Heart className="w-8 h-8 text-red-500" />
-          <h1 className="text-3xl font-bold">Favorites</h1>
+          <h1 className="text-3xl font-bold">{headerTitle}</h1>
         </div>
         <LoadingSkeleton />
       </div>
@@ -36,16 +38,14 @@ export default function FavoritesPage() {
       <div className="flex items-center space-x-3 border-b border-border pb-4">
         <Heart className="w-8 h-8 text-red-500" />
         <h1 className="text-3xl font-bold">{headerTitle}</h1>
-        <Badge variant="outline" className="ml-auto text-accent border-accent/50">
-          {posts.length} posts
+        <Badge variant="outline" className="ml-auto min-w-[50px] text-accent border-accent/50">
+          {posts.length} {t("common.posts")}
         </Badge>
       </div>
 
       {posts.length === 0 ? (
         <div className="rounded-3xl border border-border/70 bg-card/90 p-6 text-sm text-muted-foreground">
-          {user
-            ? "Your favorite posts will appear here once you start liking content."
-            : "Please sign in to view your favorite posts."}
+          {user ? t("favorites.emptyFavoritesLoggedIn") : t("favorites.emptyFavoritesLoggedOut")}
         </div>
       ) : (
         <InfiniteScroller

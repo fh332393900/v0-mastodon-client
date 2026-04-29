@@ -4,8 +4,10 @@ import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useComposeThread } from "@/hooks/mastodon/useComposeThread"
 import { ThreadPostItem } from "@/components/mastodon/compose/ThreadPostItem"
+import { useTranslations } from "next-intl"
 
 export function ComposePage() {
+  const t = useTranslations()
   const { isAuthenticated, isLoading, user } = useAuth()
   const { server } = useMasto()
   const {
@@ -52,8 +54,8 @@ export function ComposePage() {
     <div className="space-y-6 px-4 py-6">
       <div className="space-y-6">
         <div className="border-b border-border pb-4">
-          <h1 className="text-2xl font-bold">Compose Post</h1>
-          <p className="text-muted-foreground">Post new updates, media, or polls on {server}.</p>
+          <h1 className="text-2xl font-bold">{t("compose.title")}</h1>
+          <p className="text-muted-foreground">{t("compose.subtitle", { server })}</p>
         </div>
 
         <div className="rounded-2xl border border-border bg-card px-5 pt-5 pb-3 shadow-sm">

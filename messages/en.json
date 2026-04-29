@@ -33,7 +33,8 @@
     "trendingTopics": "Trending Topics",
     "search": "Search",
     "viewMoreTrendingTags": "View More Trending Tags",
-    "justNow": "just now"
+    "justNow": "just now",
+    "close": "Close"
   },
   "home": {
     "hero": {
@@ -170,6 +171,45 @@
     "localCommunity": "Local Community",
     "publicFediverse": "Public Fediverse",
     "loadingTimeline": "Loading Timeline..."
+  },
+  "favorites": {
+    "favorites": "Favorites",
+    "signInToViewFavorites": "Sign in to view favorites",
+    "emptyFavoritesLoggedIn": "Your favorite posts will appear here once you start liking content.",
+    "emptyFavoritesLoggedOut": "Please sign in to view your favorite posts."
+  },
+  "compose": {
+    "compose": "Compose",
+    "title": "Compose Post",
+    "subtitle": "Post new updates, media, or polls on {server}.",
+    "whatIsHappening": "What's happening?",
+    "addMedia": "Add media",
+    "post": "Post",
+    "pollOption": "Option {number}",
+    "addOption": "Add Option",
+    "multiple": "Multiple",
+    "pollExpires": {
+      "1h": "1 hour",
+      "6h": "6 hours",
+      "1d": "1 day",
+      "3d": "3 days",
+      "7d": "7 days"
+    },
+    "posting": "Posting…",
+    "postThread": "Post Thread",
+    "visibility": {
+      "public": "Public",
+      "unlisted": "Unlisted",
+      "followersOnly": "Followers only",
+      "direct": "Direct"
+    },
+    "emoji": "Emoji",
+    "image": "Image",
+    "video": "Video",
+    "poll": "Poll",
+    "contentWarning": "Content Warning",
+    "contentWarningPlaceholder": "Enter a content warning (optional)",
+    "pollSettings": "Poll Settings"
   },
   "account": {
     "allReplies": "All Replies",

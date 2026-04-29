@@ -33,7 +33,8 @@
     "trendingTopics": "トレンド",
     "search": "検索",
     "viewMoreTrendingTags": "さらにトレンドタグを見る",
-    "justNow": "たった今"
+    "justNow": "たった今",
+    "close": "閉じる"
   },
   "home": {
     "hero": {
@@ -170,6 +171,45 @@
     "localCommunity": "ローカルコミュニティ",
     "publicFediverse": "公開Fediverse",
     "loadingTimeline": "タイムラインを読み込み中..."
+  },
+  "favorites": {
+    "favorites": "お気に入り",
+    "signInToViewFavorites": "お気に入りを見るにはサインインしてください",
+    "emptyFavoritesLoggedIn": "いいねを開始すると、ここにお気に入りの投稿が表示されます。",
+    "emptyFavoritesLoggedOut": "お気に入りの投稿を見るにはサインインしてください。"
+  },
+  "compose": {
+    "compose": "投稿",
+     "title": "投稿",
+     "subtitle": "{server} で新しい更新、メディア、または投票を投稿します。",
+    "whatIsHappening": "何が起こっていますか？",
+    "addMedia": "メディアを追加",
+    "post": "投稿",
+    "pollOption": "オプション {number}",
+    "addOption": "オプションを追加",
+    "multiple": "複数回答",
+    "pollExpires": {
+      "1h": "1 時間",
+      "6h": "6 時間",
+      "1d": "1 日",
+      "3d": "3 日",
+      "7d": "7 日"
+    },
+    "posting": "投稿中…",
+    "postThread": "スレッドを投稿",
+    "visibility": {
+      "public": "公開",
+      "unlisted": "非公開",
+      "followersOnly": "フォロワーのみ",
+      "direct": "ダイレクト"
+    },
+    "emoji": "絵文字",
+    "image": "画像",
+    "video": "ビデオ",
+    "poll": "投票",
+    "contentWarning": "コンテンツ警告",
+    "contentWarningPlaceholder": "コンテンツ警告を入力（任意）",
+    "pollSettings": "投票設定"
   },
   "account": {
     "allReplies": "すべての返信",

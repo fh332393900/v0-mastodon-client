@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useMemo, useRef } from "react"
 import {
   AlertTriangle,
   BarChart3,
@@ -22,12 +22,13 @@ import { cn } from "@/lib/utils"
 import { ToolbarButton } from "@/components/mastodon/compose/ComposeToolbar"
 import { useComposePostActions } from "@/components/mastodon/compose/useComposePostActions"
 import type { ThreadItem } from "@/hooks/mastodon/useComposeThread"
+import { useTranslations } from "next-intl"
 
-const VISIBILITY_OPTIONS: Array<{ value: mastodon.v1.StatusVisibility; label: string }> = [
-  { value: "public", label: "Public" },
-  { value: "unlisted", label: "Unlisted" },
-  { value: "private", label: "Followers only" },
-  { value: "direct", label: "Direct" },
+const VISIBILITY_OPTIONS: Array<{ value: mastodon.v1.StatusVisibility; labelKey: string }> = [
+  { value: "public", labelKey: "compose.visibility.public" },
+  { value: "unlisted", labelKey: "compose.visibility.unlisted" },
+  { value: "private", labelKey: "compose.visibility.followersOnly" },
+  { value: "direct", labelKey: "compose.visibility.direct" },
 ]
 
 const EMOJI_LIST = [
@@ -37,11 +38,11 @@ const EMOJI_LIST = [
 ]
 
 const POLL_EXPIRES = [
-  { label: "1 hour", value: 60 * 60 },
-  { label: "6 hours", value: 6 * 60 * 60 },
-  { label: "1 day", value: 24 * 60 * 60 },
-  { label: "3 days", value: 3 * 24 * 60 * 60 },
-  { label: "7 days", value: 7 * 24 * 60 * 60 },
+  { key: "1h", value: 60 * 60 },
+  { key: "6h", value: 6 * 60 * 60 },
+  { key: "1d", value: 24 * 60 * 60 },
+  { key: "3d", value: 3 * 24 * 60 * 60 },
+  { key: "7d", value: 7 * 24 * 60 * 60 },
 ]
 
 type ThreadPostItemProps = {
@@ -99,10 +100,20 @@ export function ThreadPostItem({
     removePollOption,
     togglePoll,
   } = useComposePostActions()
+  const t = useTranslations()
 
   const pollLimit = Math.min(maxPollOptions, 4)
   const remaining = maxCharacters - post.content.length
   const isLast = index === total - 1
+
+  const visibilityOptions = useMemo(
+    () =>
+      VISIBILITY_OPTIONS.map((item) => ({
+        value: item.value,
+        label: t(item.labelKey),
+      })),
+    [t]
+  )
 
   return (
     <div className="flex gap-3">
@@ -120,7 +131,7 @@ export function ThreadPostItem({
             <Input
               value={post.spoilerText}
               onChange={(e) => onChange({ spoilerText: e.target.value })}
-              placeholder="Enter a content warning (optional)"
+              placeholder={t("compose.contentWarningPlaceholder")}
               className="h-8 text-sm"
             />
           </div>
@@ -130,7 +141,7 @@ export function ThreadPostItem({
           value={post.content}
           onChange={(value) => onChange({ content: value })}
           editorRef={editorRef}
-          placeholder="What's on your mind?"
+          placeholder={t("compose.whatIsHappening")}
         />
 
         {post.mediaList.length > 0 && (
@@ -158,9 +169,9 @@ export function ThreadPostItem({
         {post.pollEnabled && (
           <div className="mt-2 space-y-2 rounded-xl border border-border/70 bg-muted/30 p-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold">Poll Settings</h3>
+              <h3 className="text-sm font-semibold">{t("compose.pollSettings")}</h3>
               <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => onChange({ pollEnabled: false })}>
-                Close
+                {t("common.close")}
               </Button>
             </div>
             <div className="space-y-1.5">
@@ -169,7 +180,7 @@ export function ThreadPostItem({
                   <Input
                     value={option}
                     onChange={(e) => updatePollOption(e.target.value, idx, post, onChange)}
-                    placeholder={`Option ${idx + 1}`}
+                    placeholder={t("compose.pollOption", { number: idx + 1 })}
                     className="h-8 text-sm"
                   />
                   {post.pollOptions.length > 2 && (
@@ -180,13 +191,13 @@ export function ThreadPostItem({
                 </div>
               ))}
               <Button size="sm" variant="secondary" className="h-7 text-xs" onClick={() => addPollOption(post, maxPollOptions, onChange)} disabled={post.pollOptions.length >= pollLimit}>
-                Add Option
+                {t("compose.addOption")}
               </Button>
             </div>
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <div className="flex items-center gap-2">
                 <Switch checked={post.pollMultiple} onCheckedChange={(v) => onChange({ pollMultiple: v })} />
-                <span className="text-xs">Multiple</span>
+                <span className="text-xs">{t("compose.multiple")}</span>
               </div>
               <Select value={String(post.pollExpiresIn)} onValueChange={(v) => onChange({ pollExpiresIn: Number(v) })}>
                 <SelectTrigger className="h-7 w-24 text-xs">
@@ -195,7 +206,7 @@ export function ThreadPostItem({
                 <SelectContent>
                   {POLL_EXPIRES.map((item) => (
                     <SelectItem key={item.value} value={String(item.value)}>
-                      {item.label}
+                      {t(`compose.pollExpires.${item.key}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -210,7 +221,7 @@ export function ThreadPostItem({
         <div className="mt-2 flex flex-wrap items-center gap-1 border-t border-border/40 pt-2">
           <ToolbarButton icon={<Smile className="h-4 w-4" />} label="Emoji">
             <div className="space-y-2">
-              <div className="text-xs font-semibold text-muted-foreground">Emoji</div>
+              <div className="text-xs font-semibold text-muted-foreground">{t("compose.emoji")}</div>
               <div className="grid grid-cols-8 gap-1.5 text-base">
                 {EMOJI_LIST.map((emoji) => (
                   <button
@@ -228,21 +239,21 @@ export function ThreadPostItem({
 
           <ToolbarButton
             icon={<ImageIcon className="h-4 w-4" />}
-            label="Image"
+            label={t("compose.image")}
             onClick={() => imageInputRef.current?.click()}
             disabled={post.pollEnabled}
           />
 
           <ToolbarButton
             icon={<Video className="h-4 w-4" />}
-            label="Video"
+            label={t("compose.video")}
             onClick={() => videoInputRef.current?.click()}
             disabled={post.pollEnabled}
           />
 
           <ToolbarButton
             icon={<BarChart3 className="h-4 w-4" />}
-            label="Poll"
+            label={t("compose.poll")}
             onClick={() => togglePoll(post, onChange)}
             disabled={post.mediaList.length > 0}
             active={post.pollEnabled}
@@ -250,7 +261,7 @@ export function ThreadPostItem({
 
           <ToolbarButton
             icon={<AlertTriangle className="h-4 w-4 text-destructive" />}
-            label="Content Warning"
+            label={t("compose.contentWarning")}
             onClick={() => onChange({ showSpoiler: !post.showSpoiler })}
             active={post.showSpoiler}
           />
@@ -267,7 +278,7 @@ export function ThreadPostItem({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {VISIBILITY_OPTIONS.map((item) => (
+                {visibilityOptions.map((item) => (
                   <SelectItem key={item.value} value={item.value}>
                     {item.label}
                   </SelectItem>
@@ -282,7 +293,7 @@ export function ThreadPostItem({
                 type="button"
                 onClick={onAddPost}
                 disabled={isSubmitting}
-                aria-label="继续嘟文串"
+                aria-label="Add a post to this thread"
                 className="group cursor-pointer flex items-center gap-1 rounded-l-lg px-2 py-1 transition hover:bg-primary/10 disabled:opacity-40"
               >
                 <MessageSquarePlus className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition" />
@@ -318,9 +329,9 @@ export function ThreadPostItem({
               {isSubmittingThis ? (
                 <>
                   <Loader2 className="mr-1 h-3 w-3 animate-spin" />
-                  Posting…
+                  {t("compose.posting")}
                 </>
-              ) : total > 1 ? "Post Thread" : "Post"}
+              ) : total > 1 ? t("compose.postThread") : t("compose.post")}
             </Button>
           )}
         </div>
