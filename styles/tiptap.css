@@ -19,6 +19,13 @@
 .tiptap strong       { font-weight: 700; }
 .tiptap em           { font-style: italic; }
 
+/* ── Mention / Hashtag ─────────────────────────────────────────────────── */
+.tiptap .mention,
+.tiptap .hashtag {
+  color: var(--primary);
+  font-weight: 600;
+}
+
 /* ── Inline code ─────────────────────────────────────────────────────────── */
 .tiptap code:not(pre code) {
   background: var(--muted);

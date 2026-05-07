@@ -23,6 +23,68 @@ const lowlight = createLowlight(all)
 
 // ─── Custom EmojiNode ─────────────────────────────────────────────────────────
 
+const MentionNode = Node.create({
+  name: "mention",
+  group: "inline",
+  inline: true,
+  atom: true,
+  selectable: false,
+  addAttributes() {
+    return {
+      label: {
+        default: "",
+        parseHTML: (el: Element) => el.getAttribute("data-mention") ?? "",
+        renderHTML: (attrs: Record<string, string>) => ({ "data-mention": attrs.label }),
+      },
+    }
+  },
+  parseHTML() {
+    return [{ tag: "span[data-mention]" }]
+  },
+  renderHTML({ node, HTMLAttributes }: { node: { attrs?: Record<string, string> }; HTMLAttributes: Record<string, string> }) {
+    const label = node.attrs?.label ?? ""
+    return [
+      "span",
+      mergeAttributes(HTMLAttributes, {
+        class: "mention text-primary",
+        contenteditable: "false",
+      }),
+      `@${label}`,
+    ]
+  },
+})
+
+const HashtagNode = Node.create({
+  name: "hashtag",
+  group: "inline",
+  inline: true,
+  atom: true,
+  selectable: false,
+  addAttributes() {
+    return {
+      label: {
+        default: "",
+        parseHTML: (el: Element) => el.getAttribute("data-hashtag") ?? "",
+        renderHTML: (attrs: Record<string, string>) => ({ "data-hashtag": attrs.label }),
+      },
+    }
+  },
+  parseHTML() {
+    return [{ tag: "span[data-hashtag]" }]
+  },
+  renderHTML({ node, HTMLAttributes }: { node: { attrs?: Record<string, string> }; HTMLAttributes: Record<string, string> }) {
+    const label = node.attrs?.label ?? ""
+    return [
+      "span",
+      mergeAttributes(HTMLAttributes, {
+        class: "hashtag text-primary",
+        contenteditable: "false",
+      }),
+      `#${label}`,
+    ]
+  },
+})
+
 const EmojiNode = Node.create({
   name: "emoji",
   group: "inline",
@@ -91,6 +153,8 @@ const baseExtensions = [
       return ReactNodeViewRenderer(CodeBlockView)
     },
   }).configure({ lowlight, defaultLanguage: "auto" }),
+  MentionNode,
+  HashtagNode,
   EmojiNode,
 ]
 
@@ -111,6 +175,8 @@ function docToPlainText(doc: DocNode): string {
     if (node.type === "hardBreak") { text += "\n"; return }
     // Custom emoji node → :shortcode:
     if (node.type === "emoji") { text += node.attrs?.shortcode ?? ""; return }
+    if (node.type === "mention") { text += `@${node.attrs?.label ?? ""}`; return }
+    if (node.type === "hashtag") { text += `#${node.attrs?.label ?? ""}`; return }
     if (node.type === "paragraph") {
       if (text.length > 0 && !text.endsWith("\n")) text += "\n"
       node.content?.forEach(walk)
@@ -249,7 +315,7 @@ export function ComposeEditor({
     const { state } = e
     const { from } = state.selection
     const textBefore = state.doc.textBetween(Math.max(0, from - 50), from, "\n", "\0")
-    const match = textBefore.match(/(^|\s)([#@])([\p{L}\p{N}_-]{1,30})$/u)
+  const match = textBefore.match(/(^|\s)([#@])([\p{L}\p{N}._-]{1,30})$/u)
 
     if (!match) {
       setTrigger(null)
@@ -331,23 +397,26 @@ export function ComposeEditor({
   // ── Insert entity ─────────────────────────────────────────────────────────
 
   const insertEntity = useCallback((label: string, type: TriggerType) => {
-    if (!editor || !trigger) return
-    const replacement = type === "hashtags" ? `#${label}` : `@${label}`
+    if (!editor) return
     const { state } = editor
     const { from } = state.selection
     const textBefore = state.doc.textBetween(Math.max(0, from - 50), from, "\n", "\0")
-    const match = textBefore.match(/(^|\s)([#@])([\p{L}\p{N}_-]{1,30})$/u)
-    if (!match) return
-    const deleteLen = match[2].length + match[3].length
-    editor
-      .chain()
-      .focus()
-      .deleteRange({ from: from - deleteLen, to: from })
-      .insertContent(replacement + " ")
+    const match = textBefore.match(/(^|\s)([#@])([\p{L}\p{N}._-]{1,30})$/u)
+    const command = editor.chain().focus()
+    if (match) {
+      const deleteLen = match[2].length + match[3].length
+      command.deleteRange({ from: from - deleteLen, to: from })
+    }
+    command
+      .insertContent(
+        type === "hashtags"
+          ? { type: "hashtag", attrs: { label } }
+          : { type: "mention", attrs: { label } },
+      )
       .run()
     setTrigger(null)
     setCaretPosition(null)
-  }, [editor, trigger])
+  }, [editor])
 
   // ── Render suggestions ────────────────────────────────────────────────────
 
