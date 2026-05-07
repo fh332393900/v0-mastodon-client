@@ -212,7 +212,14 @@
     "poll": "투표",
     "contentWarning": "콘텐츠 경고",
     "contentWarningPlaceholder": "내용 경고 입력 (선택)",
-    "pollSettings": "설문조사 설정"
+    "pollSettings": "설문조사 설정",
+    "editor": {
+      "format": "서식",
+      "codeBlock": "코드 블록",
+      "bold": "굵게",
+      "italic": "기울임",
+      "deleteBlock": "블록 삭제"
+    }
   },
   "account": {
     "allReplies": "모든 답글",

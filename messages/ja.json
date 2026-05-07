@@ -212,7 +212,14 @@
     "poll": "投票",
     "contentWarning": "コンテンツ警告",
     "contentWarningPlaceholder": "コンテンツ警告を入力（任意）",
-    "pollSettings": "投票設定"
+    "pollSettings": "投票設定",
+    "editor": {
+      "format": "書式",
+      "codeBlock": "コードブロック",
+      "bold": "太字",
+      "italic": "斜体",
+      "deleteBlock": "ブロックを削除"
+    }
   },
   "account": {
     "allReplies": "すべての返信",

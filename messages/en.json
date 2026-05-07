@@ -212,7 +212,14 @@
     "poll": "Poll",
     "contentWarning": "Content Warning",
     "contentWarningPlaceholder": "Enter a content warning (optional)",
-    "pollSettings": "Poll Settings"
+    "pollSettings": "Poll Settings",
+    "editor": {
+      "format": "Format",
+      "codeBlock": "Code block",
+      "bold": "Bold",
+      "italic": "Italic",
+      "deleteBlock": "Delete block"
+    }
   },
   "account": {
     "allReplies": "All Replies",

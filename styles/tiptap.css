@@ -3,6 +3,8 @@
 /* ─────────────────────────────────────────────────────────────────────────── */
 
 /* ── Placeholder ─────────────────────────────────────────────────────────── */
+/* @tiptap/extension-placeholder injects is-editor-empty on ProseMirror root */
+/* and sets data-placeholder on the first <p> child                           */
 .tiptap p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;

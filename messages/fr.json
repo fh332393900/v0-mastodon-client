@@ -212,7 +212,14 @@
     "poll": "Sondage",
     "contentWarning": "Avertissement de contenu",
     "contentWarningPlaceholder": "Saisissez un avertissement de contenu (facultatif)",
-    "pollSettings": "Paramètres du sondage"
+    "pollSettings": "Paramètres du sondage",
+    "editor": {
+      "format": "Format",
+      "codeBlock": "Bloc de code",
+      "bold": "Gras",
+      "italic": "Italique",
+      "deleteBlock": "Supprimer le bloc"
+    }
   },
   "account": {
     "allReplies": "Toutes les réponses",

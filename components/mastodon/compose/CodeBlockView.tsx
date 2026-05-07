@@ -3,6 +3,7 @@
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react"
 import type { NodeViewProps } from "@tiptap/react"
 import { X } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export const CODE_LANGUAGES = [
   { value: "auto", label: "Auto" },
@@ -37,6 +38,7 @@ export function CodeBlockView({
   updateAttributes,
   deleteNode,
 }: NodeViewProps) {
+  const t = useTranslations("compose.editor")
   const language = (node.attrs.language as string) ?? "auto"
 
   return (
@@ -68,7 +70,7 @@ export function CodeBlockView({
             onClick={deleteNode}
             className="ml-1 text-muted-foreground/50 hover:text-destructive transition-colors"
             tabIndex={-1}
-            title="删除代码块"
+            title={t("deleteBlock")}
           >
             <X className="h-3.5 w-3.5" />
           </button>

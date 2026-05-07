@@ -14,7 +14,9 @@ import { EditorContent, ReactNodeViewRenderer, useEditor } from "@tiptap/react"
 import { Node, mergeAttributes } from "@tiptap/core"
 import StarterKit from "@tiptap/starter-kit"
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
+import Placeholder from "@tiptap/extension-placeholder"
 import { all, createLowlight } from "lowlight"
+import { useTranslations } from "next-intl"
 import { CodeBlockView } from "./compose/CodeBlockView"
 
 const lowlight = createLowlight(all)
@@ -75,9 +77,9 @@ type ComposeEditorProps = {
   editorRef?: React.RefObject<ComposeEditorHandle | null>
 }
 
-// ─── Extensions ──────────────────────────────────────────────────────────────
+// ─── Extensions (static — created once at module level) ──────────────────────
 
-const extensions = [
+const baseExtensions = [
   StarterKit.configure({
     codeBlock: false,
     heading: false,
@@ -133,6 +135,7 @@ function docToPlainText(doc: DocNode): string {
 type EditorInstance = NonNullable<ReturnType<typeof useEditor>>
 
 function FormatToolbar({ editor }: { editor: EditorInstance }) {
+  const t = useTranslations("compose.editor")
   const [open, setOpen] = useState(false)
 
   const isBold = editor.isActive("bold")
@@ -143,21 +146,21 @@ function FormatToolbar({ editor }: { editor: EditorInstance }) {
     {
       key: "codeBlock",
       icon: Code2,
-      label: "代码块",
+      label: t("codeBlock"),
       active: isCode,
       action: () => editor.chain().focus().toggleCodeBlock().run(),
     },
     {
       key: "bold",
       icon: Bold,
-      label: "加粗",
+      label: t("bold"),
       active: isBold,
       action: () => editor.chain().focus().toggleBold().run(),
     },
     {
       key: "italic",
       icon: Italic,
-      label: "斜体",
+      label: t("italic"),
       active: isItalic,
       action: () => editor.chain().focus().toggleItalic().run(),
     },
@@ -172,10 +175,10 @@ function FormatToolbar({ editor }: { editor: EditorInstance }) {
             "flex items-center gap-1 px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors",
             (isBold || isItalic || isCode) && "text-primary",
           )}
-          title="格式工具"
+          title={t("format")}
         >
           <Wand2 className="h-3.5 w-3.5" />
-          <span>格式</span>
+          <span>{t("format")}</span>
         </button>
       </PopoverTrigger>
       <PopoverContent
@@ -220,6 +223,7 @@ export function ComposeEditor({
   onLengthChange,
   editorRef,
 }: ComposeEditorProps) {
+  const placeholderRef = useRef(placeholder)
   const [trigger, setTrigger] = useState<TriggerState | null>(null)
   const [caretPosition, setCaretPosition] = useState<CaretPosition | null>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -234,6 +238,10 @@ export function ComposeEditor({
     trigger?.query ?? "",
     trigger?.type ?? null,
   )
+
+  useEffect(() => {
+    placeholderRef.current = placeholder
+  }, [placeholder])
 
   // ── Trigger detection ──────────────────────────────────────────────────────
 
@@ -265,13 +273,22 @@ export function ComposeEditor({
 
   // ── Editor ────────────────────────────────────────────────────────────────
 
+  const extensions = useMemo(
+    () => [
+      ...baseExtensions,
+      Placeholder.configure({
+        placeholder: () => placeholderRef.current,
+      }),
+    ],
+    [],
+  )
+
   const editor = useEditor({
     extensions,
     content: "",
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        "data-placeholder": placeholder,
         class: "tiptap min-h-[140px] w-full outline-none text-sm",
       },
     },

@@ -212,7 +212,14 @@
     "poll": "投票",
     "contentWarning": "内容警告",
     "contentWarningPlaceholder": "输入内容警告（可选）",
-    "pollSettings": "投票设置"
+    "pollSettings": "投票设置",
+    "editor": {
+      "format": "格式",
+      "codeBlock": "代码块",
+      "bold": "加粗",
+      "italic": "斜体",
+      "deleteBlock": "删除代码块"
+    }
   },
   "account": {
     "allReplies": "全部回复",
