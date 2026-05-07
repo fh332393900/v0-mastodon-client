@@ -1,28 +1,64 @@
-"use client"
+﻿"use client"
 
 import type React from "react"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState, useCallback } from "react"
 import { cn } from "@/lib/utils"
 import { useComposeSearch } from "@/hooks/mastodon/useComposeSearch"
 import type { mastodon } from "masto"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
-import { useMasto } from "@/components/auth/masto-provider"
 import { useCustomEmojis } from "@/hooks/mastodon/useCustomEmojis"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Bold, Code2, Italic, Wand2 } from "lucide-react"
+import { EditorContent, ReactNodeViewRenderer, useEditor } from "@tiptap/react"
+import { Node, mergeAttributes } from "@tiptap/core"
+import StarterKit from "@tiptap/starter-kit"
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
+import { all, createLowlight } from "lowlight"
+import { CodeBlockView } from "./compose/CodeBlockView"
+
+const lowlight = createLowlight(all)
+
+// ─── Custom EmojiNode ─────────────────────────────────────────────────────────
+
+const EmojiNode = Node.create({
+  name: "emoji",
+  group: "inline",
+  inline: true,
+  atom: true,
+  addAttributes() {
+    return {
+      shortcode: {
+        default: null,
+        parseHTML: (el: Element) => el.getAttribute("data-shortcode"),
+        renderHTML: (attrs: Record<string, string>) => ({ "data-shortcode": attrs.shortcode }),
+      },
+      url: {
+        default: null,
+        parseHTML: (el: Element) => (el as HTMLImageElement).src,
+        renderHTML: (attrs: Record<string, string>) => ({ src: attrs.url }),
+      },
+    }
+  },
+  parseHTML() {
+    return [{ tag: "img[data-shortcode]" }]
+  },
+  renderHTML({ HTMLAttributes }: { HTMLAttributes: Record<string, string> }) {
+    return [
+      "img",
+      mergeAttributes(HTMLAttributes, {
+        class: "inline h-5 w-5 align-text-bottom",
+        contenteditable: "false",
+      }),
+    ]
+  },
+})
+
+// ─── Types ───────────────────────────────────────────────────────────────────
 
 type TriggerType = "hashtags" | "accounts"
-
-type TriggerState = {
-  type: TriggerType
-  query: string
-  start: number
-  end: number
-}
-
-type CaretPosition = {
-  top: number
-  left: number
-}
+type TriggerState = { type: TriggerType; query: string }
+type CaretPosition = { top: number; left: number }
 
 export type ComposeEditorHandle = {
   insertText: (text: string) => void
@@ -39,100 +75,142 @@ type ComposeEditorProps = {
   editorRef?: React.RefObject<ComposeEditorHandle | null>
 }
 
-function getCaretIndex(root: HTMLElement) {
-  const selection = window.getSelection()
-  if (!selection || selection.rangeCount === 0) return 0
-  const range = selection.getRangeAt(0)
-  const preRange = range.cloneRange()
-  preRange.selectNodeContents(root)
-  preRange.setEnd(range.endContainer, range.endOffset)
-  return preRange.toString().length
+// ─── Extensions ──────────────────────────────────────────────────────────────
+
+const extensions = [
+  StarterKit.configure({
+    codeBlock: false,
+    heading: false,
+    horizontalRule: false,
+    blockquote: false,
+  }),
+  CodeBlockLowlight.extend({
+    addNodeView() {
+      return ReactNodeViewRenderer(CodeBlockView)
+    },
+  }).configure({ lowlight, defaultLanguage: "auto" }),
+  EmojiNode,
+]
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+type DocNode = {
+  type?: string
+  text?: string
+  attrs?: Record<string, string>
+  content?: DocNode[]
 }
 
-function getRangeForTextIndices(root: HTMLElement, start: number, end: number) {
-  const range = document.createRange()
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null)
-  let currentIndex = 0
-  let startNode: Text | null = null
-  let startOffset = 0
-  let endNode: Text | null = null
-  let endOffset = 0
-
-  while (walker.nextNode()) {
-    const node = walker.currentNode as Text
-    const nextIndex = currentIndex + node.data.length
-
-    if (!startNode && start <= nextIndex) {
-      startNode = node
-      startOffset = Math.max(0, start - currentIndex)
-    }
-
-    if (end <= nextIndex) {
-      endNode = node
-      endOffset = Math.max(0, end - currentIndex)
-      break
-    }
-
-    currentIndex = nextIndex
-  }
-
-  if (!startNode || !endNode) {
-    range.selectNodeContents(root)
-    range.collapse(false)
-    return range
-  }
-
-  range.setStart(startNode, startOffset)
-  range.setEnd(endNode, endOffset)
-  return range
-}
-
-/**
- * Extract text content from the editor, converting custom emoji <img data-shortcode>
- * elements back to their :shortcode: text representation for submission.
- */
-function getEditorText(root: Node): string {
+function docToPlainText(doc: DocNode): string {
   let text = ""
-  for (const node of Array.from(root.childNodes)) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      text += (node as Text).data
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      const el = node as HTMLElement
-      const shortcode = el.getAttribute("data-shortcode")
-      if (shortcode) {
-        text += shortcode
-      } else {
-        text += getEditorText(el)
-      }
+  function walk(node: DocNode) {
+    if (!node) return
+    if (node.type === "text") { text += node.text ?? ""; return }
+    if (node.type === "hardBreak") { text += "\n"; return }
+    // Custom emoji node → :shortcode:
+    if (node.type === "emoji") { text += node.attrs?.shortcode ?? ""; return }
+    if (node.type === "paragraph") {
+      if (text.length > 0 && !text.endsWith("\n")) text += "\n"
+      node.content?.forEach(walk)
+      return
     }
+    if (node.type === "codeBlock") {
+      const lang = node.attrs?.language && node.attrs.language !== "auto" ? node.attrs.language : ""
+      text += "\`\`\`" + lang + "\n"
+      node.content?.forEach(walk)
+      if (!text.endsWith("\n")) text += "\n"
+      text += "\`\`\`\n"
+      return
+    }
+    node.content?.forEach(walk)
   }
-  return text
+  walk(doc)
+  return text.replace(/\n$/, "")
 }
 
-/** Insert a custom emoji <img> at the given range and move cursor after it */
-function insertCustomEmojiAtRange(
-  range: Range,
-  shortcode: string,
-  url: string,
-): void {
-  range.deleteContents()
-  const img = document.createElement("img")
-  img.src = url
-  img.alt = `:${shortcode}:`
-  img.title = shortcode
-  img.setAttribute("data-shortcode", `:${shortcode}:`)
-  img.contentEditable = "false"
-  img.className = "inline h-5 w-5 align-text-bottom"
-  range.insertNode(img)
-  const space = document.createTextNode(" ")
-  range.setStartAfter(img)
-  range.insertNode(space)
-  range.setStartAfter(space)
-  range.setEndAfter(space)
-  const selection = window.getSelection()
-  selection?.removeAllRanges()
-  selection?.addRange(range)
+// ─── FormatToolbar ────────────────────────────────────────────────────────────
+
+type EditorInstance = NonNullable<ReturnType<typeof useEditor>>
+
+function FormatToolbar({ editor }: { editor: EditorInstance }) {
+  const [open, setOpen] = useState(false)
+
+  const isBold = editor.isActive("bold")
+  const isItalic = editor.isActive("italic")
+  const isCode = editor.isActive("codeBlock")
+
+  const tools = [
+    {
+      key: "codeBlock",
+      icon: Code2,
+      label: "代码块",
+      active: isCode,
+      action: () => editor.chain().focus().toggleCodeBlock().run(),
+    },
+    {
+      key: "bold",
+      icon: Bold,
+      label: "加粗",
+      active: isBold,
+      action: () => editor.chain().focus().toggleBold().run(),
+    },
+    {
+      key: "italic",
+      icon: Italic,
+      label: "斜体",
+      active: isItalic,
+      action: () => editor.chain().focus().toggleItalic().run(),
+    },
+  ]
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className={cn(
+            "flex items-center gap-1 px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors",
+            (isBold || isItalic || isCode) && "text-primary",
+          )}
+          title="格式工具"
+        >
+          <Wand2 className="h-3.5 w-3.5" />
+          <span>格式</span>
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        side="top"
+        align="start"
+        className="w-auto p-1 flex flex-row gap-1"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
+        {tools.map(({ key, icon: Icon, label, active, action }) => (
+          <button
+            key={key}
+            type="button"
+            onMouseDown={(e) => {
+              e.preventDefault()
+              action()
+              setOpen(false)
+            }}
+            className={cn(
+              "flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium transition-colors",
+              active
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground",
+            )}
+            title={label}
+          >
+            <Icon className="h-3.5 w-3.5" />
+            {label}
+          </button>
+        ))}
+      </PopoverContent>
+    </Popover>
+  )
 }
+
+// ─── ComposeEditor ────────────────────────────────────────────────────────────
 
 export function ComposeEditor({
   value,
@@ -142,12 +220,10 @@ export function ComposeEditor({
   onLengthChange,
   editorRef,
 }: ComposeEditorProps) {
-  const rootRef = useRef<HTMLDivElement | null>(null)
   const [trigger, setTrigger] = useState<TriggerState | null>(null)
   const [caretPosition, setCaretPosition] = useState<CaretPosition | null>(null)
-  const searchTimer = useRef<number | null>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
-  // Use shared React Query cache for custom emojis
   const serverEmojis = useCustomEmojis()
   const customEmojiMap = useMemo(
     () => Object.fromEntries(serverEmojis.map((e) => [e.shortcode, e.url])),
@@ -159,80 +235,12 @@ export function ComposeEditor({
     trigger?.type ?? null,
   )
 
-  useEffect(() => {
-    if (!rootRef.current) return
-    if (value === "") {
-      rootRef.current.innerHTML = ""
-    }
-  }, [value])
+  // ── Trigger detection ──────────────────────────────────────────────────────
 
-  useEffect(() => {
-    if (!editorRef) return
-    editorRef.current = {
-      insertText: (text: string) => {
-        const root = rootRef.current
-        if (!root) return
-        const selection = window.getSelection()
-        if (!selection || selection.rangeCount === 0) {
-          root.focus()
-          return
-        }
-        const range = selection.getRangeAt(0)
-        range.deleteContents()
-        const node = document.createTextNode(text)
-        range.insertNode(node)
-        range.setStartAfter(node)
-        range.setEndAfter(node)
-        selection.removeAllRanges()
-        selection.addRange(range)
-        handleInput()
-      },
-      insertCustomEmoji: (shortcode: string, url: string) => {
-        const root = rootRef.current
-        if (!root) return
-        root.focus()
-        const selection = window.getSelection()
-        if (!selection || selection.rangeCount === 0) return
-        const range = selection.getRangeAt(0)
-        insertCustomEmojiAtRange(range, shortcode, url)
-        const newText = getEditorText(root)
-        onChange(newText)
-        onLengthChange?.(newText.length)
-      },
-      focus: () => rootRef.current?.focus(),
-    }
-  }, [editorRef, onChange, onLengthChange])
-
-  const handleInput = () => {
-    const root = rootRef.current
-    if (!root) return
-
-    const caretIndex = getCaretIndex(root)
-    const rawText = root.textContent ?? ""
-    const textBefore = rawText.slice(0, caretIndex)
-
-    // Auto-replace completed :shortcode: with custom emoji image
-    const shortcodeMatch = textBefore.match(/:([a-zA-Z0-9_+-]+):$/)
-    if (shortcodeMatch) {
-      const code = shortcodeMatch[1]
-      const url = customEmojiMap[code]
-      if (url) {
-        const fullLen = code.length + 2 // `:code:`
-        const range = getRangeForTextIndices(root, caretIndex - fullLen, caretIndex)
-        insertCustomEmojiAtRange(range, code, url)
-        const newText = getEditorText(root)
-        onChange(newText)
-        onLengthChange?.(newText.length)
-        setTrigger(null)
-        setCaretPosition(null)
-        return
-      }
-    }
-
-    const text = getEditorText(root)
-    onChange(text)
-    onLengthChange?.(text.length)
-
+  const detectTrigger = useCallback((e: EditorInstance) => {
+    const { state } = e
+    const { from } = state.selection
+    const textBefore = state.doc.textBetween(Math.max(0, from - 50), from, "\n", "\0")
     const match = textBefore.match(/(^|\s)([#@])([\p{L}\p{N}_-]{1,30})$/u)
 
     if (!match) {
@@ -241,70 +249,98 @@ export function ComposeEditor({
       return
     }
 
-    const symbol = match[2]
-    const queryText = match[3]
-    const start = caretIndex - (symbol.length + queryText.length)
+    setTrigger({ type: match[2] === "#" ? "hashtags" : "accounts", query: match[3] })
 
-    setTrigger({
-      type: symbol === "#" ? "hashtags" : "accounts",
-      query: queryText,
-      start,
-      end: caretIndex,
-    })
-
-    const selection = window.getSelection()
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0).cloneRange()
+    const sel = window.getSelection()
+    if (sel && sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0).cloneRange()
       range.collapse(false)
       const rect = range.getBoundingClientRect()
-      const rootRect = root.getBoundingClientRect()
-      setCaretPosition({
-        top: rect.bottom - rootRect.top + root.scrollTop + 6,
-        left: rect.left - rootRect.left + root.scrollLeft,
-      })
+      const wrapRect = wrapperRef.current?.getBoundingClientRect()
+      if (wrapRect) {
+        setCaretPosition({ top: rect.bottom - wrapRect.top + 6, left: rect.left - wrapRect.left })
+      }
     }
-  }
+  }, [])
 
-  const insertEntity = (label: string, type: TriggerType) => {
-    const root = rootRef.current
-    if (!root || !trigger) return
+  // ── Editor ────────────────────────────────────────────────────────────────
 
+  const editor = useEditor({
+    extensions,
+    content: "",
+    immediatelyRender: false,
+    editorProps: {
+      attributes: {
+        "data-placeholder": placeholder,
+        class: "tiptap min-h-[140px] w-full outline-none text-sm",
+      },
+    },
+    onUpdate({ editor: e }) {
+      const json = e.getJSON() as DocNode
+      const text = docToPlainText(json)
+      onChange(text)
+      onLengthChange?.(text.length)
+      detectTrigger(e)
+    },
+    onSelectionUpdate({ editor: e }) {
+      detectTrigger(e)
+    },
+  })
+
+  // Sync external reset (empty submit)
+  useEffect(() => {
+    if (!editor || value !== "") return
+    editor.commands.clearContent()
+  }, [value, editor])
+
+  // ── EditorRef ─────────────────────────────────────────────────────────────
+
+  useEffect(() => {
+    if (!editorRef || !editor) return
+    editorRef.current = {
+      insertText: (text: string) => {
+        editor.chain().focus().insertContent(text).run()
+      },
+      insertCustomEmoji: (shortcode: string, url: string) => {
+        editor.chain().focus().insertContent({
+          type: "emoji",
+          attrs: { shortcode: `:${shortcode}:`, url },
+        }).run()
+      },
+      focus: () => editor.commands.focus(),
+    }
+  }, [editorRef, editor])
+
+  // ── Insert entity ─────────────────────────────────────────────────────────
+
+  const insertEntity = useCallback((label: string, type: TriggerType) => {
+    if (!editor || !trigger) return
     const replacement = type === "hashtags" ? `#${label}` : `@${label}`
-    const range = getRangeForTextIndices(root, trigger.start, trigger.end)
-    range.deleteContents()
-
-    const span = document.createElement("span")
-    span.textContent = replacement
-    span.setAttribute("data-entity", type)
-    span.className = "text-primary font-semibold"
-    span.contentEditable = "false"
-
-    range.insertNode(span)
-    const space = document.createTextNode(" ")
-    range.setStartAfter(span)
-    range.insertNode(space)
-    range.setStartAfter(space)
-    range.setEndAfter(space)
-
-    const selection = window.getSelection()
-    selection?.removeAllRanges()
-    selection?.addRange(range)
-
+    const { state } = editor
+    const { from } = state.selection
+    const textBefore = state.doc.textBetween(Math.max(0, from - 50), from, "\n", "\0")
+    const match = textBefore.match(/(^|\s)([#@])([\p{L}\p{N}_-]{1,30})$/u)
+    if (!match) return
+    const deleteLen = match[2].length + match[3].length
+    editor
+      .chain()
+      .focus()
+      .deleteRange({ from: from - deleteLen, to: from })
+      .insertContent(replacement + " ")
+      .run()
     setTrigger(null)
-    handleInput()
-  }
+    setCaretPosition(null)
+  }, [editor, trigger])
+
+  // ── Render suggestions ────────────────────────────────────────────────────
 
   const renderAccount = (account: mastodon.v1.Account) => {
-    const nameText = getDisplayNameText({
-      displayName: account.displayName,
-      username: account.username,
-    })
-
+    const nameText = getDisplayNameText({ displayName: account.displayName, username: account.username })
     return (
       <button
         key={account.id}
         type="button"
-        onClick={() => insertEntity(account.acct, "accounts")}
+        onMouseDown={(e) => { e.preventDefault(); insertEntity(account.acct, "accounts") }}
         className="flex w-full items-center gap-3 rounded-md px-2 py-2 text-left text-sm hover:bg-foreground/8 transition-colors"
       >
         <Avatar className="h-8 w-8">
@@ -313,11 +349,7 @@ export function ComposeEditor({
         </Avatar>
         <div className="min-w-0">
           <div className="truncate font-medium text-foreground">
-            {renderDisplayName({
-              displayName: account.displayName,
-              username: account.username,
-              emojis: account.emojis,
-            })}
+            {renderDisplayName({ displayName: account.displayName, username: account.username, emojis: account.emojis })}
           </div>
           <div className="truncate text-xs text-muted-foreground">@{account.acct}</div>
         </div>
@@ -337,43 +369,31 @@ export function ComposeEditor({
         return `${x},${y}`
       })
       .join(" ")
-
     return (
       <svg width="64" height="28" viewBox="0 0 60 24" className="text-primary">
-        <polyline
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          points={points}
-        />
+        <polyline fill="none" stroke="currentColor" strokeWidth="2" points={points} />
       </svg>
     )
   }
 
   const renderHashtag = (tag: mastodon.v1.Tag) => {
-    const days = 2
     const people = tag.history?.[0]?.accounts ?? tag.history?.[0]?.uses ?? 0
-
     return (
-    <button
-      key={tag.name}
-      type="button"
-      onClick={() => insertEntity(tag.name, "hashtags")}
-      className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm hover:bg-foreground/8 transition-colors"
-    >
-      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-lg font-bold text-primary">
-        #
-      </div>
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center justify-between gap-2">
-          <span className="truncate font-medium text-foreground">#{tag.name}</span>
-          {renderHashtagTrend(tag)}
+      <button
+        key={tag.name}
+        type="button"
+        onMouseDown={(e) => { e.preventDefault(); insertEntity(tag.name, "hashtags") }}
+        className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm hover:bg-foreground/8 transition-colors"
+      >
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-lg font-bold text-primary">#</div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-2">
+            <span className="truncate font-medium text-foreground">#{tag.name}</span>
+            {renderHashtagTrend(tag)}
+          </div>
+          <div className="mt-1 text-xs text-muted-foreground">过去 2 天 {people} 人访问</div>
         </div>
-        <div className="mt-1 text-xs text-muted-foreground">
-          过去 {days} 天 {people} 人访问
-        </div>
-      </div>
-    </button>
+      </button>
     )
   }
 
@@ -390,66 +410,45 @@ export function ComposeEditor({
         </div>
       )
     }
-
     if (trigger.type === "accounts") {
       return (
         <div className="max-h-64 space-y-1 overflow-y-auto p-1">
-          {accounts.length === 0 ? (
-            <div className="px-2 py-2 text-xs text-muted-foreground">没有匹配用户</div>
-          ) : (
-            accounts.map(renderAccount)
-          )}
+          {accounts.length === 0
+            ? <div className="px-2 py-2 text-xs text-muted-foreground">没有匹配用户</div>
+            : accounts.map(renderAccount)}
         </div>
       )
     }
-
     return (
       <div className="max-h-64 space-y-1 overflow-y-auto p-1">
-        {hashtags.length === 0 ? (
-          <div className="px-2 py-2 text-xs text-muted-foreground">没有匹配话题</div>
-        ) : (
-          hashtags.map(renderHashtag)
-        )}
+        {hashtags.length === 0
+          ? <div className="px-2 py-2 text-xs text-muted-foreground">没有匹配话题</div>
+          : hashtags.map(renderHashtag)}
       </div>
     )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accounts, hashtags, isLoading, trigger])
 
+  // ── JSX ───────────────────────────────────────────────────────────────────
+
   return (
-    <div className="relative">
-      <div
-        ref={rootRef}
-        role="textbox"
-        aria-label="编辑器"
-        contentEditable
-        suppressContentEditableWarning
-        data-placeholder={placeholder}
-        className={cn(
-          "min-h-[160px] w-full rounded-xl border border-border/70 bg-background px-4 py-3 text-sm outline-none",
-          "empty:before:content-[attr(data-placeholder)] empty:before:text-muted-foreground",
-          "empty:before:pointer-events-none",
-          className,
+    <div ref={wrapperRef} className="relative">
+      <div className={cn("rounded-xl border border-border/70 bg-background px-4 py-3 text-sm", className)}>
+        {editor && <EditorContent editor={editor} />}
+
+        {/* Format toolbar */}
+        {editor && (
+          <div className="mt-2 flex items-center border-t border-border/40 pt-2">
+            <FormatToolbar editor={editor} />
+          </div>
         )}
-        onInput={() => {
-          if (searchTimer.current) {
-            window.clearTimeout(searchTimer.current)
-          }
-          searchTimer.current = window.setTimeout(handleInput, 150)
-        }}
-        onKeyUp={handleInput}
-        onBlur={() => {
-          if (searchTimer.current) {
-            window.clearTimeout(searchTimer.current)
-          }
-        }}
-      />
+      </div>
+
+      {/* @ / # suggestions */}
       {showPopover && caretPosition ? (
         <div
           className="absolute z-50 w-80 rounded-lg border border-border bg-popover text-popover-foreground shadow-xl ring-1 ring-border/50"
-          style={{
-            top: caretPosition.top,
-            left: caretPosition.left,
-          }}
-          onMouseDown={(event) => event.preventDefault()}
+          style={{ top: caretPosition.top, left: caretPosition.left }}
         >
           {popoverContent}
         </div>
