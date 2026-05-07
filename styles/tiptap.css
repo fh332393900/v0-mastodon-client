@@ -1,0 +1,93 @@
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Tiptap editor styles                                                        */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Placeholder ─────────────────────────────────────────────────────────── */
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--muted-foreground);
+  pointer-events: none;
+  height: 0;
+}
+
+/* ── Basic typography ────────────────────────────────────────────────────── */
+.tiptap p            { margin: 0 0 0.35em; line-height: 1.6; }
+.tiptap p:last-child { margin-bottom: 0; }
+.tiptap strong       { font-weight: 700; }
+.tiptap em           { font-style: italic; }
+
+/* ── Inline code ─────────────────────────────────────────────────────────── */
+.tiptap code:not(pre code) {
+  background: var(--muted);
+  border-radius: 0.25rem;
+  padding: 0.1em 0.35em;
+  font-family: ui-monospace, monospace;
+  font-size: 0.875em;
+}
+
+/* ── Code block <pre> (wraps our custom NodeViewWrapper) ─────────────────── */
+.tiptap pre {
+  margin: 0.5em 0;
+  padding: 12px;
+  background: transparent;
+  overflow-x: auto;
+}
+
+/* ── lowlight / hljs syntax colors — light ──────────────────────────────── */
+.tiptap .hljs-comment,
+.tiptap .hljs-quote                     { color: oklch(0.55 0.03 250); font-style: italic; }
+.tiptap .hljs-keyword,
+.tiptap .hljs-selector-tag,
+.tiptap .hljs-built_in                  { color: oklch(0.52 0.2 300); }
+.tiptap .hljs-string,
+.tiptap .hljs-attr,
+.tiptap .hljs-regexp,
+.tiptap .hljs-addition                  { color: oklch(0.5 0.18 145); }
+.tiptap .hljs-number,
+.tiptap .hljs-literal,
+.tiptap .hljs-deletion                  { color: oklch(0.58 0.2 35); }
+.tiptap .hljs-type,
+.tiptap .hljs-class .hljs-title         { color: oklch(0.55 0.18 215); }
+.tiptap .hljs-title,
+.tiptap .hljs-section,
+.tiptap .hljs-function .hljs-title      { color: oklch(0.52 0.18 260); }
+.tiptap .hljs-variable,
+.tiptap .hljs-template-variable         { color: oklch(0.5 0.18 20); }
+.tiptap .hljs-tag                       { color: oklch(0.52 0.18 15); }
+.tiptap .hljs-name                      { color: oklch(0.52 0.2 300); }
+.tiptap .hljs-attribute                 { color: oklch(0.5 0.18 215); }
+.tiptap .hljs-symbol,
+.tiptap .hljs-bullet,
+.tiptap .hljs-link                      { color: oklch(0.52 0.18 215); }
+.tiptap .hljs-meta                      { color: oklch(0.55 0.08 250); }
+.tiptap .hljs-emphasis                  { font-style: italic; }
+.tiptap .hljs-strong                    { font-weight: bold; }
+
+/* ── lowlight / hljs syntax colors — dark ───────────────────────────────── */
+.dark .tiptap .hljs-comment,
+.dark .tiptap .hljs-quote                    { color: oklch(0.65 0.03 250); font-style: italic; }
+.dark .tiptap .hljs-keyword,
+.dark .tiptap .hljs-selector-tag,
+.dark .tiptap .hljs-built_in                 { color: oklch(0.78 0.18 300); }
+.dark .tiptap .hljs-string,
+.dark .tiptap .hljs-attr,
+.dark .tiptap .hljs-regexp,
+.dark .tiptap .hljs-addition                 { color: oklch(0.75 0.18 145); }
+.dark .tiptap .hljs-number,
+.dark .tiptap .hljs-literal,
+.dark .tiptap .hljs-deletion                 { color: oklch(0.8 0.2 55); }
+.dark .tiptap .hljs-type,
+.dark .tiptap .hljs-class .hljs-title        { color: oklch(0.75 0.18 215); }
+.dark .tiptap .hljs-title,
+.dark .tiptap .hljs-section,
+.dark .tiptap .hljs-function .hljs-title     { color: oklch(0.75 0.2 255); }
+.dark .tiptap .hljs-variable,
+.dark .tiptap .hljs-template-variable        { color: oklch(0.78 0.18 20); }
+.dark .tiptap .hljs-tag                      { color: oklch(0.75 0.18 15); }
+.dark .tiptap .hljs-name                     { color: oklch(0.78 0.2 300); }
+.dark .tiptap .hljs-attribute                { color: oklch(0.75 0.18 215); }
+.dark .tiptap .hljs-symbol,
+.dark .tiptap .hljs-bullet,
+.dark .tiptap .hljs-link                     { color: oklch(0.75 0.18 215); }
+.dark .tiptap .hljs-meta                     { color: oklch(0.7 0.08 250); }
